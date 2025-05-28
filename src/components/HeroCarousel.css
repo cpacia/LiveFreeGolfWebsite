@@ -6,7 +6,9 @@
 }
 
 .hero-carousel .slide {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 60vh;
   background-size: cover;
@@ -15,7 +17,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
 }
+
+.hero-carousel .slide.active {
+  opacity: 1;
+  position: relative; /* bring it into flow */
+  z-index: 2;         /* above the hidden slides */
++}
 
 .hero-carousel .overlay {
   pointer-events: none;
@@ -43,7 +53,24 @@
 }
 
 .hero-carousel .btn-primary {
+  background: var(--color-accent-yellow);
+  color: var(--color-dark);
+  padding: 0.7rem 1.25rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.hero-carousel .btn-primary:hover {
+  background: #d1a640;          /* slightly darker yellow hover */
+  transform: translateY(-1px);  /* subtle lift */
+}
+
+.hero-carousel .btn-secondary {
   background: var(--color-primary-green);
+  font-family: var(--font-heading);
   color: #ffffff;
   padding: 0.75rem 1.5rem;
   border-radius: 4px;
@@ -52,9 +79,20 @@
   transition: background 0.2s;
 }
 
-.hero-carousel .btn-primary:hover {
-  background: var(--color-accent-yellow);
-  color: var(--color-dark);
+.hero-carousel .btn-secondary:hover {
+  background: #10281C;          /* slightly darker yellow hover */
+  transform: translateY(-1px);  /* subtle lift */
+}
+
+.hero-carousel .cta-group {
+  display: flex;
+  gap: 1rem;                /* space between buttons */
+}
+
+.hero-carousel .cta-group a {
+  flex: 1;                  /* both share the space equally */
+  max-width: 150px;         /* optional cap if you don’t want them too wide */
+  text-align: center;
 }
 
 .hero-carousel .nav {
@@ -119,7 +157,6 @@
   top: -2px; /* move the arrow up 2px */
 }
 
-
 /* Container & positioning */
 .blurb-card {
   background: rgba(247, 245, 233, 0.0);   
@@ -174,7 +211,7 @@
 
 
 .event-card {
-  background: rgba(247, 245, 233, 0.0);   
+  background: transparent !important;
   padding: 2rem;                          /* generous breathing room */
   border-radius: 8px;                     /* soft corners */
   max-width: 700px;                       /* narrow enough for readability */
@@ -182,7 +219,7 @@
   text-align: left;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.0); /* subtle depth over the image */
   margin-left: 10rem;
-  margin-top: 1rem;
+  margin-top: 2.5rem;
   position: relative;
 }
 
@@ -190,22 +227,24 @@
 .event-card .label {
   font-family: var(--font-heading);
   color: var(--color-accent-yellow);
-  font-size: 0.9rem;
+  font-size: 2.5rem;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
 }
 
-.event-card h1 {
+.event-card .title {
+  font-weight: bold;
   font-family: var(--font-heading);
-  font-size: 2rem;
+  color: rgba(255, 255, 255, 1);
+  font-size: 4rem;
   margin: 0.25rem 0;
 }
 
 .event-card .sub {
-  font-family: var(--font-body);
-  font-size: 1rem;
+  font-family: var(--font-heading);
+  color: rgba(255, 255, 255, 1);
+  font-size: 2rem;
   margin-bottom: 1.5rem;
-  color: var(--color-dark);
 }
 
 .event-card .cta-group a {
