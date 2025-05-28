@@ -1,20 +1,30 @@
 [
   {
-    "id": "spring-stroke-play",
-    "name": "Spring Stroke Play",
-    "date": "2025-05-22",
-    "course": "North Course"
+    "id": "impact-fire-open",
+    "name": "Impact Fire Open",
+    "date": "2025-04-27",
+    "course": "The Oaks",
+    "town": "Somersworth"
   },
   {
-    "id": "summer-scramble",
-    "name": "Summer Scramble",
-    "date": "2025-06-12",
-    "course": "South Course"
+    "id": "fastenal-class",
+    "name": "Fastenal Classic",
+    "date": "2025-05-04",
+    "course": "Far Corners",
+    "town": "Boxford"
   },
   {
-    "id": "colony-cup-qualifier",
-    "name": "Colony Cup Qualifier",
-    "date": "2025-06-26",
-    "course": "East Course"
+    "id": "memorial-day-shootout",
+    "name": "Memorial Day Shootout",
+    "date": "2025-05-26",
+    "course": "Stonebridge Country Club",
+    "town": "Goffstown"
+  },
+  {
+    "id": "impact-fire-major",
+    "name": "Impact Fire Major",
+    "date": "2025-06-08",
+    "course": "Montcalm GC",
+    "town": "Enfield"
   }
 ]

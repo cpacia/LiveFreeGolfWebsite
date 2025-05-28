@@ -16,7 +16,7 @@
   /* …other properties (height, display, etc.)… */
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
@@ -26,6 +26,16 @@
   position: relative; /* bring it into flow */
   z-index: 2;         /* above the hidden slides */
 +}
+
+/* Animate the content in lock‑step */
+.hero-carousel .slide-content {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out 0.1s; /* 0.1s delay so background is already moving */
+}
+
+.hero-carousel .slide.active .slide-content {
+  opacity: 1;
+}
 
 .hero-carousel .overlay {
   pointer-events: none;
@@ -251,3 +261,82 @@
   margin-right: 1rem;
 }
 
+.hero-carousel .post-slide {
+  display: flex;
+  align-items: center;         /* vertical center */
+  max-width: 1100px;            /* limits overall card width */
+  background: rgba(255,255,255,0.95);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  overflow: hidden;            /* clip any overflow */
+}
+
+.hero-carousel .slide.post-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;      /* center this one only */
+  padding: 0;                   /* drop left padding so true center */
+}
+
+/* 1. Target the overlay when it’s inside a post slide */
+.hero-carousel .slide.post-wrapper .overlay {
+  justify-content: center;  /* center content horizontally */
+  align-items: center;      /* center content vertically */
+}
+
+/* 2. (Optional) Remove the overlay’s padding so true centering */
+.hero-carousel .slide.post-wrapper .overlay {
+  padding: 0;
+}
+
+.hero-carousel .post-image {
+  flex: 0 0 50%;               /* 40% of the card width */
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.hero-carousel .post-text {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-date {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--color-primary-green);
+}
+
+.post-title {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.post-excerpt {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+  color: var(--color-dark);
+  
+  /* ======= MULTI‑LINE TRUNCATION ======= */
+  display: -webkit-box;            /* necessary for line‑clamp */
+  -webkit-box-orient: vertical;    
+  overflow: hidden;                
+  text-overflow: ellipsis;         
+  -webkit-line-clamp: 3;           /* show up to 3 lines, then “...” */
+}
+
+.post-text .btn-primary {
+  align-self: flex-start;      /* button hugs left of text block */
+  margin-top: 1rem;            /* pushes button to bottom if you want consistent placement */
+  margin-left: 1rem;
+}

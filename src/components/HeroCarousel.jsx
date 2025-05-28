@@ -10,12 +10,6 @@ import './HeroCarousel.css';
      blurbText: '…',
      cta: { text: 'Learn More', href: '/tour-info' }
    },
-   {
-     id: 'champion',                   // ← unique key
-     img: '/images/slide2.jpg',
-     headline: 'Congrats to Jane Smith, Spring Stroke Play Champion!',
-     ctas: [{ text: 'View Results', href: '/schedule#event-123' }],
-   }
 ];
 
 export default function HeroCarousel() {
@@ -38,6 +32,11 @@ export default function HeroCarousel() {
    // Advance slide
   const advance = () => {
 	  setIndex((i) => (i >= slides.length - 1 ? 0 : i + 1));
+  };
+  
+  const resetTimer = () => {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(advance, 3000);
   };
 
   
@@ -75,6 +74,33 @@ export default function HeroCarousel() {
       .catch(console.error);
   }, []);
   
+   // 4. Fetch & append Latest Post (runs once)
+  useEffect(() => {
+    fetch('/blog-posts.json')
+      .then((res) => res.json())
+      .then((posts) => {
+        // Sort descending by date
+        const sorted = posts
+          .map((p) => ({ ...p, dateObj: new Date(p.date) }))
+          .sort((a, b) => b.dateObj - a.dateObj);
+        const latest = sorted[0];
+        if (latest) {
+          const postSlide = {
+            id: latest.id || latest.slug,
+            isPost: true,
+            img: '/images/slide3.png',  // generic background
+            thumbnailUrl: latest.thumbnailUrl,
+            dateObj: latest.dateObj,
+            title: latest.title,
+            slug: latest.slug,
+            excerpt: latest.excerpt,
+          };
+          setSlides((prev) => [...prev, postSlide]);
+        }
+      })
+      .catch(console.error);
+  }, []);
+  
   useEffect(() => {
 	  // Clear any existing timer
 	  if (timeoutRef.current) {
@@ -95,15 +121,19 @@ export default function HeroCarousel() {
       onMouseEnter={() => clearTimeout(timeoutRef.current)}
       onMouseLeave={() => {
         clearTimeout(timeoutRef.current);
-        timeoutRef.current = setTimeout(advance, 3000);
+        timeoutRef.current = setTimeout(advance, 400);
       }}
     >
       {slides.map((s, i) => (
         <div
           key={s.id}
-          className={`slide${i === index ? ' active' : ''}`}
+          className={
+			`slide${i === index ? ' active' : ''}` +
+			(s.isPost ? ' post-wrapper' : '')
+		  }
           style={s.img ? { backgroundImage: `url(${s.img})` } : {}}
         >
+          <div className="slide-content">
           <div className="overlay">
             {s.isBlurb ? (
               <div className="blurb-card">
@@ -117,10 +147,10 @@ export default function HeroCarousel() {
 				</div>
             ) : s.isEvent ? (
               <div className="event-card">
-		      <p className="label">{slide.label}</p>
-		      <p className="title">{slide.name}</p>
+		      <p className="label">{s.label}</p>
+		      <p className="title">{s.name}</p>
 		      <p className="sub">
-		        {fmt(slide.date)} | {slide.course}
+		        {fmt(s.date)} | {s.course}
 		      </p>
 		      <div className="cta-group">
 		        <a href="/schedule" className="btn-secondary">
@@ -131,6 +161,22 @@ export default function HeroCarousel() {
 		        </a>
 		      </div>
 		    </div>
+            ) : s.isPost ? (
+              <div className="post-slide">
+				<img
+				  src={`images/blog-posts/${s.thumbnailUrl}`}
+				  alt={s.title}
+				  className="post-image"
+				/>
+				<div className="post-text">
+				  <h2 className="post-title">{s.title}</h2>
+				  <p className="post-date">{fmt(s.date)}</p>
+				  <p className="post-excerpt">{s.excerpt}</p>
+				  <a href={`/blog/${s.slug}`} className="btn-primary">
+					Read More ▶
+				  </a>
+				</div>
+			  </div>
             ) : (
               <>
 				  <h1>{slide.headline}</h1>
@@ -144,6 +190,7 @@ export default function HeroCarousel() {
 				</>
             )}
           </div>
+        </div>
         </div>
       ))}
  
