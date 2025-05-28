@@ -1,0 +1,162 @@
+/* Container: two panels side by side, stacks on mobile */
+.events-wgr-section {
+  display: flex;
+  gap: 2rem;
+  margin: 2rem 0;
+  background: #fdfdf7;  /* cream background */
+}
+
+@media (max-width: 768px) {
+  .events-wgr-section {
+    flex-direction: column;
+  }
+}
+
+/* Base panel styling */
+.panel {
+  font-family: var(--font-heading);
+  flex: 1 1 0;
+  background: #fbf8f2;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+}
+
+/* Panel headings */
+.events-panel h2,
+.wgr-panel h2 {
+  margin: 0 0 1rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-primary-green);
+  font-family: var(--font-heading);
+}
+
+/* Upcoming Events List */
+.events-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.event-item {
+  background: #fff;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  align-items: stretch; 
+  height: 85px;
+}
+.event-item:last-child {
+  margin-bottom: 0;
+}
+.date-badge {
+  align-self: stretch;
+  position: relative;   
+  background: var(--color-primary-green);
+  font-family: var(--font-heading);
+  color: var(--color-accent-yellow);
+  border-radius: 4px;
+  text-align: center;
+  padding: 0.3rem 0.6rem;
+  margin-right: 2rem;
+  min-width: 3rem;
+  overflow: visible; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  width: 3.5rem;
+  margin-right: 1rem;
+}
+.date-badge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;                                /* flush with badge’s right edge */
+  width: 4px;                              /* thickness of the stripe */
+  height: 100%;
+  background: var(--color-accent-yellow);  /* your yellow accent */
+  border-top-right-radius: 4px;            /* match badge’s corner */
+  border-bottom-right-radius: 4px;
+}
+.date-badge .month {
+  display: block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+.date-badge .day {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.badge-text .month,
+.badge-text .day {
+  display: inline-block;     /* ensure they sit inline */
+  margin: 0 0.25rem;         /* small gap between them */
+}
+.badge-text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transform: rotate(90deg);
+  padding-top: 0.1rem;
+}
+.event-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;      /* left‑align all inner text */
+}
+.event-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+.event-course {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  color: #555;
+}
+.event-link {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2f6d31;
+  text-decoration: none;
+}
+.event-link:hover,
+.event-link:focus {
+  text-decoration: underline;
+  color: var(--color-accent-yellow);
+}
+
+/* WGR List */
+.wgr-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.wgr-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+.wgr-item:last-child {
+  border-bottom: none;
+}
+.rank {
+  font-weight: 600;
+  color: #333;
+}
+.player-name {
+  color: #333;
+}
+.points {
+  font-weight: 600;
+  color: #555;
+  text-align: right;
+}
+

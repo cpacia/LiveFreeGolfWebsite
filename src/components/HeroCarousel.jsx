@@ -53,7 +53,7 @@ export default function HeroCarousel() {
       .then((events) => {
         const today = new Date();
         const upcoming = events
-          .map((e) => ({ ...e, dateObj: new Date(e.date) }))
+          .map((e) => ({ ...e, dateObj: new Date(e.date + 'T00:00:00') }))
           .filter((e) => e.dateObj >= today)
           .sort((a, b) => a.dateObj - b.dateObj);
         const next = upcoming[0];
@@ -81,7 +81,7 @@ export default function HeroCarousel() {
       .then((posts) => {
         // Sort descending by date
         const sorted = posts
-          .map((p) => ({ ...p, dateObj: new Date(p.date) }))
+          .map((p) => ({ ...p, dateObj: new Date(p.date + 'T00:00:00') }))
           .sort((a, b) => b.dateObj - a.dateObj);
         const latest = sorted[0];
         if (latest) {
@@ -90,6 +90,7 @@ export default function HeroCarousel() {
             isPost: true,
             img: '/images/slide3.png',  // generic background
             thumbnailUrl: latest.thumbnailUrl,
+            padding: latest.thumbnailPadding,
             dateObj: latest.dateObj,
             title: latest.title,
             slug: latest.slug,
@@ -167,6 +168,7 @@ export default function HeroCarousel() {
 				  src={`images/blog-posts/${s.thumbnailUrl}`}
 				  alt={s.title}
 				  className="post-image"
+				  style={{ objectPosition: `center ${s.padding}rem` }}
 				/>
 				<div className="post-text">
 				  <h2 className="post-title">{s.title}</h2>

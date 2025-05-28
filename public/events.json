@@ -26,5 +26,26 @@
     "date": "2025-06-08",
     "course": "Montcalm GC",
     "town": "Enfield"
+  },
+  {
+    "id": "b-nice-detailing-classic",
+    "name": "B-Nice Detailing Classic",
+    "date": "2025-06-22",
+    "course": "The Links @ Outlook",
+    "town": "South Berwick"
+  },
+   {
+    "id": "brentwood-36-hole-extravaganza",
+    "name": "Brentwood 36-Hole Extravaganza",
+    "date": "2025-06-30",
+    "course": "Brentwood GC",
+    "town": "Keene"
+  },
+  {
+    "id": "july-13-round",
+    "name": "July 13 Round",
+    "date": "2025-07-13",
+    "course": "Nippo Lake",
+    "town": "Barrington"
   }
 ]

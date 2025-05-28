@@ -1,0 +1,121 @@
+.membership-section {
+  padding: 4rem 2rem;
+  background: #fbf8f2; /* light cream */
+  text-align: center;
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--color-primary-green);
+}
+
+.membership-grid {
+  display: grid;
+  /* Instead of minmax(240px,1fr), allow more breathing room: */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  max-width: 960px;        /* up from 1200px if you’d like, or keep as is */
+  margin: 0 auto;
+}
+
+@media (min-width: 900px) {
+  .membership-grid {
+    grid-template-columns: repeat(3, 1fr);  /* always 3 columns */
+}
+
+
+/* Card base */
+.tier-card {
+  background: #fcfcf9; 
+  border: 2px solid var(--color-primary-green);
+  border-radius: 8px;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.tier-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Highlight the “best value” tier—LFG + GHIN */
+.tier-card:nth-child(1) {
+  background: var(--color-primary-green);
+  color: #ffffff;
+}
+
+.tier-card:nth-child(1) .tier-cta {
+  background: var(--color-accent-yellow);
+  color: var(--color-primary-green);
+}
+
+.tier-card:nth-child(1) .tier-cta:hover {
+  background: #d1a640;  
+  color: var(--color-dark);
+}
+
+.tier-card:nth-child(3) .tier-cta {
+  background: var(--color-accent-yellow);
+  color: var(--color-primary-green);
+}
+
+.tier-card:nth-child(3) .tier-cta:hover {
+  background: #d1a640;  
+  color: var(--color-dark);
+}
+
+/* Titles & Pricing */
+.tier-title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem;
+}
+
+.tier-price {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  margin: 0 1rem 1rem;
+  font-weight: 800;
+}
+
+.tier-highlights {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: inherit;
+}
+
+.tier-highlights li + li {
+  margin-top: 0.5rem;
+}
+
+/* CTA button inside card */
+.tier-cta {
+  display: inline-block;
+  width: 140px;
+  text-align: center;
+  margin-top: auto;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.tier-cta:hover {
+  transform: translateY(-1px);
+  background: var(--color-accent-yellow);
+  color: var(--color-dark);
+}
+

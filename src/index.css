@@ -102,6 +102,14 @@ button {
   padding: 0 1rem;
 }
 
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
 .full-bleed {
   width: 100vw;
   position: relative;
