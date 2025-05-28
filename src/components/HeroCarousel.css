@@ -1,0 +1,214 @@
+.hero-carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  font-family: var(--font-heading);
+}
+
+.hero-carousel .slide {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  background-size: cover;
+  background-position: center 25%;  /* <-- align the top of the image with the top of the container */
+  /* …other properties (height, display, etc.)… */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-carousel .overlay {
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  flex-direction: column;
+  text-align: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start; /* align items to left */
+  padding: 2rem;               /* space from edges */
+}
+
+.hero-carousel .overlay h1 {
+  color: #ffffff;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.hero-carousel .overlay .cta-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.hero-carousel .btn-primary {
+  background: var(--color-primary-green);
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.hero-carousel .btn-primary:hover {
+  background: var(--color-accent-yellow);
+  color: var(--color-dark);
+}
+
+.hero-carousel .nav {
+  pointer-events: auto;
+  z-index: 10;
+  position: absolute;
+  top: 50%;                    
+  transform: translateY(-50%);
+  
+  /* explicit circle size */
+  width: 32px;      /* or 28px for a tighter look */
+  height: 32px;     /* match width for a perfect circle */
+  
+  background: var(--color-accent-yellow);
+  color: var(--color-primary-green);
+  border: none;
+  border-radius: 50%;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.85;
+  
+  /* remove padding */
+  padding: 0;
+  
+  /* font-size now only affects the icon inside */
+  font-size: 2rem;  /* larger arrow glyph */
+  
+  transition: opacity 0.2s, transform 0.2s;
+  
+   outline: none;                    /* remove default focus outline */
+  -webkit-tap-highlight-color: transparent; /* remove tap highlight on mobile */
+}
+.hero-carousel .nav:hover {
+  opacity: 1;
+  background: #d1a640;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.hero-carousel .overlay .btn-primary,
+.hero-carousel .overlay .btn-secondary,
+.hero-carousel .overlay a {
+  pointer-events: auto;
+}
+
+/* Pull the buttons in from the edges by the same amount */
+.hero-carousel .nav.prev {
+  left: 26px;    /* inset from left */
+  padding-right: .15rem;
+}
+
+.hero-carousel .nav.next {
+  right: 16px;   /* inset from right */
+  padding-left: .15rem;
+}
+
+.hero-carousel .nav .chevron {
+  display: inline-block;
+  position: relative;
+  top: -2px; /* move the arrow up 2px */
+}
+
+
+/* Container & positioning */
+.blurb-card {
+  background: rgba(247, 245, 233, 0.0);   
+  padding: 2rem;                          /* generous breathing room */
+  border-radius: 8px;                     /* soft corners */
+  max-width: 700px;                       /* narrow enough for readability */
+  color: var(--color-dark);               /* dark text for contrast */
+  text-align: left;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.0); /* subtle depth over the image */
+  margin-left: 10rem;
+  margin-top: 1rem;
+  position: relative;
+}
+
+
+
+/* Heading */
+.blurb-card h2 {
+  font-family: var(--font-heading);
+  font-size: 5rem;
+  line-height: 1.25;
+  margin: 0 0 0.75rem 0;
+  color: rgba(255, 255, 255, 1);
+}
+
+/* Body text */
+.blurb-card p {
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 1);
+  margin: 0 0 1.5rem 0;
+}
+
+/* Button */
+.blurb-card .btn-primary {
+  display: inline-block;
+  background: var(--color-accent-yellow);
+  color: var(--color-dark);
+  padding: 0.5rem 1.25rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.blurb-card .btn-primary:hover {
+  background: #d1a640;          /* slightly darker yellow hover */
+  transform: translateY(-1px);  /* subtle lift */
+}
+
+
+.event-card {
+  background: rgba(247, 245, 233, 0.0);   
+  padding: 2rem;                          /* generous breathing room */
+  border-radius: 8px;                     /* soft corners */
+  max-width: 700px;                       /* narrow enough for readability */
+  color: var(--color-dark);               /* dark text for contrast */
+  text-align: left;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.0); /* subtle depth over the image */
+  margin-left: 10rem;
+  margin-top: 1rem;
+  position: relative;
+}
+
+
+.event-card .label {
+  font-family: var(--font-heading);
+  color: var(--color-accent-yellow);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.event-card h1 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  margin: 0.25rem 0;
+}
+
+.event-card .sub {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-dark);
+}
+
+.event-card .cta-group a {
+  margin-right: 1rem;
+}
+

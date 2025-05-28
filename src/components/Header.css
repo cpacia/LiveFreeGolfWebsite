@@ -1,0 +1,100 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: var(--color-primary-green);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 100;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 80px;
+}
+
+.logo {
+  flex: 0 0 auto;
+}
+
+.main-nav {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;   /* center links in leftover space */
+  gap: 1.5rem;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+}
+
+.main-nav a {
+  color: #ffffff;                         /* white text */
+  padding: 0.5rem;
+  transition: color 0.2s;
+}
+.main-nav a:hover {
+  color: var(--color-accent-yellow);      /* yellow on hover */
+}
+
+/* Actions stick right */
+.actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-register {
+  background: var(--color-accent-yellow);
+  color: var(--color-dark);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-register:hover {
+  background: #d1a640;  /* a touch darker than #F2C14E */
+  color: var(--color-dark);
+}
+
+.cart-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1rem;         /* give it some breathing room */
+  color: #ffffff;            /* white in header */
+  transition: color 0.2s;
+}
+
+.cart-icon svg {
+  width: 1.5rem;             /* ensure it scales nicely */
+  height: 1.5rem;
+}
+
+.cart-icon:hover {
+  color: var(--color-accent-yellow);
+}
+/* Badge for item count */
+.cart-icon::after {
+  content: attr(data-count);
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: var(--color-accent-yellow);
+  color: var(--color-dark);
+  font-size: 0.7rem;
+  padding: 2px 4px;
+  border-radius: 6px;
+  display: none;                /* only show when count >0 */
+}
+
+.cart-icon[data-count]:not([data-count="0"])::after {
+  display: block;
+}

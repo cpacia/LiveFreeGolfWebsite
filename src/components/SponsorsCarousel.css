@@ -1,0 +1,37 @@
+.sponsors-carousel {
+  background: var(--color-light);
+  overflow: hidden;
+  padding: 1rem 0;
+}
+
+.sponsors-track {
+  display: flex;
+  width: calc(200% + 2rem);
+  animation: scroll 20s linear infinite;
+}
+
+.sponsor-item {
+  flex: 0 0 auto;
+  width: 150px;
+  margin: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sponsor-item img {
+  max-width: 100%;
+  height: auto;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.sponsor-item img:hover {
+  opacity: 1;
+}
+
+@keyframes scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+

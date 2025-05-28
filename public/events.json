@@ -1,0 +1,20 @@
+[
+  {
+    "id": "spring-stroke-play",
+    "name": "Spring Stroke Play",
+    "date": "2025-05-22",
+    "course": "North Course"
+  },
+  {
+    "id": "summer-scramble",
+    "name": "Summer Scramble",
+    "date": "2025-06-12",
+    "course": "South Course"
+  },
+  {
+    "id": "colony-cup-qualifier",
+    "name": "Colony Cup Qualifier",
+    "date": "2025-06-26",
+    "course": "East Course"
+  }
+]

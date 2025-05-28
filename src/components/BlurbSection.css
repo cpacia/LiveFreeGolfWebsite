@@ -1,0 +1,52 @@
+.blurb-section {
+  background: var(--color-light);
+  padding: 2rem 1rem;
+  text-align: center;
+  max-width: 800px;
+  margin: 2rem auto;
+  font-family: var(--font-body);
+}
+
+.blurb-section h2 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--color-primary-green);
+  margin-bottom: 1rem;
+  position: relative;
+  display: inline-block;
+}
+
+.blurb-section h2::after {
+  content: '';
+  display: block;
+  width: 50%;
+  height: 4px;
+  background: var(--color-accent-yellow);
+  margin: 0.5rem auto 0;
+}
+
+.blurb-section p {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--color-dark);
+  margin-bottom: 1.5rem;
+}
+
+.blurb-section .btn-secondary {
+  display: inline-block;
+  background: transparent;
+  border: 2px solid var(--color-primary-green);
+  color: var(--color-primary-green);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.blurb-section .btn-secondary:hover {
+  background: var(--color-primary-green);
+  color: #ffffff;
+}
+
