@@ -50,60 +50,64 @@ export default function HeroCarousel() {
     }).format(date);
     
   useEffect(() => {
-    fetch('/events.json')
-      .then((res) => res.json())
-      .then((events) => {
-        const today = new Date();
-        const upcoming = events
-          .map((e) => ({ ...e, dateObj: new Date(e.date + 'T00:00:00') }))
-          .filter((e) => e.dateObj >= today)
-          .sort((a, b) => a.dateObj - b.dateObj);
-        const next = upcoming[0];
-        if (next) {
-          const nextSlide = {
-            id: next.id,
-            img: `/images/slide2.png`, // your event–specific background
-            isEvent: true,
-            label: 'Next Event',
-            name: next.name,
-            date: next.dateObj,
-            course: next.course,
-          };
-          // Build new slides: blurb, nextEvent, then the rest of staticSlides (excluding the blurb at 0)
-          setSlides([staticSlides[0], nextSlide, ...staticSlides.slice(1)]);
-        }
-      })
-      .catch(console.error);
-  }, []);
-  
-   // 4. Fetch & append Latest Post (runs once)
-  useEffect(() => {
-    fetch('/blog-posts.json')
-      .then((res) => res.json())
-      .then((posts) => {
-        // Sort descending by date
-        const sorted = posts
-          .map((p) => ({ ...p, dateObj: new Date(p.date + 'T00:00:00') }))
-          .sort((a, b) => b.dateObj - a.dateObj);
-        const latest = sorted[0];
-        if (latest) {
-          const postSlide = {
-            id: latest.id || latest.slug,
-            isPost: true,
-            img: '/images/slide3.png',  // generic background
-            thumbnailUrl: latest.thumbnailUrl,
-            padding: latest.thumbnailPadding,
-            dateObj: latest.dateObj,
-            title: latest.title,
-            slug: latest.slug,
-            excerpt: latest.excerpt,
-          };
-          setSlides((prev) => [...prev, postSlide]);
-        }
-      })
-      .catch(console.error);
-  }, []);
-  
+	  const fetchSlides = async () => {
+		const today = new Date();
+		const slides = [staticSlides[0]];
+
+		try {
+		  const eventsRes = await fetch('/events.json');
+		  const events = await eventsRes.json();
+		  const upcoming = events
+		    .map((e) => ({ ...e, dateObj: new Date(e.date + 'T00:00:00') }))
+		    .filter((e) => e.dateObj >= today)
+		    .sort((a, b) => a.dateObj - b.dateObj);
+		  const next = upcoming[0];
+
+		  if (next) {
+		    slides.push({
+		      id: next.id,
+		      img: `/images/slide2.png`,
+		      isEvent: true,
+		      label: 'Next Event',
+		      name: next.name,
+		      date: next.dateObj,
+		      course: next.course,
+		    });
+		  }
+		} catch (err) {
+		  console.error('Failed to load events:', err);
+		}
+
+		try {
+		  const postsRes = await fetch('/blog-posts.json');
+		  const posts = await postsRes.json();
+		  const latest = posts
+		    .map((p) => ({ ...p, dateObj: new Date(p.date + 'T00:00:00') }))
+		    .sort((a, b) => b.dateObj - a.dateObj)[0];
+
+		  if (latest) {
+		    slides.push({
+		      id: latest.id || latest.slug,
+		      isPost: true,
+		      img: '/images/slide3.png',
+		      thumbnailUrl: latest.thumbnailUrl,
+		      padding: latest.thumbnailPadding,
+		      dateObj: latest.dateObj,
+		      title: latest.title,
+		      slug: latest.slug,
+		      excerpt: latest.excerpt,
+		    });
+		  }
+		} catch (err) {
+		  console.error('Failed to load posts:', err);
+		}
+
+		setSlides(slides);
+	  };
+
+	  fetchSlides();
+	}, []);
+	  
   useEffect(() => {
 	  // Clear any existing timer
 	  if (timeoutRef.current) {
