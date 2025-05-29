@@ -33,7 +33,7 @@ export default function TourDetailsPage() {
       <aside className="sidebar">
         <nav>
           <a href="#about">About</a>
-          <a href="#structure">League Structure</a>
+          <a href="#structure">Tour Structure</a>
           <a href="#skins">Skins</a>
           <a href="#teams">Teams</a>
           <a href="#rules">Rules</a>
@@ -44,40 +44,62 @@ export default function TourDetailsPage() {
       <main className="scrolling-content">
         <section id="about">
           <h2>About</h2>
-          <p>The Live Free Golf Tour is a competitive but friendly amateur league based in New Hampshire. We play on great courses and value camaraderie and good play.</p>
+          <p><span>The Live Free Golf Tour (LFG) is a 12‑event, season‑long competition across premier courses in New Hampshire and Massachusetts, designed to bring out the best in every golfer. Events are played at 80–90% handicap, so whether you’re shooting your lowest round or simply out to have fun, everyone has a shot at victory.</span>
+
+<span>You don’t need to play them all—enter as few or as many events as you like—and at the end of the season we’ll count your six best finishes toward the regular‑season points championship. Points accumulate Sunday afternoons throughout the season, and the players with the highest totals will qualify for the playoffs and a chance at the crown—and bragging rights.</span>
+
+<span>We’ll help you get a proper GHIN account—just purchase it right on our homepage—and you’re welcome to request preferred tee times throughout the season.</span>
+
+Ready to see how you perform under pressure? Join the Live Free Golf Tour and tee off with friends for a season of great golf, fun competition, and a chance to prove you’re the best.</p>
         </section>
 
         <section id="structure">
-          <h2>League Structure</h2>
+          <h2>Tour Structure</h2>
           <ul>
-            <li>10–12 event season running from May to September</li>
-            <li>Net stroke play format using full handicap</li>
-            <li>Optional match play tournament</li>
-            <li>End-of-season Colony Cup team competition</li>
-            <li>Point-based standings to determine champion</li>
-            <li>Skins game at every event</li>
+            <li>There are 12 regular season events plus two playoff events and a Championship.</li>
+            <li>Similar to the FedEx Cup, players earn points based on their leaderboard finish.</li>
+            <li>Only your top six point totals count toward your season total.</li>
+            <li>The top X [ask chad to clarify] players in points qualify after the regular season for the first playoff event.</li>
+            <li>The top X [ask chad to clarify] players in points after the first playoff event qualify for the second playoff event.</li>
+            <li>The top X [ask chad to clarify] players in points after the second playoff event qualify for the Championship.</li>
+            <li>The Championship uses a "starting strokes" format whereby players start the tournament with different scores relative to par based on their season long point total.</li>
           </ul>
         </section>
 
         <section id="skins">
           <h2>Skins</h2>
-          <p>Skins are awarded to the lowest unique score on each hole. If no unique low score is recorded, the skin rolls over to the next hole.</p>
+          <p>[X% of your tournament registration fee] is placed into the skins pool (to be confirmed). The pool is divided equally among all 18 holes. The player with the lowest net score on a hole wins that skin. If two or more players tie for lowest, no one wins—those skins carry over to holes with a unique low score. Only 50% of your handicap strokes are applied when calculating net scores for skins.</p>
         </section>
 
         <section id="teams">
           <h2>Teams</h2>
-          <p>Team play occurs during the Colony Cup where players are split into two teams and compete across a variety of match formats.</p>
+          <p>Every event except the Championship has a team event that runs simultaneously. Players are placed into better ball teams of four. The lowest individual score on the hole is your team's score for the hole. Each member of the winning team earns 15 bonus points toward the season‑long race. 90% of handicap strokes are typically used for team play.</p>
         </section>
 
         <section id="rules">
-          <h2>Rules Addendums</h2>
-          <ul>
-            <li>All OB is stroke and distance unless otherwise noted</li>
-            <li>Lost balls follow USGA rules unless local rule allows drop</li>
-            <li>Preferred lies allowed only when posted before event</li>
-            <li>Max score is double par unless posted otherwise</li>
-            <li>Pace of play is enforced with group warnings and penalties</li>
-          </ul>
+          <h2>Rules</h2>
+          <ol>
+            <li>All Men will play from the same designated tee. Exceptions can be made if agreed upon. All Women from the Women’s Tee.</li>
+            <li>All players will play at a percentage of their course or GHIN handicap.</li>
+            <li>It is preferred that all members have an active GHIN handicap. However, a player without a GHIN will be able to play at an approximated GHIN. (The committee has the ability to change a player's unofficial handicap after a round depending on results)</li>
+            <li>White Stakes.  We at Live Free Golf are not pros. Neither are you.  We will be playing all White OB Stakes as a MANDATORY Lateral Drop for a 1 stroke penalty.  You may NOT play the ball as it lies but you may take the drop as if you were taking a Red Stake Lateral Drop for 1 stroke penalty.  2 club lengths from estimated point of entry.</li>
+            <li><span>Red/Yellow Staked Hazards are now played exactly the same options with one exception for Red Stakes (2 club lengths from point of entry). Each option incurs a 1 stroke penalty.  You may also play the ball as it lies if you find it.</span> <span>See Rules Video: <a href="https://www.youtube.com/watch?v=gfjY8G79MEI"> Red/Yellow Stake Penalty Rule 5a</a></span> No Stakes but clearly defined trouble areas/hazards, mainly wood lines and water may be played as a Red Stake Penalty areas.  <b>Always ask the group consensus if this situation occurs.</b></li>
+            <li>Unplayable Rule - See Rule Video: <a href="https://www.youtube.com/watch?v=j2x8atu-W_U">Unplayable Rule</a></li>
+            <li>We ask that all groups keep 1 official scorecard and 1 or 2 non-official scorecards and confirm all scores at the end of the round.</li>
+            <li>Golfers will have 3 minutes to look for their ball. All other players should play their shots in order to keep Pace of Play.  Please have identifying marks on your ball and let your group know.</li>
+            <li>The ball will be played up in your own fairways. The ball shall be placed no more than a scorecards distance away from original spot.</li>
+            <li>Mud Ball. This would apply in the rough, with a group consensus a ball can be deemed to have excessive mud.  The ball would be cleaned and dropped (not placed) as close to the original spot as possible.</li>
+            <li>Unlikely Lie Relief (Ground Under Repair not marked). If and only if, the group consensus is that your ball ended up in an unlikely lie then you may take a free drop. Extended Cart Path (dirt that should be grass but carts have driven on it), non-grass area (a wet/mud patch surrounded by 99% rough), standing water rule always applies (pooling water at feet).</li>
+            <li>Cart Path Relief can be taken on either side of the Cart Path one club length off the Cart Path but no closer to the hole.</li>
+            <li>Preferred lie in bunkers will be stated prior to the Tournamant. In a situation where a player has an abnormal lie, the player may rake and place the ball with the groups permission.</li>
+            <li>Max score on any hole for any player is 5 over par  3=8, 4=9. 5=10</li>
+            <li>After a players 3rd missed Putt from the same Green he may pick up and add 1 stroke.</li>
+            <li>FALL GOLF RULE/PLUGGING RULE – When there are Leaves or it is Wet out, all players need to pay attention to each other’s shots. If the group agrees that a shot was in play but not found because Leaves or Plug then the player may take a free drop in an area agreed upon by the group.</li>
+            <li>Common sense rule: Just use common sense when any situation arises. Please try to have 2 other playing partners agree with a ruling and move on.</li>
+            <li>Play Ready Golf!</li>
+            <li>All gps, phones, rangefinders, or anything you want to use may be used to help gain information.</li>
+            <li>Players who may miss an event are able play prior to the day of the event if they are not able to make it to the scheduled event as long as they have a good history of attendance and play with a fellow League member (The league members score will not count) that is approved by the commissioner and board members, also must give 10+ days of notice that they will not able to make the event.</li>
+          </ol>
         </section>
 
         <section id="points">
@@ -107,9 +129,9 @@ export default function TourDetailsPage() {
               <tr><td>18th</td><td>27</td><td>41</td><td>49</td><td>49</td><td>50</td><td>E</td></tr>
               <tr><td>19th</td><td>26</td><td>40</td><td>48</td><td>48</td><td>49</td><td>E</td></tr>
               <tr><td>20th</td><td>25</td><td>39</td><td>47</td><td>47</td><td>48</td><td>E</td></tr>
-              <tr><td>21th</td><td>24</td><td>38</td><td>46</td><td>46</td><td>47</td><td>E</td></tr>
-              <tr><td>22rd</td><td>23</td><td>37</td><td>45</td><td>45</td><td>46</td><td>E</td></tr>
-              <tr><td>23th</td><td>22</td><td>36</td><td>44</td><td>44</td><td>45</td><td>E</td></tr>
+              <tr><td>21st</td><td>24</td><td>38</td><td>46</td><td>46</td><td>47</td><td>E</td></tr>
+              <tr><td>22nd</td><td>23</td><td>37</td><td>45</td><td>45</td><td>46</td><td>E</td></tr>
+              <tr><td>23rd</td><td>22</td><td>36</td><td>44</td><td>44</td><td>45</td><td>E</td></tr>
               <tr><td>24th</td><td>21</td><td>35</td><td>43</td><td>43</td><td>44</td><td>E</td></tr>
               <tr><td>25th</td><td>20</td><td>34</td><td>42</td><td>42</td><td>43</td><td></td></tr>
               <tr><td>26th</td><td>20</td><td>33</td><td>41</td><td>41</td><td>42</td><td></td></tr>

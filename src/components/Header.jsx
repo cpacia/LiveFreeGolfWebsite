@@ -25,7 +25,7 @@ export default function Header() {
     <header className="site-header">
       <div className="container">
         <div className="logo">
-          <img src={logo} alt="Live Free Golf Logo" />
+          <a href="/"><img src={logo} alt="Live Free Golf Logo" /></a>
         </div>
         <nav className="main-nav">
           <a href="/">Home</a>

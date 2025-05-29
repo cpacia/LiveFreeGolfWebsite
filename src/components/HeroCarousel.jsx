@@ -153,7 +153,7 @@ export default function HeroCarousel() {
 				  <p>
 					New Hampshire amateur golf at its finest!
 				  </p>
-				  <a href="/tour-info" className="btn-primary">
+				  <a href="/tour-details" className="btn-primary">
 					Learn More ▶
 				  </a>
 				</div>
