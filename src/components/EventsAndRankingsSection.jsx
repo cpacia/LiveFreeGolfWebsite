@@ -21,13 +21,13 @@ export default function EventsAndRankingsSection() {
       .catch(console.error);
 
     // Fetch world golf rankings
-    fetch('/data/rankings.json')
+    fetch('/wgr-rankings.json')
       .then(res => res.json())
       .then(all => {
         const top = all
           .sort((a, b) => a.points - b.points)
           .reverse()
-          .slice(0, 5);
+          .slice(0, 7);
         setRankings(top);
       })
       .catch(console.error);
@@ -75,7 +75,7 @@ export default function EventsAndRankingsSection() {
         <ul className="wgr-list">
           {rankings.map((p, i) => (
             <li key={p.id || p.name} className="wgr-item">
-              <span className="rank">{i + 1}</span>
+              <span className="rank">{p.rank}</span>
               <span className="player-name">{p.name}</span>
               <span className="points">{p.points}</span>
             </li>

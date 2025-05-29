@@ -2,7 +2,8 @@
 .events-wgr-section {
   display: flex;
   gap: 2rem;
-  margin: 2rem 0;
+  margin: 4rem 0;
+  justify-content: center;
   background: #fdfdf7;  /* cream background */
 }
 
@@ -15,11 +16,12 @@
 /* Base panel styling */
 .panel {
   font-family: var(--font-heading);
-  flex: 1 1 0;
   background: #fbf8f2;
   border-radius: 6px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   padding: 1.5rem;
+  flex: 1 1 45%;            /* each panel tries to be at least 45% of the container */
+  min-width: 380px;         /* prevents them from getting squished too much */
 }
 
 /* Panel headings */
@@ -86,7 +88,7 @@
 }
 .date-badge .day {
   display: block;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   font-weight: 700;
 }
 .badge-text .month,
@@ -124,6 +126,7 @@
   font-weight: 600;
   color: #2f6d31;
   text-decoration: none;
+  cursor: pointer;
 }
 .event-link:hover,
 .event-link:focus {
@@ -152,6 +155,8 @@
   color: #333;
 }
 .player-name {
+  padding-left: 1rem;
+  text-align: left;
   color: #333;
 }
 .points {

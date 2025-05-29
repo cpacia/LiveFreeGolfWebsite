@@ -1,7 +1,10 @@
 .membership-section {
-  padding: 4rem 2rem;
-  background: #fbf8f2; /* light cream */
-  text-align: center;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
 }
 
 .section-title {
@@ -23,6 +26,7 @@
 @media (min-width: 900px) {
   .membership-grid {
     grid-template-columns: repeat(3, 1fr);  /* always 3 columns */
+   }
 }
 
 

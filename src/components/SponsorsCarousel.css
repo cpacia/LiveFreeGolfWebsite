@@ -1,13 +1,14 @@
 .sponsors-carousel {
   background: var(--color-light);
   overflow: hidden;
-  padding: 1rem 0;
+  padding: 0rem 0;
+  padding-bottom: 2rem;
 }
 
 .sponsors-track {
   display: flex;
-  width: calc(200% + 2rem);
-  animation: scroll 20s linear infinite;
+  justify-content: center; /* centers items horizontally */
+  gap: 11rem; /* optional: adds space between logos */
 }
 
 .sponsor-item {
@@ -22,16 +23,30 @@
 .sponsor-item img {
   max-width: 100%;
   height: auto;
-  opacity: 0.8;
+  opacity: 1;
   transition: opacity 0.2s;
 }
 
 .sponsor-item img:hover {
-  opacity: 1;
+  opacity: .8;
 }
 
-@keyframes scroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+.sponsors-carousel h2 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--color-primary-green);
+  margin-bottom: 2.5rem;
+  position: relative;
+  display: inline-block;
 }
+
+.sponsors-carousel h2::after {
+  content: '';
+  display: block;
+  width: 50%;
+  height: 4px;
+  background: var(--color-accent-yellow);
+  margin: 0.5rem auto 0;
+}
+
 

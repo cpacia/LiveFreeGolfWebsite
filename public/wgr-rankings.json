@@ -1,0 +1,56 @@
+[
+	{
+		"id": "1",
+		"rank": "1",
+		"name": "Jim Tokanel",
+		"points": 1100
+	},
+	{
+		"id": "2",
+		"rank": "3",
+		"name": "Jonathan Levenson",
+		"points": 977
+	},
+	{
+		"id": "3",
+		"rank": "3",
+		"name": "Ricky Dichard",
+		"points": 945
+	},
+	{
+		"id": "4",
+		"rank": "4",
+		"name": "Chris Roussin",
+		"points": 922
+	},
+	{
+		"id": "5",
+		"rank": "5",
+		"name": "Chad Lawrence",
+		"points": 868
+	},
+	{
+		"id": "6",
+		"rank": "6",
+		"name": "Tom Gibson II",
+		"points": 831
+	},
+	{
+		"id": "7",
+		"rank": "7",
+		"name": "Joshua Klein",
+		"points": 809
+	},
+	{
+		"id": "8",
+		"rank": "8",
+		"name": "John Theriault",
+		"points": 791
+	},
+	{
+		"id": "9",
+		"rank": "9",
+		"name": "Robert Wenrich",
+		"points": 722
+	}
+]
