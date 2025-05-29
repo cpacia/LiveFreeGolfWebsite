@@ -230,5 +230,13 @@
     "state": "NH",
     "thumbnail": "hooper.webp",
     "link": "https://www.hoopergolfcourse.com/"
+  },
+  {
+    "id": "far-corner",
+    "name": "Far Corner",
+    "city": "West Boxford",
+    "state": "MA",
+    "thumbnail": "far-corner.jpg",
+    "link": "https://farcornergolf.com/"
   }
 ]
