@@ -24,8 +24,8 @@ const tiers = [
 
 export default function Membership() {
   return (
-    <div className="content-card">
     <section className="membership-section2 full-bleed">
+    <div className="content-card">
       <h2 className="section-title">Become a Tour Member</h2>
       <p className="blurb2">Purchase one of the membership options below to join the 2025 LFG Tour. You must have a valid GHIN handicap to compete. If you already have one, feel free to purchase the LFG membership only. Otherwise, you can purchase a membership and a GHIN and we'll get you a handicap.</p>
       <div className="membership-grid">
@@ -44,8 +44,8 @@ export default function Membership() {
           </div>
         ))}
       </div>
+      </div>
     </section>
-    </div>
   );
 }
 

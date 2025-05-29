@@ -1,22 +1,33 @@
 .membership-section2 {
-  /*background: url("/images/register.png");
-  background-repeat: no-repeat;
+  background: url("/images/register.png") no-repeat center top;
   background-size: cover;
-  background-position: center top -180px;*/
   background-color: #fdfdf7;
-  padding-top: 2rem;
+  padding: 2rem 4rem;
   position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  width: 100vw;
-  padding-bottom: 2rem;
+  z-index: 0;
+}
+
+.membership-section2 .tier-card {
+  margin-left: 1rem;
+  margin-right: 2.5rem;
 }
 
 .content-card {
-  width: 100%;
-  background-color: #fff;
+  background-color: rgba(253, 253, 247, 0.75);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+  max-width: 900px;
+  margin: 1rem auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .blurb2 {
