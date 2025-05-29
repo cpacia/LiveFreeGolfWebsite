@@ -98,3 +98,65 @@
 .cart-icon[data-count]:not([data-count="0"])::after {
   display: block;
 }
+
+/* Dropdown Menu */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  background: none;
+  border: none;
+  color: white;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.dropbtn:hover {
+  color: var(--color-accent-yellow);
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #1d3a2f; /* darker shade of green for dropdown */
+  min-width: 200px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 4px;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease;
+}
+
+.dropdown-content a {
+  color: white;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  display: block;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.dropdown-content a:hover {
+  background-color: var(--color-accent-yellow);
+  color: var(--color-dark);
+}
+
+/* Show the dropdown on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropbtn:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}

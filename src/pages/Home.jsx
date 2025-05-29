@@ -15,6 +15,11 @@ export default function Home() {
 			<MembershipCards/>
 			<EventsAndRankings limit={3} eventsEndpoint="/data/events.json" />
 		</div>
+		
+		 {/* full‑bleed sponsors */}
+		 <div className="full-bleed">
+			<SponsorsCarousel />
+		 </div>
     </div>
   );
 }

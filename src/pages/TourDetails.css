@@ -1,0 +1,152 @@
+html {
+  scroll-behavior: smooth;
+}
+
+.tour-details-layout {
+  display: flex;
+  height: 105vh;
+  overflow: hidden;
+}
+
+.tour-details-layout {
+  font-family: var(--font-heading);
+  display: flex;
+  padding: 2rem;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1600px;  /* optional cap for ultra-wide monitors */
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: white; /* optional */
+  border-right: 1px solid #eee;
+}
+
+.scrolling-content {
+  flex-grow: 1;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-sizing: border-box;
+}
+
+.sidebar nav a {
+  display: block;
+  margin-bottom: 1rem;
+  color: var(--color-dark);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.sidebar nav a:hover {
+  color: var(--color-accent-yellow);
+}
+
+.scrolling-content section {
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.scrolling-content section::before {
+  content: '';
+  display: block;
+  height: 120px; /* match your header height */
+  margin-top: -120px;
+  visibility: hidden;
+}
+
+.scrolling-content h2 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--color-primary-green);
+  margin-bottom: 1rem;
+  position: relative;
+  display: inline-block;
+}
+
+.scrolling-content h2::after {
+  content: '';
+  display: block;
+  width: 50%;
+  height: 4px;
+  background: var(--color-accent-yellow);
+  margin: 0.5rem auto 0;
+}
+.scrolling-content ul {
+  padding-left: 1.25rem;
+  line-height: 1.6;
+}
+
+.scrolling-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.scrolling-content table th,
+.scrolling-content table td {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  text-align: left;
+  background-color: #fff;
+}
+
+.scrolling-content table th {
+  background-color: var(--color-primary-green);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .tour-details {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+    border-top: 2px solid var(--color-primary-green);
+    padding-top: 1rem;
+  }
+
+  .sidebar nav a {
+    margin: 0;
+  }
+} 
+
+.sidebar nav a.active {
+  color: var(--color-accent-yellow);
+  font-weight: 700;
+  position: relative;
+}
+
+.sidebar nav a.active::before {
+  content: '';
+  position: absolute;
+  left: -0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent-yellow);
+}
+

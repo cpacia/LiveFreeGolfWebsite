@@ -5,7 +5,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import SponsorsCarousel from './components/SponsorsCarousel';
 import Home from './pages/Home';
-//import Schedule from './pages/Schedule';
+import TourDetails from './pages/TourDetails';
 //import Standings from './pages/Standings';
 import './App.css'
 
@@ -14,7 +14,7 @@ export default function App() {
   const currentPage = window.location.pathname;
 
   let Content = Home;
-  if (currentPage.startsWith('/schedule')) Content = Schedule;
+  if (currentPage.startsWith('/tour-details')) Content = TourDetails;
   else if (currentPage.startsWith('/standings')) Content = Standings;
 
   return (
@@ -26,11 +26,6 @@ export default function App() {
       
       {/* page content */}
       <Content />
-      
-      {/* full‑bleed sponsors */}
-      <div className="full-bleed">
-        <SponsorsCarousel />
-      </div>
 
       {/* full‑bleed footer */}
       <div className="full-bleed">

@@ -31,7 +31,15 @@ export default function Header() {
           <a href="/">Home</a>
           <a href="/schedule">Schedule</a>
           <a href="/standings">Standings</a>
-          <a href="/tour-info">Tour Info</a>
+          <div className="dropdown">
+		  <button className="dropbtn">Tour Info ▾</button>
+		  <div className="dropdown-content">
+		    <a href="/tour-details">Tour Details</a>
+		    <a href="/match-play">Match Play Tournament</a>
+		    <a href="/colony-cup">Colony Cup</a>
+		    <a href="/disabled-list">Disabled List</a>
+		  </div>
+		</div>
           <a href="/courses">Courses</a>
           <a href="/news">News & Recaps</a>
           <a href="/shop">Shop</a>
