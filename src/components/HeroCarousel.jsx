@@ -38,7 +38,7 @@ export default function HeroCarousel() {
   
   const resetTimer = () => {
       clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(advance, 3000);
+      timeoutRef.current = setTimeout(advance, SLIDE_INTERVAL);
   };
 
   
@@ -110,7 +110,7 @@ export default function HeroCarousel() {
 	    clearTimeout(timeoutRef.current);
 	  }
 	  // Set a new timer to advance slides after 5 seconds
-	  timeoutRef.current = setTimeout(advance, 5000);
+	  timeoutRef.current = setTimeout(advance, SLIDE_INTERVAL);
 
 	  // Clean up on unmount
 	  return () => {
