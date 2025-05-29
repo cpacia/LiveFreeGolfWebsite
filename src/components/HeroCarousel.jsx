@@ -37,9 +37,11 @@ export default function HeroCarousel() {
   };
   
   const resetTimer = () => {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(advance, SLIDE_INTERVAL);
-  };
+	  clearInterval(intervalRef.current);
+	  intervalRef.current = setInterval(() => {
+	    setIndex((i) => (i + 1) % slides.length);
+	  }, SLIDE_INTERVAL);
+	};
 
   
   const fmt = (date) =>
@@ -108,21 +110,20 @@ export default function HeroCarousel() {
 	  fetchSlides();
 	}, []);
 	  
-  useEffect(() => {
-	  // Clear any existing timer
-	  if (timeoutRef.current) {
-	    clearTimeout(timeoutRef.current);
-	  }
-	  // Set a new timer to advance slides after 5 seconds
-	  timeoutRef.current = setTimeout(advance, SLIDE_INTERVAL);
+  const intervalRef = useRef(null);
 
-	  // Clean up on unmount
-	  return () => {
-	    clearTimeout(timeoutRef.current);
-	  };
-	}, [index, slides.length]); 
-	
-	useEffect(() => {
+   useEffect(() => {
+	  if (slides.length <= 1) return;
+
+	  // Start interval
+	  intervalRef.current = setInterval(() => {
+	    setIndex((i) => (i + 1) % slides.length);
+	  }, SLIDE_INTERVAL);
+
+	  return () => clearInterval(intervalRef.current);
+	}, [slides]);
+		
+   useEffect(() => {
 	  if (index >= slides.length) {
 		setIndex(0);
 	  }
