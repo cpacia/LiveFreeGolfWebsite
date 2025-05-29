@@ -6,7 +6,7 @@ import Footer from './components/Footer';
 import SponsorsCarousel from './components/SponsorsCarousel';
 import Home from './pages/Home';
 import TourDetails from './pages/TourDetails';
-//import Standings from './pages/Standings';
+import Courses from './pages/Courses';
 import './App.css'
 
 export default function App() {
@@ -15,7 +15,7 @@ export default function App() {
 
   let Content = Home;
   if (currentPage.startsWith('/tour-details')) Content = TourDetails;
-  else if (currentPage.startsWith('/standings')) Content = Standings;
+  else if (currentPage.startsWith('/courses')) Content = Courses;
 
   return (
     <>

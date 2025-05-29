@@ -1,0 +1,234 @@
+[
+  {
+    "id": "stonebridge",
+    "name": "Stonebridge Country Club",
+    "city": "Goffstown",
+    "state": "NH",
+    "thumbnail": "stonebridge.jpg",
+    "link": "https://www.golfstonebridgecc.com"
+  },
+  {
+    "id": "candiawoods",
+    "name": "Candia Woods",
+    "city": "Candia",
+    "state": "NH",
+    "thumbnail": "candiawoods.webp",
+    "link": "https://candiaoaks.com/candia-woods-course/"
+  },
+  {
+    "id": "amherst",
+    "name": "Amherst Country Club",
+    "city": "Amherst",
+    "state": "NH",
+    "thumbnail": "amherst.webp",
+    "link": "https://playamherst.com"
+  },
+  {
+    "id": "montcalm",
+    "name": "Montcalm Golf Club",
+    "city": "Enfield",
+    "state": "NH",
+    "thumbnail": "montcalm.jpg",
+    "link": "https://montcalmgolfclub.com"
+  },
+  {
+    "id": "crumpin-fox",
+    "name": "Crumpin-Fox Club",
+    "city": "Bernardston",
+    "state": "MA",
+    "thumbnail": "crumpin-fox.webp",
+    "link": "https://crumpinfox.com"
+  },
+  {
+    "id": "eastman",
+    "name": "Eastman Golf LInks",
+    "city": "Grantham",
+    "state": "NH",
+    "thumbnail": "eastman.gif",
+    "link": "https://eastmannh.org/golf-links"
+  },
+  {
+    "id": "theoaks",
+    "name": "The Oaks",
+    "city": "Somersworth",
+    "state": "NH",
+    "thumbnail": "theoaks.webp",
+    "link": "https://candiaoaks.com/oaks-home-page/"
+  },
+  {
+    "id": "rochester",
+    "name": "Rochester Country Club",
+    "city": "Rochester",
+    "state": "NH",
+    "thumbnail": "rochester.jpg",
+    "link": "https://rochestercc.com"
+  },
+  {
+    "id": "nippo-lake",
+    "name": "Nippo Lake Golf Club",
+    "city": "Barrington",
+    "state": "NH",
+    "thumbnail": "nippo-lake.jpg",
+    "link": "https://nippolake.com"
+  },
+  {
+    "id": "ccnh",
+    "name": "Country Club of New Hampshire",
+    "city": "North Sutton",
+    "state": "NH",
+    "thumbnail": "ccnh.jpg",
+    "link": "https://countryclubofnh.com"
+  },
+  {
+    "id": "green-meadow-jungle",
+    "name": "Green Meadow Jungle",
+    "city": "Hudson",
+    "state": "NH",
+    "thumbnail": "green-meadow-jungle.jpg",
+    "link": "http://greenmeadowgolfclub.com/"
+  },
+  {
+    "id": "souhegan-woods",
+    "name": "Souhegan Woods",
+    "city": "Amherst",
+    "state": "NH",
+    "thumbnail": "souhegan.jpg",
+    "link": "http://souheganwoods.com/"
+  },
+  {
+    "id": "owls-nest",
+    "name": "Owl's Nest",
+    "city": "Thornton",
+    "state": "NH",
+    "thumbnail": "owls-nest.jpg",
+    "link": "https://www.owlsnestresort.com/golf/"
+  },
+  {
+    "id": "lochmere",
+    "name": "Lochmere Golf & Country Club",
+    "city": "Tilton",
+    "state": "NH",
+    "thumbnail": "lochmere.webp",
+    "link": "https://lochmeregolf.com/"
+  },
+  {
+    "id": "canterbury-woods",
+    "name": "Canterbury Woods",
+    "city": "Canterbury",
+    "state": "NH",
+    "thumbnail": "canterbury.webp",
+    "link": "https://canterburywoodscc.com/"
+  },
+  {
+    "id": "granite-fields",
+    "name": "Granite Fields",
+    "city": "Kingston",
+    "state": "NH",
+    "thumbnail": "granite-fields.jpg",
+    "link": "https://granitefields.com/"
+  },
+   {
+    "id": "northern-spy",
+    "name": "Northern Spy Golf Club",
+    "city": "Townsend",
+    "state": "MA",
+    "thumbnail": "northern-spy.jpg",
+    "link": "https://northernspygc.com/"
+  },
+  {
+    "id": "nashua",
+    "name": "Nashua Country Club",
+    "city": "Nashua",
+    "state": "NH",
+    "thumbnail": "nashua.jpg",
+    "link": "https://www.nashuacountryclub.com/"
+  },
+  {
+    "id": "sky-meadow",
+    "name": "Sky Meadow Country Club",
+    "city": "Nashua",
+    "state": "NH",
+    "thumbnail": "sky-meadow.jpg",
+    "link": "https://www.skymeadow.com/"
+  },
+  {
+    "id": "brentwood",
+    "name": "Brentwood Golf Course",
+    "city": "Keene",
+    "state": "NH",
+    "thumbnail": "brentwood.jpg",
+    "link": "https://bretwoodgc.com/"
+  },
+  {
+    "id": "keenecc",
+    "name": "Keene Country Club",
+    "city": "Keene",
+    "state": "NH",
+    "thumbnail": "keene.jpg",
+    "link": "https://keenecountryclub.com/"
+  },
+   {
+    "id": "haverhill",
+    "name": "Haverhill Golf & Country Club",
+    "city": "Haverhill",
+    "state": "MA",
+    "thumbnail": "haverhill.webp",
+    "link": "https://www.haverhillcc.com/"
+  },
+  {
+    "id": "loudon",
+    "name": "Loudon Country Club",
+    "city": "Loudon",
+    "state": "NH",
+    "thumbnail": "loudon.webp",
+    "link": "https://www.loudoncc.com/"
+  },
+   {
+    "id": "beaver-meadow",
+    "name": "Beaver Meadow Golf Club",
+    "city": "Concord",
+    "state": "NH",
+    "thumbnail": "beaver-meadow.webp",
+    "link": "https://www.bmgc.com/"
+  },
+  {
+    "id": "breakfast-hill",
+    "name": "Breakfast Hill Golf Club",
+    "city": "Greenland",
+    "state": "NH",
+    "thumbnail": "breakfast-hill.jpeg",
+    "link": "https://www.breakfasthill.com/"
+  },
+  {
+    "id": "passaconaway",
+    "name": "Passaconaway Country Club",
+    "city": "Litchfield",
+    "state": "NH",
+    "thumbnail": "passaconaway.webp",
+    "link": "https://passaconawaycc.com/"
+  },
+  {
+    "id": "croched-mountain",
+    "name": "Crotched Mountain",
+    "city": "Francestown",
+    "state": "NH",
+    "thumbnail": "crotched-mountain.webp",
+    "link": "https://www.crotchedmtngolf.com/"
+  },
+  {
+    "id": "shattuck",
+    "name": "The Shattuck",
+    "city": "Jaffrey",
+    "state": "NH",
+    "thumbnail": "shattuck.jpg",
+    "link": "https://shattuckgolf.com/"
+  },
+  {
+    "id": "hooper",
+    "name": "Hooper Golf Course",
+    "city": "Walpole",
+    "state": "NH",
+    "thumbnail": "hooper.webp",
+    "link": "https://www.hoopergolfcourse.com/"
+  }
+]

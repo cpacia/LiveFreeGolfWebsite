@@ -1,6 +1,5 @@
 import React from 'react';
 import HeroCarousel from '../components/HeroCarousel';
-import BlurbSection from '../components/BlurbSection';
 import MembershipCards from '../components/MembershipSection';
 import EventsAndRankings from '../components/EventsAndRankingsSection';
 import SponsorsCarousel from '../components/SponsorsCarousel';
