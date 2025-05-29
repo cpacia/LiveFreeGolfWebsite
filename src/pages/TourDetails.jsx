@@ -44,7 +44,7 @@ export default function TourDetailsPage() {
       <main className="scrolling-content">
         <section id="about">
           <h2>About</h2>
-          <p><span>The Live Free Golf Tour (LFG) is a 12‑event, season‑long competition across premier courses in New Hampshire and Massachusetts, designed to bring out the best in every golfer. Events are played at 80–90% handicap, so whether you’re shooting your lowest round or simply out to have fun, everyone has a shot at victory.</span>
+          <p><span>The Live Free Golf Tour (LFGT) is a 12‑event, season‑long competition across premier courses in New Hampshire and Massachusetts, designed to bring out the best in every golfer. Events are played at 80–90% handicap, so whether you’re shooting your lowest round or simply out to have fun, everyone has a shot at victory.</span>
 
 <span>You don’t need to play them all—enter as few or as many events as you like—and at the end of the season we’ll count your six best finishes toward the regular‑season points championship. Points accumulate Sunday afternoons throughout the season, and the players with the highest totals will qualify for the playoffs and a chance at the crown—and bragging rights.</span>
 
@@ -59,7 +59,7 @@ Ready to see how you perform under pressure? Join the Live Free Golf Tour and te
             <li>There are 12 regular season events plus two playoff events and a Championship.</li>
             <li>Similar to the FedEx Cup, players earn points based on their leaderboard finish.</li>
             <li>Only your top six point totals count toward your season total.</li>
-            <li>The top X [ask chad to clarify] players in points qualify after the regular season for the first playoff event.</li>
+            <li>The top X [ask chad to clarify] players in points after the regular season for the first playoff event.</li>
             <li>The top X [ask chad to clarify] players in points after the first playoff event qualify for the second playoff event.</li>
             <li>The top X [ask chad to clarify] players in points after the second playoff event qualify for the Championship.</li>
             <li>The Championship uses a "starting strokes" format whereby players start the tournament with different scores relative to par based on their season long point total.</li>
@@ -68,12 +68,12 @@ Ready to see how you perform under pressure? Join the Live Free Golf Tour and te
 
         <section id="skins">
           <h2>Skins</h2>
-          <p>[X% of your tournament registration fee] is placed into the skins pool (to be confirmed). The pool is divided equally among all 18 holes. The player with the lowest net score on a hole wins that skin. If two or more players tie for lowest, no one wins—those skins carry over to holes with a unique low score. Only 50% of your handicap strokes are applied when calculating net scores for skins.</p>
+          <p>[X% of your tournament registration fee] is placed into the skins pool. The pool is divided equally among all 18 holes. The player with the lowest net score on a hole wins that skin. If two or more players tie for lowest, no one wins—those skins carry over to holes with a unique low score. Only 50% of your handicap strokes are applied when calculating net scores for skins.</p>
         </section>
 
         <section id="teams">
           <h2>Teams</h2>
-          <p>Every event except the Championship has a team event that runs simultaneously. Players are placed into better ball teams of four. The lowest individual score on the hole is your team's score for the hole. Each member of the winning team earns 15 bonus points toward the season‑long race. 90% of handicap strokes are typically used for team play.</p>
+          <p>Every event except the Championship has a team event that runs simultaneously. Players are placed into better ball teams of four. The lowest individual score on the hole is your team's score for that hole. Each member of the winning team earns 15 bonus points toward the season‑long race. 90% of handicap strokes are typically used for team play.</p>
         </section>
 
         <section id="rules">
