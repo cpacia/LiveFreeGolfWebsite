@@ -12,11 +12,13 @@ import './HeroCarousel.css';
    },
 ];
 
+const SLIDE_INTERVAL = 5000;
+
 export default function HeroCarousel() {
   const [slides, setSlides] = useState(staticSlides);
   const [index, setIndex] = useState(0);
   
-  const slide = slides[index] || staticSlides[0];
+  const slide = slides[index] ?? staticSlides[0];
   const timeoutRef = useRef(null);
 
   const prev = () => {
@@ -115,15 +117,19 @@ export default function HeroCarousel() {
 	    clearTimeout(timeoutRef.current);
 	  };
 	}, [index, slides.length]); 
+	
+	useEffect(() => {
+	  if (index >= slides.length) {
+		setIndex(0);
+	  }
+	}, [slides]);
+
 
   return (
       <div
       className="hero-carousel"
       onMouseEnter={() => clearTimeout(timeoutRef.current)}
-      onMouseLeave={() => {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = setTimeout(advance, 400);
-      }}
+      onMouseLeave={() => resetTimer()}
     >
       {slides.map((s, i) => (
         <div
