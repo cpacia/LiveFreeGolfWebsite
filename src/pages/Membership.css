@@ -2,7 +2,7 @@
   background: url("/images/register.png") no-repeat center top;
   background-size: cover;
   background-color: #fdfdf7;
-  padding: 2rem 4rem;
+  padding: 2rem 2rem;
   position: relative;
   z-index: 0;
 }
@@ -13,6 +13,7 @@
 }
 
 .content-card {
+  transform: translateX(-40px); 
   background-color: rgba(253, 253, 247, 0.75);
   backdrop-filter: blur(10px);
   border-radius: 16px;
