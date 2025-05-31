@@ -1,0 +1,75 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-sidebar {
+  width: 220px;
+  background-color: #f0f0f0;
+  padding: 1rem;
+  border-right: 1px solid #ccc;
+  box-sizing: border-box;
+
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  max-width: 220px; /* <- this caps the visual width */
+}
+
+.admin-sidebar h2 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.admin-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-sidebar li {
+  margin: 0.1rem 0;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid #ddd;
+  text-align: left; /* 👈 Align text to the left */
+}
+
+.admin-sidebar a {
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  color: #006644;
+  font-weight: 500;
+  display: block;
+  transition: background 0.2s;
+}
+
+.admin-sidebar a:hover {
+  background-color: #e2e2e2;
+  text-decoration: underline;
+}
+
+.admin-content {
+  flex-grow: 1;
+  padding: 2rem;
+  background-color: #fff;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  /* This realigns the content next to the pulled-left sidebar */
+  margin-left: 50vw;
+}
+
+.admin-inner {
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+}
