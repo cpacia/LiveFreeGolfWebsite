@@ -8,39 +8,8 @@ import Membership from './pages/Membership';
 import Courses from './pages/Courses';
 import AdminLogin from './pages/AdminLogin';
 import AdminPanel from './pages/AdminPanel';
+import AdminRoute from './components/AdminRoute';
 import './App.css';
-
-function AdminRoute() {
-  const [loading, setLoading] = useState(true);
-  const [authenticated, setAuthenticated] = useState(false);
-
-  useEffect(() => {
-    fetch('http://localhost:8080/auth/me', {
-      credentials: 'include',
-    })
-      .then((res) => {
-        if (res.ok) return res.json();
-        throw new Error('Not authenticated');
-      })
-      .then((data) => {
-        if (data.authenticated) {
-          setAuthenticated(true);
-        }
-      })
-      .catch(() => {
-        setAuthenticated(false);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) {
-    return <div style={{ padding: '2rem' }}>Loading...</div>;
-  }
-
-  return authenticated ? <AdminPanel /> : <AdminLogin />;
-}
 
 export default function App() {
   return (
