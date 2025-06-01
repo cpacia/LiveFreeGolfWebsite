@@ -1,5 +1,5 @@
 // AdminSchedule.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './AdminSchedule.css';
 
 export default function AdminSchedule() {
@@ -13,6 +13,12 @@ export default function AdminSchedule() {
 
   // draftEvent holds the temporary edited values when editingId !== null
   const [draftEvent, setDraftEvent] = useState(null);
+
+  // thumbnailFile holds the File object selected by the user (if any) during edit
+  const [thumbnailFile, setThumbnailFile] = useState(null);
+
+  // For triggering the hidden file input click
+  const fileInputRef = useRef();
 
   // 2) Fetch data once on mount
   useEffect(() => {
@@ -66,7 +72,22 @@ export default function AdminSchedule() {
     return url.replace(/^https?:\/\//, '');
   }
 
-  // 5) Render the list of event “card‐tables”
+  // 5) Handler for when user selects a new thumbnail file
+  const handleThumbnailChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setThumbnailFile(file);
+
+      // Create a temporary preview URL and store it in draftEvent.thumbnail for immediate preview
+      const previewURL = URL.createObjectURL(file);
+      setDraftEvent((prev) => ({
+        ...prev,
+        thumbnail: previewURL,
+      }));
+    }
+  };
+
+  // 6) Render the list of event “card‐tables”
   return (
     <>
       {/* Page header */}
@@ -112,20 +133,29 @@ export default function AdminSchedule() {
                     {/* Column 1: Thumbnail (spans 5 rows) */}
                     <td className="cell-image" rowSpan="5">
                       {isEditing ? (
-                        <input
-                          type="text"
-                          className="thumbnail-input"
-                          value={draftEvent.thumbnail || ''}
-                          onChange={(e) =>
-                            setDraftEvent({
-                              ...draftEvent,
-                              thumbnail: e.target.value,
-                            })
-                          }
-                        />
+                        <>
+                          {/* Show preview (or existing) and allow click to open file picker */}
+                          <img
+                            src={
+                              draftEvent.thumbnail ||
+                              '/images/default-image.webp'
+                            }
+                            alt={`${draftEvent.name} thumbnail`}
+                            className="event-thumbnail clickable-image"
+                            onClick={() => fileInputRef.current.click()}
+                          />
+                          {/* Hidden file input */}
+                          <input
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            ref={fileInputRef}
+                            onChange={handleThumbnailChange}
+                          />
+                        </>
                       ) : (
                         <img
-                          src={evt.thumbnail || '/images/default-image.webp'}
+                          src={"http://localhost:8080/events/"+evt.eventID+"/thumbnail" || '/images/default-image.webp'}
                           alt={`${evt.name} thumbnail`}
                           className="event-thumbnail"
                         />
@@ -138,16 +168,16 @@ export default function AdminSchedule() {
                       {isEditing ? (
                         <input
                           type="date"
-                          value={draftEvent.dateString}
+                          value={draftEvent.date}
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
-                              dateString: e.target.value,
+                              date: e.target.value,
                             })
                           }
                         />
                       ) : (
-                        evt.dateString
+                        evt.date
                       )}
                     </td>
 
@@ -209,15 +239,26 @@ export default function AdminSchedule() {
                           <button
                             className="btn-save"
                             onClick={() => {
-                              // 1) Send PUT to API
+                              // 1) Send PUT to API using FormData with both "event" and "thumbnail"
                               const form = new FormData();
-			      form.append('event', JSON.stringify(draftEvent));
+                              // Append JSON under key "event"
+                              const eventCopy = { ...draftEvent };
+                              // We don't want to send the preview URL as thumbnail
+                              delete eventCopy.thumbnail;
+                              form.append('event', JSON.stringify(eventCopy));
+                              // If user selected a new file, append under key "thumbnail"
+                              if (thumbnailFile) {
+                                form.append('thumbnail', thumbnailFile);
+                              }
 
-                              fetch(`http://localhost:8080/events/${draftEvent.eventID}`, {
-                                method: 'PUT',
-                                credentials: 'include',
-                                body: form,  
-                              })
+                              fetch(
+                                `http://localhost:8080/events/${draftEvent.eventID}`,
+                                {
+                                  method: 'PUT',
+                                  credentials: 'include',
+                                  body: form,
+                                }
+                              )
                                 .then((res) => {
                                   if (!res.ok) {
                                     throw new Error(`HTTP ${res.status}`);
@@ -231,18 +272,20 @@ export default function AdminSchedule() {
                                       e.eventID === updatedEvt.eventID
                                         ? {
                                             ...updatedEvt,
-                                            dateString: updatedEvt.dateString || '',
+                                            date:
+                                              updatedEvt.date || '',
                                           }
                                         : e
                                     )
                                   );
-                                  // 3) Exit edit mode
+                                  // 3) Exit edit mode and reset thumbnailFile
                                   setEditingId(null);
                                   setDraftEvent(null);
+                                  setThumbnailFile(null);
                                 })
                                 .catch((err) => {
                                   console.error('Save failed:', err);
-                                  // You could show a toast or other UI here
+                                  // Optionally show an error message
                                 });
                             }}
                           >
@@ -253,6 +296,7 @@ export default function AdminSchedule() {
                             onClick={() => {
                               setEditingId(null);
                               setDraftEvent(null);
+                              setThumbnailFile(null);
                             }}
                           >
                             Cancel
@@ -263,7 +307,7 @@ export default function AdminSchedule() {
                           className="btn-edit"
                           onClick={() => {
                             setEditingId(evt.eventID);
-                            setDraftEvent({ ...evt });
+                            setDraftEvent({ ...evt, date: evt.date });
                           }}
                         >
                           Edit
@@ -310,7 +354,7 @@ export default function AdminSchedule() {
                       ) : (
                         <span className="status-closed">No</span>
                       )}
-                    </td>
+                    </td> 
 
                     <td className="cell-label">Teams URL</td>
                     <td className="cell-value">

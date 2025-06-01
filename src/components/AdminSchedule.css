@@ -16,8 +16,8 @@
 }
 
 .btn-add-event {
-  background-color: #007bff;
-  color: #fff;
+  background-color: var(--color-accent-yellow);
+  color: var(--color-primary-green);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 4px;
@@ -25,7 +25,7 @@
   cursor: pointer;
 }
 .btn-add-event:hover {
-  background-color: #0069d9;
+  background-color: #d1a640; 
 }
 
 /* ------------------------------------------
@@ -48,7 +48,7 @@
    3) GREEN HEADER BAR (“Event Name”) 
 ------------------------------------------- */
 .card-table-header {
-  background-color: #28a745; /* bright green */
+  background-color: var(--color-primary-green);
   color: #fff;
   font-size: 1.25rem;
   font-weight: 600;
@@ -262,5 +262,15 @@ select {
   }
 }
 
+.clickable-image {
+  cursor: pointer;
+  border: 2px dashed #aaa;
+  border-radius: 4px;
+  transition: border-color 0.2s;
+}
+
+.clickable-image:hover {
+  border-color: #333;
+}
 
 
