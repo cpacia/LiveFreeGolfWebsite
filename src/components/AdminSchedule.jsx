@@ -205,9 +205,10 @@ export default function AdminSchedule() {
                           {/* Preview (or default) + clickable to open file chooser */}
                           <img
                             src={
-                              draftEvent.thumbnail ||
-                              '/images/default-image.webp'
-                            }
+				    evt.thumbnail
+				      ? `http://localhost:8080/events/${draftEvent.eventID}/thumbnail`
+				      : '/images/default-image.webp'
+				  }
                             alt={`${draftEvent.name} thumbnail`}
                             className="event-thumbnail clickable-image"
                             onClick={() => fileInputRef.current.click()}

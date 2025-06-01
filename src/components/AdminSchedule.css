@@ -191,15 +191,18 @@ select {
 .btn-save,
 .btn-cancel,
 .btn-delete {
+  display: inline-block;       /* allow a fixed width to stick */
+  width: 80px;                 /* same width for all buttons */
+  text-align: center;          /* center the label inside */
   font-size: 0.9rem;
-  padding: 0.4rem 0.8rem;
+  padding: 0.4rem 0.8rem;      /* you can adjust top/bottom padding if needed */
   border: 1px solid #666;
   background: #fff;
   border-radius: 4px;
   cursor: pointer;
   margin-left: 0.5rem;
+  margin-top: 0.2rem;
 }
-
 .btn-edit:hover,
 .btn-save:hover,
 .btn-cancel:hover,
