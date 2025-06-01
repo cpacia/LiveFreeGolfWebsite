@@ -9,6 +9,7 @@ import Courses from './pages/Courses';
 import AdminLogin from './pages/AdminLogin';
 import AdminPanel from './pages/AdminPanel';
 import AdminRoute from './components/AdminRoute';
+import AdminSchedule from './components/AdminSchedule';
 import './App.css';
 
 export default function App() {
@@ -23,7 +24,14 @@ export default function App() {
         <Route path="/tour-details" element={<TourDetails />} />
         <Route path="/membership" element={<Membership />} />
         <Route path="/courses" element={<Courses />} />
-        <Route path="/admin" element={<AdminRoute />} />
+        <Route path="/admin" element={<AdminPanel />}>
+		  <Route path="schedule" element={<AdminSchedule />} />
+		  <Route index element={<div>
+		  			<h1>Welcome to the Admin Panel</h1>
+		  			<p>Select a section from the menu.</p>
+		  			</div>
+		   } />
+		</Route>
       </Routes>
 
       <div className="full-bleed">

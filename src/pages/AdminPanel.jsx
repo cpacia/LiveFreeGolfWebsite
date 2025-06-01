@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, Outlet} from 'react-router-dom';
 import './AdminPanel.css';
 
 export default function AdminPanel() {
   return (
-    <div className="admin-layout">
+    <div className="admin-layout full-bleed">
       <nav className="admin-sidebar">
         <h2>Admin</h2>
         <ul>
@@ -19,9 +19,9 @@ export default function AdminPanel() {
 
       <main className="admin-content">
 		  <div className="admin-inner">
-			<h1>Welcome to the Admin Panel</h1>
-			<p>Select a section from the menu.</p>
-		  </div>
+		          {/* This <Outlet /> is where “/admin/schedule” or “/admin” (index) will render */}
+		          <Outlet />
+	        </div>
 	 </main>
     </div>
   );

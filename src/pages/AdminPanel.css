@@ -1,23 +1,32 @@
+/* ──────────────────────────────────────────────────────────────────
+   AdminPanel.css (the one imported by AdminPanel.jsx)
+   ────────────────────────────────────────────────────────────────── */
+
 .admin-layout {
+  /* FULL‑BLEED + FLEX:
+     - position:relative; left:50%; margin-left:-50vw; width: 100vw makes it span the viewport
+     - display:flex lets the sidebar sit at 220px and the content fill the rest */
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  width: 100vw;
+
   display: flex;
   min-height: 100vh;
-  width: 100%;
-  font-family: sans-serif;
   margin: 0;
   padding: 0;
+  font-family: sans-serif;
 }
 
 .admin-sidebar {
+  /* FIXED 220px WIDE LEFT COLUMN */
   width: 220px;
   background-color: #f0f0f0;
   padding: 1rem;
   border-right: 1px solid #ccc;
   box-sizing: border-box;
 
-  position: relative;
-  left: 50%;
-  margin-left: -50vw;
-  max-width: 220px; /* <- this caps the visual width */
+  /* no other shifts needed: the parent has already pulled everything full‑bleed */
 }
 
 .admin-sidebar h2 {
@@ -36,7 +45,7 @@
   margin: 0.1rem 0;
   padding: 0.25rem 0;
   border-bottom: 1px solid #ddd;
-  text-align: left; /* 👈 Align text to the left */
+  text-align: left;
 }
 
 .admin-sidebar a {
@@ -55,21 +64,29 @@
 }
 
 .admin-content {
+  /* FLEX‑GROW to fill everything to the right of the 220px sidebar */
   flex-grow: 1;
+  background-color: #fff; /* or #f5f5f5 if you want the gray background */
   padding: 2rem;
-  background-color: #fff;
   box-sizing: border-box;
 
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-
-  /* This realigns the content next to the pulled-left sidebar */
-  margin-left: 50vw;
+  /* You no longer need any justify-content or margin-left hacks */
+  display: block; 
 }
 
 .admin-inner {
-  max-width: 800px;
+  /* If you want a max-width inside the content, set it here.
+     Otherwise, remove max-width or set it to none to let content fill all of .admin-content. */
+  
+  /* OPTION A: Keep an 800px cap (centered within .admin-content) */
+  /* max-width: 800px;
+     margin: 0 auto;   <-- center the inner content if you want that narrower look */
+
+  /* OPTION B (full‑width): Remove the cap entirely so it fills .admin-content */
+  max-width: none;
   width: 100%;
-  text-align: center;
+
+  /* Text‐alignment is your choice (center for headlines, left for paragraphs, etc.) */
+  text-align: left;
 }
+
