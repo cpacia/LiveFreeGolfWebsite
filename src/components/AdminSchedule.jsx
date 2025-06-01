@@ -99,7 +99,7 @@ export default function AdminSchedule() {
       wgrLeaderboardUrl: '',
     };
 
-    // Insert placeholder at the top of the list (or bottom—choose as desired)
+    // Insert placeholder at the top of the list
     setEvents((prev) => [blank, ...prev]);
 
     // Enter edit mode with that placeholder
@@ -123,7 +123,35 @@ export default function AdminSchedule() {
     }
   };
 
-  // 7) Render the list of event “card‐tables”
+  // 7) Handler for Delete button
+  const handleDelete = (evt) => {
+    const isNew = evt.eventID.startsWith('__new__');
+    if (isNew) {
+      // Simply remove the placeholder
+      setEvents((prev) => prev.filter((e) => e.eventID !== evt.eventID));
+    } else {
+      // Send DELETE to API
+      fetch(`http://localhost:8080/events/${evt.eventID}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+          }
+          // Remove from state on success
+          setEvents((prev) =>
+            prev.filter((e) => e.eventID !== evt.eventID)
+          );
+        })
+        .catch((err) => {
+          console.error('Delete failed:', err);
+          // Optionally show an error toast
+        });
+    }
+  };
+
+  // 8) Render the list of event “card‐tables”
   return (
     <>
       {/* Page header */}
@@ -272,7 +300,7 @@ export default function AdminSchedule() {
                       )}
                     </td>
 
-                    {/* Column 4: Edit/Save/Cancel & Delete (spans 5 rows) */}
+                    {/* Column 4: Edit/Save/Cancel/Delete (spans 5 rows) */}
                     <td className="cell-actions" rowSpan="5">
                       {isEditing ? (
                         <>
@@ -281,7 +309,6 @@ export default function AdminSchedule() {
                             onClick={() => {
                               // Build FormData: "event" + optional "thumbnail"
                               const form = new FormData();
-                              // Copy draftEvent and remove preview URL
                               const eventCopy = { ...draftEvent };
                               form.append('event', JSON.stringify(eventCopy));
                               if (thumbnailFile) {
@@ -308,7 +335,7 @@ export default function AdminSchedule() {
                                 .then((returnedEvt) => {
                                   setEvents((prev) => {
                                     if (isNew) {
-                                      // Remove any other __new__ placeholders and prepend the real event
+                                      // Remove placeholders and prepend the real event
                                       const filtered = prev.filter(
                                         (e) => !e.eventID.startsWith('__new__')
                                       );
@@ -331,7 +358,6 @@ export default function AdminSchedule() {
                                 })
                                 .catch((err) => {
                                   console.error('Save failed:', err);
-                                  // Optionally show an error toast
                                 });
                             }}
                           >
@@ -355,15 +381,23 @@ export default function AdminSchedule() {
                           </button>
                         </>
                       ) : (
-                        <button
-                          className="btn-edit"
-                          onClick={() => {
-                            setEditingId(evt.eventID);
-                            setDraftEvent({ ...evt, date: evt.date });
-                          }}
-                        >
-                          Edit
-                        </button>
+                        <>
+                          <button
+                            className="btn-edit"
+                            onClick={() => {
+                              setEditingId(evt.eventID);
+                              setDraftEvent({ ...evt, date: evt.date });
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn-delete"
+                            onClick={() => handleDelete(evt)}
+                          >
+                            Delete
+                          </button>
+                        </>
                       )}
                     </td>
                   </tr>
