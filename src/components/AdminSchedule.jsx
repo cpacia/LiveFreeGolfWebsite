@@ -1,133 +1,246 @@
 // AdminSchedule.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './AdminSchedule.css';
 
 export default function AdminSchedule() {
+  // 1) Local state for our fetched events and loading/errors
+  const [events, setEvents] = useState([]);     // array of Event objects
+  const [loading, setLoading] = useState(true); // true while fetch is in progress
+  const [error, setError] = useState(null);     // if something goes wrong
+
+  // 2) Fetch data once on mount
+  useEffect(() => {
+    fetch('http://localhost:8080/events')
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status} – ${res.statusText}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        // The API shape is: { calendarYear: ..., additionalYears: [...], events: [ ... ] }
+        if (Array.isArray(data.events)) {
+          setEvents(data.events);
+        } else {
+          console.warn('Unexpected payload shape:', data);
+          setEvents([]);
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to fetch events:', err);
+        setError(err.message || 'Unknown error');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  // 3) Render loading or error states
+  if (loading) {
+    return (
+      <div className="schedule-header">
+        <h1>Schedule – 2025</h1>
+        <button className="btn-add-event">Add Event</button>
+        <p>Loading events…</p>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="schedule-header">
+        <h1>Schedule – 2025</h1>
+        <button className="btn-add-event">Add Event</button>
+        <p style={{ color: 'red' }}>Error loading events: {error}</p>
+      </div>
+    );
+  }
+
+  // 4) Once data is loaded, map over events to render a “card‑table” each
   return (
     <>
-      {/* Page header with title + “Add Event” button */}
+      {/* Page header w/ title + Add Event button */}
       <div className="schedule-header">
         <h1>Schedule – 2025</h1>
         <button className="btn-add-event">Add Event</button>
       </div>
 
-      {/* ─────────────────────────────────────────────────────────
-          Card rendered as a “table” with a green header bar
-      ───────────────────────────────────────────────────────── */}
-      <div className="card-table-container">
-        {/* 1) GREEN HEADER BAR */}
-        <div className="card-table-header">
-          Spring Classic
-        </div>
+      {events.length === 0 ? (
+        <p>No events found for this year.</p>
+      ) : (
+        events.map((evt) => (
+          <div className="card-table-container" key={evt.eventID}>
+            {/* 1) Green header bar showing the event’s name */}
+            <div className="card-table-header">{evt.name}</div>
 
-        {/* 2) TABLE BODY */}
-        <table className="event-table">
-          <tbody>
-            {/* Row 1: Date | Registration Open | Skins URL | Edit Button */}
-            <tr>
-              {/* Image spans all five rows */}
-              <td className="cell-image" rowSpan="5">
-                <img
-                  src="/images/default-image.webp"
-                  alt="Spring Classic thumbnail"
-                  className="event-thumbnail"
-                />
-              </td>
+            {/* 2) Table of event details (5 rows) */}
+            <table className="event-table">
+              <tbody>
+                {/* Row 1: Date | Registration Open | Skins URL | Buttons */}
+                <tr>
+                  <td className="cell-image" rowSpan="5">
+                    <img
+                      src={evt.thumbnail || '/images/default-image.webp'}
+                      alt={`${evt.name} thumbnail`}
+                      className="event-thumbnail"
+                    />
+                  </td>
 
-              <td className="cell-label">Date</td>
-              <td className="cell-value">2025‑04‑15</td>
+                  <td className="cell-label">Date</td>
+                  <td className="cell-value">{evt.date || evt.dateString}</td>
 
-              <td className="cell-label">Registration</td>
-              <td className="cell-value status-open">Open</td>
+                  <td className="cell-label">Registration</td>
+                  <td className={`cell-value ${
+                    evt.registrationOpen ? 'status-open' : 'status-closed'
+                  }`}>
+                    {evt.registrationOpen ? 'Open' : 'Closed'}
+                  </td>
 
-              <td className="cell-label">Skins URL</td>
-              <td className="cell-value">
-                <a href="https://bluegolf.com/skins" target="_blank" rel="noopener noreferrer">
-                  bluegolf.com/skins
-                </a>
-              </td>
+                  <td className="cell-label">Skins URL</td>
+                  <td className="cell-value">
+                    {evt.skinsLeaderboardUrl ? (
+                      <a
+                        href={evt.skinsLeaderboardUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {stripProtocol(evt.skinsLeaderboardUrl)}
+                      </a>
+                    ) : (
+                      '—'
+                    )}
+                  </td>
 
-              {/* Edit button only in row 1 */}
-              <td className="cell-actions" rowSpan="5">
-                <button className="btn-edit">Edit</button>
-                <button className="btn-delete">Delete</button>
-              </td>
-            </tr>
+                  <td className="cell-actions" rowSpan="5">
+                    <button className="btn-edit">Edit</button>
+                    <button className="btn-delete">Delete</button>
+                  </td>
+                </tr>
 
-            {/* Row 2: Course | Complete | Teams URL */}
-            <tr>
-              <td className="cell-label">Course</td>
-              <td className="cell-value">Whispering Pines</td>
+                {/* Row 2: Course | Complete | Teams URL */}
+                <tr>
+                  <td className="cell-label">Course</td>
+                  <td className="cell-value">{evt.course || '—'}</td>
 
-              <td className="cell-label">Complete</td>
-              <td className="cell-value status-closed">No</td>
+                  <td className="cell-label">Complete</td>
+                  <td className={`cell-value ${
+                    evt.isComplete ? 'status-open' : 'status-closed'
+                  }`}>
+                    {evt.isComplete ? 'Yes' : 'No'}
+                  </td>
 
-              <td className="cell-label">Teams URL</td>
-              <td className="cell-value">
-                <a href="https://bluegolf.com/teams" target="_blank" rel="noopener noreferrer">
-                  bluegolf.com/teams
-                </a>
-              </td>
-            </tr>
+                  <td className="cell-label">Teams URL</td>
+                  <td className="cell-value">
+                    {evt.teamsLeaderboardUrl ? (
+                      <a
+                        href={evt.teamsLeaderboardUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {stripProtocol(evt.teamsLeaderboardUrl)}
+                      </a>
+                    ) : (
+                      '—'
+                    )}
+                  </td>
+                </tr>
 
-            {/* Row 3: Town | BlueGolf URL | WGR URL */}
-            <tr>
-              <td className="cell-label">Town</td>
-              <td className="cell-value">Greenville</td>
+                {/* Row 3: Town | BlueGolf URL | WGR URL */}
+                <tr>
+                  <td className="cell-label">Town</td>
+                  <td className="cell-value">{evt.town || '—'}</td>
 
-              <td className="cell-label">BlueGolf URL</td>
-              <td className="cell-value">
-                <a href="https://bluegolf.com/spring-classic/some-ling-url/contest/19" target="_blank" rel="noopener noreferrer">
-                  bluegolf.com/spring-classic/some-ling-url/contest/19
-                </a>
-              </td>
+                  <td className="cell-label">BlueGolf URL</td>
+                  <td className="cell-value">
+                    {evt.blueGolfUrl ? (
+                      <a
+                        href={evt.blueGolfUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {stripProtocol(evt.blueGolfUrl)}
+                      </a>
+                    ) : (
+                      '—'
+                    )}
+                  </td>
 
-              <td className="cell-label">WGR URL</td>
-              <td className="cell-value">
-                <a href="https://bluegolf.com/wgr" target="_blank" rel="noopener noreferrer">
-                  bluegolf.com/wgr
-                </a>
-              </td>
-            </tr>
+                  <td className="cell-label">WGR URL</td>
+                  <td className="cell-value">
+                    {evt.wgrLeaderboardUrl ? (
+                      <a
+                        href={evt.wgrLeaderboardUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {stripProtocol(evt.wgrLeaderboardUrl)}
+                      </a>
+                    ) : (
+                      '—'
+                    )}
+                  </td>
+                </tr>
 
-            {/* Row 4: State | Net URL */}
-            <tr>
-              <td className="cell-label">State</td>
-              <td className="cell-value">TX</td>
+                {/* Row 4: State | Net URL */}
+                <tr>
+                  <td className="cell-label">State</td>
+                  <td className="cell-value">{evt.state || '—'}</td>
 
-              <td className="cell-label">Net URL</td>
-              <td className="cell-value">
-                <a href="https://bluegolf.com/net" target="_blank" rel="noopener noreferrer">
-                  bluegolf.com/net
-                </a>
-              </td>
+                  <td className="cell-label">Net URL</td>
+                  <td className="cell-value">
+                    {evt.netLeaderboardUrl ? (
+                      <a
+                        href={evt.netLeaderboardUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {stripProtocol(evt.netLeaderboardUrl)}
+                      </a>
+                    ) : (
+                      '—'
+                    )}
+                  </td>
 
-              {/* Empty cells to keep the 7‑cell structure */}
-              <td className="cell-label">&nbsp;</td>
-              <td className="cell-value">&nbsp;</td>
-            </tr>
+                  <td className="cell-label">&nbsp;</td>
+                  <td className="cell-value">&nbsp;</td>
+                </tr>
 
-            {/* Row 5: Handicap | Gross URL */}
-            <tr>
-              <td className="cell-label">Handicap</td>
-              <td className="cell-value">80%</td>
+                {/* Row 5: Handicap | Gross URL */}
+                <tr>
+                  <td className="cell-label">Handicap</td>
+                  <td className="cell-value">{evt.handicapAllowance || '–'}</td>
 
-              <td className="cell-label">Gross URL</td>
-              <td className="cell-value">
-                <a href="https://bluegolf.com/gross" target="_blank" rel="noopener noreferrer">
-                  bluegolf.com/gross
-                </a>
-              </td>
+                  <td className="cell-label">Gross URL</td>
+                  <td className="cell-value">
+                    {evt.grossLeaderboardUrl ? (
+                      <a
+                        href={evt.grossLeaderboardUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {stripProtocol(evt.grossLeaderboardUrl)}
+                      </a>
+                    ) : (
+                      '—'
+                    )}
+                  </td>
 
-              {/* Empty cells for alignment */}
-              <td className="cell-label">&nbsp;</td>
-              <td className="cell-value">&nbsp;</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                  <td className="cell-label">&nbsp;</td>
+                  <td className="cell-value">&nbsp;</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        ))
+      )}
     </>
   );
+}
+
+/**
+ * Utility: strip “http://” or “https://” so that link text reads more compactly.
+ */
+function stripProtocol(url) {
+  return url.replace(/^https?:\/\//, '');
 }
 
 
