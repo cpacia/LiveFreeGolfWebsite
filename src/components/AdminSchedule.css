@@ -1,7 +1,7 @@
 /* AdminSchedule.css */
 
 /* ------------------------------------------
-   1) PAGE HEADER
+   1) PAGE HEADER (unchanged)
 ------------------------------------------- */
 .schedule-header {
   display: flex;
@@ -16,8 +16,8 @@
 }
 
 .btn-add-event {
-  background-color: #007bff;
-  color: #fff;
+  background-color: var(--color-accent-yellow);
+  color: var(--color-primary-green);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 4px;
@@ -25,205 +25,111 @@
   cursor: pointer;
 }
 .btn-add-event:hover {
-  background-color: #0069d9;
+  background-color: #d1a640; 
 }
 
 /* ------------------------------------------
-   2) CONTAINER FOR CARDS
+   2) CARD AS A TABLE (Green header + bordered rows)
 ------------------------------------------- */
-.schedule-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;    /* space between each card */
-  width: 100%;
-}
-
-/* ------------------------------------------
-   3) CARD (flex: four columns)
-------------------------------------------- */
-.card {
-  display: flex;
-  background: #fff;
-  border: 1px solid #e0e0e0;
+.card-table-container {
+  border: 1px solid #ccc;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  width: auto;
-  padding-right: 5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 2rem;
 }
 
-/* ─────────────────────────────────────────────────────────
-   Column 1: Thumbnail image
-───────────────────────────────────────────────────────── */
-.col-image {
-  flex: 0 0 120px;       /* fixed width of 120px */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.75rem 1rem 0.75rem 0.75rem;
+/* 2a) Green header bar */
+.card-table-header {
+  background-color: var(--color-primary-green);
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
 }
 
-.thumbnail {
+/* 2b) Table styling */
+.event-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* All TD cells receive a 1‑pixel border */
+.event-table td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  vertical-align: top;
+}
+
+/* 2c) Alternating row backgrounds for readability */
+.event-table tr:nth-child(even) {
+  background-color: #f9f9f9;   /* light gray stripe */
+}
+
+/* 2d) First column (image) */
+.cell-image {
+  padding: 0.75rem;
+  text-align: center;
+  background-color: white;
+}
+
+/* Thumbnail styles */
+.event-thumbnail {
   width: 120px;
   height: 90px;
   object-fit: cover;
   border-radius: 4px;
-  border: 1px solid #ddd;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  background-color: #e0e0e0; /* gray placeholder if no image */
+  border: 1px solid #ccc;
+  background-color: #ececec;
 }
 
-/* ─────────────────────────────────────────────────────────
-   Column 2: Event Details
-───────────────────────────────────────────────────────── */
-.col-details {
-  flex: 0 0 auto;        /* ← changed so it only takes up as much width as its content */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding: 0.75rem 1rem 0.75rem 0.5rem;
-}
-
-/* Title Row */
-.row-title {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.25rem;
-}
-.event-title {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-
-/* Date | Location Row */
-.row-subtitle {
-  display: flex;
-  align-items: center;
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 0.25rem;
-}
-.row-subtitle .icon {
-  margin-right: 0.25rem;
-}
-.row-subtitle .separator {
-  margin: 0 0.5rem;
-  color: #777;
-}
-
-/* ─────────────────────────────────────────────────────────
-   NEW: Status Row (replaces “row-badges”)
-───────────────────────────────────────────────────────── */
-.row-status {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;            /* space between each status-item */
-  margin-bottom: 0.5rem;  /* some breathing room under date/location */
-}
-
-/* Each label/value pair in the status row */
-.status-item {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;           /* small space between label and value */
-  font-size: 0.9rem;
-  color: #333;
-}
-
-/* The “label” part (e.g. “Handicap:”) */
-.status-label {
+/* 2e) Label cells (first cell of each label/value pair) */
+.cell-label {
   font-weight: 500;
+  width: 12%;             /* adjust as needed */
+  white-space: nowrap;
 }
 
-/* The “value” part */
-.status-value {
+/* 2f) Value cells (second cell of each label/value pair) */
+.cell-value {
+  width: 20%;             /* adjust as needed */
+  word-break: break-word;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden; 
+  max-width: 150px; 
+}
+
+/* 2g) Registration/Complete status colors */
+.status-open {
+  color: #28a745;        /* green */
   font-weight: 600;
 }
 
-/* If the status is “Open” or “Yes” → green text */
-.status-value.status-open {
-  color: #28a745;         /* green */
-}
-
-/* If the status is “Closed” or “No” → red text */
-.status-value.status-closed {
-  color: #dc3545;         /* red */
-}
-
-/* ─────────────────────────────────────────────────────────
-   Column 3: Links (two‑column grid of 6)
-───────────────────────────────────────────────────────── */
-.col-links {
-  flex: 0 0 auto;       /* shrink to fit contents */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 1.25rem 1rem 0.75rem 0rem; /* left/right padding as needed */
-}
-
-/* Links header */
-.links-header {
-  font-size: 0.95rem;
+.status-closed {
+  color: #dc3545;        /* red */
   font-weight: 600;
-  color: #333;
-  margin-bottom: 0.25rem;
 }
 
-/* Links list laid out as two columns */
-.links-list {
-  display: grid;
-  grid-template-columns: repeat(2, max-content);
-  row-gap: 0.25rem;
-  column-gap: 1rem;
-}
-
-/* Individual link row within the grid */
-.link-item {
-  display: flex;
-  gap: 0.25rem;
-  font-size: 0.9rem;
-}
-
-.link-label {
-  font-weight: 500;
-  min-width: 60px;       /* aligns all labels in a column */
-  color: #333;
+/* 2h) Last column: Edit/Delete buttons, pinned top-right */
+.cell-actions {
+  background-color: #fff;
+  padding: 0.75rem 1rem;
   text-align: right;
+  vertical-align: top;
+  width: 12%;            /* adjust as needed */
 }
 
-.link-item a {
-  color: #0066cc;
-  text-decoration: none;
-  word-break: break-all; /* wrap long URLs */
-}
-.link-item a:hover {
-  text-decoration: underline;
-}
-
-/* ─────────────────────────────────────────────────────────
-   Column 4: Edit/Delete Buttons
-───────────────────────────────────────────────────────── */
-.col-actions {
-  flex: 1 1 auto;             /* allow this column to expand and take all remaining space */
-  display: flex;
-  flex-direction: row;         /* lay buttons side‑by‑side */
-  justify-content: flex-end;   /* push buttons to the far right */
-  align-items: flex-start;     /* align buttons to the top of this column */
-  padding: 0.75rem 0.75rem 0.75rem 0.5rem;
-  gap: .25rem;
-}
-
+/* Buttons in the last column */
 .btn-edit,
 .btn-delete {
-  background: var(--color-primary-green);
-  font-family: var(--font-heading);
-  color: #ffffff;
-  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #666;
+  background: #fff;
   border-radius: 4px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background 0.2s;
+  cursor: pointer;
+  margin-left: 0.5rem;
 }
 
 .btn-edit:hover {
@@ -235,30 +141,6 @@
   background: #f8d7da;
   border-color: #d9534f;
   color: #d9534f;
-}
-/* ------------------------------------------
-   4) RESPONSIVE: Stack columns on narrow viewports
-------------------------------------------- */
-@media (max-width: 800px) {
-  .card {
-    flex-direction: column;
-  }
-  .col-image {
-    flex: none;
-    padding: 0.75rem;
-    justify-content: center;
-  }
-  .col-details {
-    padding: 0.5rem 0.75rem;
-  }
-  .col-links {
-    flex: none;
-    padding: 0.5rem 0.75rem;
-  }
-  .col-actions {
-    flex: none;
-    padding: 0.5rem 0.75rem;
-  }
 }
 
 
