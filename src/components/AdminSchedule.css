@@ -1,7 +1,7 @@
 /* AdminSchedule.css */
 
 /* ------------------------------------------
-   1) PAGE HEADER (unchanged)
+   1) PAGE HEADER: Schedule Page Title + Add Event
 ------------------------------------------- */
 .schedule-header {
   display: flex;
@@ -16,8 +16,8 @@
 }
 
 .btn-add-event {
-  background-color: var(--color-accent-yellow);
-  color: var(--color-primary-green);
+  background-color: #007bff;
+  color: #fff;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 4px;
@@ -25,103 +25,171 @@
   cursor: pointer;
 }
 .btn-add-event:hover {
-  background-color: #d1a640; 
+  background-color: #0069d9;
 }
 
 /* ------------------------------------------
-   2) CARD AS A TABLE (Green header + bordered rows)
+   2) CARD‐AS‐TABLE CONTAINER
 ------------------------------------------- */
 .card-table-container {
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   margin-bottom: 2rem;
 }
 
-/* 2a) Green header bar */
+/* When a card is in editing mode, make the header darker green */
+.card-table-container.editing .card-table-header {
+  background-color: #3d8a3d; /* darker green */
+}
+
+/* ------------------------------------------
+   3) GREEN HEADER BAR (“Event Name”) 
+------------------------------------------- */
 .card-table-header {
-  background-color: var(--color-primary-green);
-  color: white;
+  background-color: #28a745; /* bright green */
+  color: #fff;
   font-size: 1.25rem;
   font-weight: 600;
   padding: 0.75rem 1rem;
 }
 
-/* 2b) Table styling */
+/* Editable header input style */
+.header-input {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  margin: 0;
+}
+
+/* ------------------------------------------
+   4) EVENT DETAILS TABLE
+------------------------------------------- */
 .event-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-/* All TD cells receive a 1‑pixel border */
+/* Zebra‑strip: even table rows get light gray bg */
+.event-table tr:nth-child(even) td {
+  background-color: #f9f9f9;
+}
+
+/* Table cells common style */
 .event-table td {
   border: 1px solid #ddd;
   padding: 0.5rem;
   vertical-align: top;
 }
 
-/* 2c) Alternating row backgrounds for readability */
-.event-table tr:nth-child(even) {
-  background-color: #f9f9f9;   /* light gray stripe */
-}
-
-/* 2d) First column (image) */
+/* ------------------------------------------
+   5) COLUMN 1: THUMBNAIL IMAGE
+------------------------------------------- */
 .cell-image {
   padding: 0.75rem;
   text-align: center;
-  background-color: white;
+  width: 120px; /* fixed width for thumbnail column */
 }
 
-/* Thumbnail styles */
 .event-thumbnail {
   width: 120px;
   height: 90px;
   object-fit: cover;
   border-radius: 4px;
   border: 1px solid #ccc;
-  background-color: #ececec;
+  background-color: #ececec; /* placeholder gray */
 }
 
-/* 2e) Label cells (first cell of each label/value pair) */
+/* Editable thumbnail input */
+.thumbnail-input {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+}
+
+/* ------------------------------------------
+   6) COLUMN 2 & 3: LABEL / VALUE PAIRS
+------------------------------------------- */
 .cell-label {
   font-weight: 500;
-  width: 12%;             /* adjust as needed */
   white-space: nowrap;
+  width: 12%; /* adjust as needed */
 }
 
-/* 2f) Value cells (second cell of each label/value pair) */
 .cell-value {
-  width: 20%;             /* adjust as needed */
   word-break: break-word;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden; 
-  max-width: 150px; 
+  width: 20%; /* adjust as needed */
 }
 
-/* 2g) Registration/Complete status colors */
+/* If you want labels & values always white, remove or override: */
+/* .cell-label, .cell-value { background-color: #fff; } */
+/* We leave them transparent so zebra stripes show through. */
+
+/* Editable text inputs in cells */
+.cell-input {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+}
+
+/* Editable URL inputs (same as text inputs) */
+.url-input {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+}
+
+/* Select dropdowns (for registration/complete) */
+select {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+}
+
+/* ------------------------------------------
+   7) STATUS COLORS (Open = green, Closed = red)
+------------------------------------------- */
 .status-open {
-  color: #28a745;        /* green */
+  color: #28a745;
   font-weight: 600;
 }
 
 .status-closed {
-  color: #dc3545;        /* red */
+  color: #dc3545;
   font-weight: 600;
 }
 
-/* 2h) Last column: Edit/Delete buttons, pinned top-right */
+/* ------------------------------------------
+   8) COLUMN 4: EDIT / SAVE / CANCEL / DELETE BUTTONS
+------------------------------------------- */
 .cell-actions {
-  background-color: #fff;
-  padding: 0.75rem 1rem;
   text-align: right;
   vertical-align: top;
-  width: 12%;            /* adjust as needed */
+  padding: 0.75rem 1rem;
+  width: 12%; /* adjust as needed */
 }
 
-/* Buttons in the last column */
+/* All these button classes share a basic style */
 .btn-edit,
+.btn-save,
+.btn-cancel,
 .btn-delete {
   font-size: 0.9rem;
   padding: 0.4rem 0.8rem;
@@ -132,15 +200,67 @@
   margin-left: 0.5rem;
 }
 
-.btn-edit:hover {
+.btn-edit:hover,
+.btn-save:hover,
+.btn-cancel:hover,
+.btn-delete:hover {
   background: #f0f0f0;
   border-color: #555;
 }
 
+/* DELETE button (red on hover) */
 .btn-delete:hover {
   background: #f8d7da;
   border-color: #d9534f;
   color: #d9534f;
 }
+
+/* You could override .btn-save to be green if you like: */
+.btn-save {
+  border-color: #28a745;
+}
+.btn-save:hover {
+  background: #e6f5e6;
+}
+
+/* ------------------------------------------
+   9) RESPONSIVE: Stack columns on narrow screens
+------------------------------------------- */
+@media (max-width: 800px) {
+  .card-table-container {
+    margin: 1rem;
+  }
+  .event-table,
+  .event-table tbody,
+  .event-table tr,
+  .event-table td {
+    display: block;
+    width: 100%;
+  }
+  .cell-image,
+  .cell-actions {
+    text-align: center;
+  }
+  .cell-image {
+    padding: 0.5rem;
+  }
+  .cell-actions {
+    padding: 0.5rem;
+  }
+  .cell-label {
+    font-weight: 600;
+  }
+  .cell-value,
+  .cell-label {
+    display: inline-block;
+    width: 48%;
+  }
+  select,
+  input[type='text'],
+  input[type='date'] {
+    width: 100%;
+  }
+}
+
 
 
