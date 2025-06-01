@@ -24,14 +24,7 @@ export default function App() {
         <Route path="/tour-details" element={<TourDetails />} />
         <Route path="/membership" element={<Membership />} />
         <Route path="/courses" element={<Courses />} />
-        <Route path="/admin" element={<AdminPanel />}>
-		  <Route path="schedule" element={<AdminSchedule />} />
-		  <Route index element={<div>
-		  			<h1>Welcome to the Admin Panel</h1>
-		  			<p>Select a section from the menu.</p>
-		  			</div>
-		   } />
-		</Route>
+        <Route path="/admin*" element={<AdminRoute />} />
       </Routes>
 
       <div className="full-bleed">
