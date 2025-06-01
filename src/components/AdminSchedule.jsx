@@ -3,26 +3,29 @@ import React, { useState, useEffect, useRef } from 'react';
 import './AdminSchedule.css';
 
 export default function AdminSchedule() {
-  // 1) State for list of events, loading/error, and inline editing
+  // 1) State for list of events, loading/error, inline editing, and new-event counter
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // editingId = eventID of the row currently being edited (or null if none)
+  // Which eventID is currently in edit mode (or null if none)
   const [editingId, setEditingId] = useState(null);
 
-  // draftEvent holds the temporary edited values when editingId !== null
+  // The draft copy of the event being edited
   const [draftEvent, setDraftEvent] = useState(null);
 
-  // thumbnailFile holds the File object selected by the user (if any) during edit
+  // The selected thumbnail File, if any, during edit
   const [thumbnailFile, setThumbnailFile] = useState(null);
 
-  // For triggering the hidden file input click
+  // Counter for generating temporary IDs for new events
+  const [newCount, setNewCount] = useState(0);
+
+  // File input ref for thumbnail selection
   const fileInputRef = useRef();
 
-  // 2) Fetch data once on mount
+  // 2) Fetch existing events on mount
   useEffect(() => {
-    fetch('http://localhost:8080/events')
+    fetch('http://localhost:8080/events', { credentials: 'include' })
       .then((res) => {
         if (!res.ok) {
           throw new Error(`HTTP ${res.status} – ${res.statusText}`);
@@ -30,7 +33,6 @@ export default function AdminSchedule() {
         return res.json();
       })
       .then((data) => {
-        // The API returns { calendarYear: ..., additionalYears: [...], events: [...] }
         if (Array.isArray(data.events)) {
           setEvents(data.events);
         } else {
@@ -72,13 +74,47 @@ export default function AdminSchedule() {
     return url.replace(/^https?:\/\//, '');
   }
 
-  // 5) Handler for when user selects a new thumbnail file
+  // 5) Handler for Add Event button
+  const handleAddEvent = () => {
+    const tempId = `__new__${newCount + 1}`;
+    setNewCount((n) => n + 1);
+
+    // Create a blank placeholder with default/empty fields
+    const blank = {
+      eventID: tempId,
+      name: '',
+      date: new Date().toISOString().slice(0, 10), // default today
+      course: '',
+      town: '',
+      state: '',
+      handicapAllowance: '',
+      blueGolfUrl: '',
+      thumbnail: '', // no preview yet
+      registrationOpen: false,
+      isComplete: false,
+      netLeaderboardUrl: '',
+      grossLeaderboardUrl: '',
+      skinsLeaderboardUrl: '',
+      teamsLeaderboardUrl: '',
+      wgrLeaderboardUrl: '',
+    };
+
+    // Insert placeholder at the top of the list (or bottom—choose as desired)
+    setEvents((prev) => [blank, ...prev]);
+
+    // Enter edit mode with that placeholder
+    setEditingId(tempId);
+    setDraftEvent(blank);
+    setThumbnailFile(null);
+  };
+
+  // 6) Handler for thumbnail file selection (in edit mode)
   const handleThumbnailChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setThumbnailFile(file);
 
-      // Create a temporary preview URL and store it in draftEvent.thumbnail for immediate preview
+      // Immediately update preview URL in draftEvent.thumbnail
       const previewURL = URL.createObjectURL(file);
       setDraftEvent((prev) => ({
         ...prev,
@@ -87,13 +123,15 @@ export default function AdminSchedule() {
     }
   };
 
-  // 6) Render the list of event “card‐tables”
+  // 7) Render the list of event “card‐tables”
   return (
     <>
       {/* Page header */}
       <div className="schedule-header">
         <h1>Schedule – 2025</h1>
-        <button className="btn-add-event">Add Event</button>
+        <button className="btn-add-event" onClick={handleAddEvent}>
+          Add Event
+        </button>
       </div>
 
       {events.length === 0 ? (
@@ -101,6 +139,7 @@ export default function AdminSchedule() {
       ) : (
         events.map((evt) => {
           const isEditing = editingId === evt.eventID;
+          const isNew = evt.eventID.startsWith('__new__');
 
           return (
             <div
@@ -115,6 +154,7 @@ export default function AdminSchedule() {
                   type="text"
                   className="header-input"
                   value={draftEvent.name}
+                  placeholder="Event Name"
                   onChange={(e) =>
                     setDraftEvent({ ...draftEvent, name: e.target.value })
                   }
@@ -134,7 +174,7 @@ export default function AdminSchedule() {
                     <td className="cell-image" rowSpan="5">
                       {isEditing ? (
                         <>
-                          {/* Show preview (or existing) and allow click to open file picker */}
+                          {/* Preview (or default) + clickable to open file chooser */}
                           <img
                             src={
                               draftEvent.thumbnail ||
@@ -144,7 +184,6 @@ export default function AdminSchedule() {
                             className="event-thumbnail clickable-image"
                             onClick={() => fileInputRef.current.click()}
                           />
-                          {/* Hidden file input */}
                           <input
                             type="file"
                             accept="image/*"
@@ -155,7 +194,7 @@ export default function AdminSchedule() {
                         </>
                       ) : (
                         <img
-                          src={"http://localhost:8080/events/"+evt.eventID+"/thumbnail" || '/images/default-image.webp'}
+                          src={`http://localhost:8080/events/${evt.eventID}/thumbnail`}
                           alt={`${evt.name} thumbnail`}
                           className="event-thumbnail"
                         />
@@ -218,6 +257,7 @@ export default function AdminSchedule() {
                               skinsLeaderboardUrl: e.target.value,
                             })
                           }
+                          placeholder="https://..."
                         />
                       ) : evt.skinsLeaderboardUrl ? (
                         <a
@@ -239,53 +279,59 @@ export default function AdminSchedule() {
                           <button
                             className="btn-save"
                             onClick={() => {
-                              // 1) Send PUT to API using FormData with both "event" and "thumbnail"
+                              // Build FormData: "event" + optional "thumbnail"
                               const form = new FormData();
-                              // Append JSON under key "event"
+                              // Copy draftEvent and remove preview URL
                               const eventCopy = { ...draftEvent };
-                              // We don't want to send the preview URL as thumbnail
-                              delete eventCopy.thumbnail;
                               form.append('event', JSON.stringify(eventCopy));
-                              // If user selected a new file, append under key "thumbnail"
                               if (thumbnailFile) {
                                 form.append('thumbnail', thumbnailFile);
                               }
 
-                              fetch(
-                                `http://localhost:8080/events/${draftEvent.eventID}`,
-                                {
-                                  method: 'PUT',
-                                  credentials: 'include',
-                                  body: form,
-                                }
-                              )
+                              // Determine POST vs PUT
+                              const url = isNew
+                                ? 'http://localhost:8080/events'
+                                : `http://localhost:8080/events/${draftEvent.eventID}`;
+                              const method = isNew ? 'POST' : 'PUT';
+
+                              fetch(url, {
+                                method,
+                                credentials: 'include',
+                                body: form,
+                              })
                                 .then((res) => {
                                   if (!res.ok) {
                                     throw new Error(`HTTP ${res.status}`);
                                   }
                                   return res.json();
                                 })
-                                .then((updatedEvt) => {
-                                  // 2) Merge updatedEvt into local events array
-                                  setEvents((prev) =>
-                                    prev.map((e) =>
-                                      e.eventID === updatedEvt.eventID
-                                        ? {
-                                            ...updatedEvt,
-                                            date:
-                                              updatedEvt.date || '',
-                                          }
-                                        : e
-                                    )
-                                  );
-                                  // 3) Exit edit mode and reset thumbnailFile
+                                .then((returnedEvt) => {
+                                  setEvents((prev) => {
+                                    if (isNew) {
+                                      // Remove any other __new__ placeholders and prepend the real event
+                                      const filtered = prev.filter(
+                                        (e) => !e.eventID.startsWith('__new__')
+                                      );
+                                      return [returnedEvt, ...filtered];
+                                    } else {
+                                      // Replace existing event
+                                      return prev.map((e) =>
+                                        e.eventID === returnedEvt.eventID
+                                          ? {
+                                              ...returnedEvt,
+                                              date: returnedEvt.date || '',
+                                            }
+                                          : e
+                                      );
+                                    }
+                                  });
                                   setEditingId(null);
                                   setDraftEvent(null);
                                   setThumbnailFile(null);
                                 })
                                 .catch((err) => {
                                   console.error('Save failed:', err);
-                                  // Optionally show an error message
+                                  // Optionally show an error toast
                                 });
                             }}
                           >
@@ -294,6 +340,12 @@ export default function AdminSchedule() {
                           <button
                             className="btn-cancel"
                             onClick={() => {
+                              // If it was a new placeholder, remove it entirely
+                              if (isNew) {
+                                setEvents((prev) =>
+                                  prev.filter((e) => e.eventID !== evt.eventID)
+                                );
+                              }
                               setEditingId(null);
                               setDraftEvent(null);
                               setThumbnailFile(null);
@@ -328,6 +380,7 @@ export default function AdminSchedule() {
                             setDraftEvent({ ...draftEvent, course: e.target.value })
                           }
                           className="cell-input"
+                          placeholder="Course name"
                         />
                       ) : (
                         evt.course || '—'
@@ -354,7 +407,7 @@ export default function AdminSchedule() {
                       ) : (
                         <span className="status-closed">No</span>
                       )}
-                    </td> 
+                    </td>
 
                     <td className="cell-label">Teams URL</td>
                     <td className="cell-value">
@@ -369,6 +422,7 @@ export default function AdminSchedule() {
                               teamsLeaderboardUrl: e.target.value,
                             })
                           }
+                          placeholder="https://..."
                         />
                       ) : evt.teamsLeaderboardUrl ? (
                         <a
@@ -396,6 +450,7 @@ export default function AdminSchedule() {
                             setDraftEvent({ ...draftEvent, town: e.target.value })
                           }
                           className="cell-input"
+                          placeholder="Town"
                         />
                       ) : (
                         evt.town || '—'
@@ -415,6 +470,7 @@ export default function AdminSchedule() {
                               blueGolfUrl: e.target.value,
                             })
                           }
+                          placeholder="https://..."
                         />
                       ) : evt.blueGolfUrl ? (
                         <a
@@ -442,6 +498,7 @@ export default function AdminSchedule() {
                               wgrLeaderboardUrl: e.target.value,
                             })
                           }
+                          placeholder="https://..."
                         />
                       ) : evt.wgrLeaderboardUrl ? (
                         <a
@@ -469,6 +526,7 @@ export default function AdminSchedule() {
                             setDraftEvent({ ...draftEvent, state: e.target.value })
                           }
                           className="cell-input"
+                          placeholder="State"
                         />
                       ) : (
                         evt.state || '—'
@@ -488,6 +546,7 @@ export default function AdminSchedule() {
                               netLeaderboardUrl: e.target.value,
                             })
                           }
+                          placeholder="https://..."
                         />
                       ) : evt.netLeaderboardUrl ? (
                         <a
@@ -522,6 +581,7 @@ export default function AdminSchedule() {
                             })
                           }
                           className="cell-input"
+                          placeholder="e.g. 80%"
                         />
                       ) : (
                         evt.handicapAllowance || '—'
@@ -541,6 +601,7 @@ export default function AdminSchedule() {
                               grossLeaderboardUrl: e.target.value,
                             })
                           }
+                          placeholder="https://..."
                         />
                       ) : evt.grossLeaderboardUrl ? (
                         <a
@@ -568,5 +629,6 @@ export default function AdminSchedule() {
     </>
   );
 }
+
 
 
