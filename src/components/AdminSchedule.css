@@ -48,7 +48,8 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  width: 80%;
+  width: auto;
+  padding-right: 5rem;
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -59,7 +60,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.75rem 0.5rem 0.75rem 0.75rem;
+  padding: 0.75rem 1rem 0.75rem 0.75rem;
 }
 
 .thumbnail {
@@ -111,26 +112,43 @@
   color: #777;
 }
 
-/* Badges Row */
-.row-badges {
+/* ─────────────────────────────────────────────────────────
+   NEW: Status Row (replaces “row-badges”)
+───────────────────────────────────────────────────────── */
+.row-status {
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 1.2rem;            /* space between each status-item */
+  margin-bottom: 0.5rem;  /* some breathing room under date/location */
 }
-.badge {
-  font-size: 0.8rem;
+
+/* Each label/value pair in the status row */
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;           /* small space between label and value */
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* The “label” part (e.g. “Handicap:”) */
+.status-label {
   font-weight: 500;
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  color: #fff;
 }
-.badge-secondary {
-  background: #6c757d;  /* gray – “80% Handicap” */
+
+/* The “value” part */
+.status-value {
+  font-weight: 600;
 }
-.badge-success {
-  background: #28a745;  /* green – “Open Registration” */
+
+/* If the status is “Open” or “Yes” → green text */
+.status-value.status-open {
+  color: #28a745;         /* green */
 }
-.badge-danger {
-  background: #dc3545;  /* red – “Incomplete” */
+
+/* If the status is “Closed” or “No” → red text */
+.status-value.status-closed {
+  color: #dc3545;         /* red */
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -141,7 +159,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 0.75rem 1rem 0.75rem 1rem; /* left/right padding as needed */
+  padding: 1.25rem 1rem 0.75rem 0rem; /* left/right padding as needed */
 }
 
 /* Links header */
@@ -187,23 +205,25 @@
    Column 4: Edit/Delete Buttons
 ───────────────────────────────────────────────────────── */
 .col-actions {
-  flex: 0 0 auto;             /* keep “shrink-to-fit” */
+  flex: 1 1 auto;             /* allow this column to expand and take all remaining space */
   display: flex;
   flex-direction: row;         /* lay buttons side‑by‑side */
-  gap: 0.5rem;
-  align-items: flex-start;     /* align children to top of this column */
+  justify-content: flex-end;   /* push buttons to the far right */
+  align-items: flex-start;     /* align buttons to the top of this column */
   padding: 0.75rem 0.75rem 0.75rem 0.5rem;
+  gap: .25rem;
 }
 
 .btn-edit,
 .btn-delete {
-  font-size: 0.9rem;
-  padding: 0.3rem 0.7rem;
-  border: 1px solid #666;
-  background: #fff;
+  background: var(--color-primary-green);
+  font-family: var(--font-heading);
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
   border-radius: 4px;
-  cursor: pointer;
-  margin-top: 0;               /* ← remove any downward offset */
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
 }
 
 .btn-edit:hover {

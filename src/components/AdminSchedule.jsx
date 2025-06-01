@@ -42,18 +42,38 @@ export default function AdminSchedule() {
             </div>
 
             {/* Row 3: Badges */}
-            <div className="row-badges">
-              <span className="badge badge-secondary">80% Handicap</span>
-              <span className="badge badge-success">Open Registration</span>
-              <span className="badge badge-danger">Incomplete</span>
-            </div>
+            {/* Row 3: Status Indicators */}
+	 <div className="row-status">
+	   {/* 1) Handicap */}
+	   <div className="status-item">
+	     <span className="status-label">Handicap:</span>
+	     <span className="status-value">80%</span>
+	   </div>
+
+	   {/* 2) Registration (Open -> green check, Closed -> red X) */}
+	   <div className="status-item">
+	     <span className="status-label">Registration:</span>
+	     {/* If “open” */}
+	     <span className="status-value status-open">✓ Open</span>
+	     {/* If “closed,” you’d render instead:
+		 <span className="status-value status-closed">✗ Closed</span>
+	     */}
+	   </div>
+
+	   {/* 3) Complete (No -> red X, Yes -> green check) */}
+	   <div className="status-item">
+	     <span className="status-label">Complete:</span>
+	     {/* If not complete */}
+	     <span className="status-value status-closed">✗ No</span>
+	     {/* If complete, use:
+		 <span className="status-value status-open">✓ Yes</span>
+	     */}
+	   </div>
+	</div>
           </div>
 
           {/* ─────────────────────── Column 3: Links ─────────────────────── */}
           <div className="col-links">
-            <div className="links-header">
-              <strong>Links:</strong>
-            </div>
             <div className="links-list">
               <div className="link-item">
                 <span className="link-label">Net:</span>
