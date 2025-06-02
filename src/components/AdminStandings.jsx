@@ -3,59 +3,56 @@ import React, { useState, useEffect } from 'react';
 import './AdminStandings.css';
 
 export default function AdminStandings() {
-  // ■ 1) State
-  const [standings, setStandings] = useState([]);
+  // ─── 1) State Hooks ──────────────────────────────────────────────
+  const [standings, setStandings] = useState([]); // array of { id, calendarYear, seasonStandingsUrl, wgrStandingsUrl, cacheKey }
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Which standing (by yearId) is in “edit mode” right now
-  const [editingId, setEditingId] = useState(null);
-  // Draft object for the row being edited
-  const [draft, setDraft] = useState(null);
-  // Counter to give temporary IDs for newly added rows
-  const [newCount, setNewCount] = useState(0);
+  const [editingId, setEditingId] = useState(null); // which record is in edit mode
+  const [draft, setDraft] = useState(null);         // draft copy of the record being edited
+  const [newCount, setNewCount] = useState(0);      // for generating temporary IDs
 
-  // ■ 2) Helper: strip “http(s)://” and truncate to ~25 chars for display
+  // ─── 2) Utility: strip protocol + truncate to ~25 chars ──────────
   function stripProtocol(url) {
     if (!url) return '';
-    const withoutProto = url.replace(/^https?:\/\//, '');
+    const noProto = url.replace(/^https?:\/\//, '');
     const MAX = 25;
-    return withoutProto.length <= MAX
-      ? withoutProto
-      : withoutProto.slice(0, MAX - 1) + '...';
+    return noProto.length <= MAX ? noProto : noProto.slice(0, MAX - 1) + '...';
   }
 
-  // ■ 3) Fetch all standings on mount
+  // ─── 3) Fetch existing standings on mount ─────────────────────────
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:8080/standings', {
-      credentials: 'include',
-    })
+    fetch('http://localhost:8080/standings-urls', { credentials: 'include' })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
       })
       .then((data) => {
-        // Expecting data.standings = [ { id: <string or number>, year: 2025, netUrl: "...", grossUrl: "..." }, ... ]
-        if (Array.isArray(data.standings)) {
-          // Give each a cacheKey so we can bust after update
-          const withKeys = data.standings.map((s) => ({
-            ...s,
+        // Expect data to be an array of objects:
+        // [ { ID, calendarYear, seasonStandingsUrl, wgrStandingsUrl, ...gorm fields }, … ]
+        // We’ll only keep the fields we need, plus a cacheKey for re‐rendering
+        if (Array.isArray(data)) {
+          const normalized = data.map((row) => ({
+            id: row.ID || row.id, // GORM’s ID field
+            calendarYear: row.calendarYear,
+            seasonStandingsUrl: row.seasonStandingsUrl,
+            wgrStandingsUrl: row.wgrStandingsUrl,
             cacheKey: Date.now(),
           }));
-          setStandings(withKeys);
+          setStandings(normalized);
         } else {
           setStandings([]);
         }
       })
       .catch((err) => {
-        console.error('Failed to fetch standings:', err);
+        console.error('Error fetching standings:', err);
         setError(err.message || 'Unknown error');
       })
       .finally(() => setLoading(false));
   }, []);
 
-  // ■ 4) Loading / Error UI
+  // ─── 4) Loading / Error States ───────────────────────────────────
   if (loading) {
     return (
       <div className="standings-header">
@@ -75,48 +72,98 @@ export default function AdminStandings() {
     );
   }
 
-  // ■ 5) Handle adding a brand‑new “year” entry (temporary)
+  // ─── 5) “Add Year” Handler ────────────────────────────────────────
   const handleAdd = () => {
     const tempId = `__new__${newCount + 1}`;
     setNewCount((n) => n + 1);
 
-    // Blank placeholder
-    const blank = {
+    const todayYear = new Date().getFullYear().toString();
+    const placeholder = {
       id: tempId,
-      year: new Date().getFullYear(), // default to current
-      netUrl: '',
-      grossUrl: '',
+      calendarYear: todayYear,
+      seasonStandingsUrl: '',
+      wgrStandingsUrl: '',
       cacheKey: Date.now(),
     };
 
-    setStandings((prev) => [blank, ...prev]);
+    setStandings((prev) => [placeholder, ...prev]);
     setEditingId(tempId);
-    setDraft(blank);
+    setDraft(placeholder);
   };
 
-  // ■ 6) Handle deleting (either remove temp or send DELETE)
-  const handleDelete = (row) => {
+  // ─── 6) Save (POST or PUT) ────────────────────────────────────────
+  const handleSave = () => {
+    if (!draft) return;
+
+    const isNew = String(draft.id).startsWith('__new__');
+    const url = 'http://localhost:8080/standings-urls';
+    const method = isNew ? 'POST' : 'PUT';
+
+    // We send JSON body: { id?, calendarYear, seasonStandingsUrl, wgrStandingsUrl }
+    // For PUT, GORM expects an ID field in the JSON so it knows which record to update.
+    const payload = {
+      ...(isNew ? {} : { ID: draft.id }),
+      calendarYear: draft.calendarYear,
+      seasonStandingsUrl: draft.seasonStandingsUrl,
+      wgrStandingsUrl: draft.wgrStandingsUrl,
+    };
+
+    fetch(url, {
+      method,
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((returned) => {
+        // GORM typically returns the full saved object, including ID for POST.
+        const saved = {
+          id: returned.ID || returned.id,
+          calendarYear: returned.calendarYear,
+          seasonStandingsUrl: returned.seasonStandingsUrl,
+          wgrStandingsUrl: returned.wgrStandingsUrl,
+          cacheKey: Date.now(),
+        };
+
+        setStandings((prev) => {
+          if (isNew) {
+            // Remove any “__new__” placeholders, then prepend the real saved row.
+            const filtered = prev.filter(
+              (r) => !String(r.id).startsWith('__new__')
+            );
+            return [saved, ...filtered];
+          } else {
+            // Replace the edited row in place
+            return prev.map((r) =>
+              r.id === saved.id ? saved : r
+            );
+          }
+        });
+
+        setEditingId(null);
+        setDraft(null);
+      })
+      .catch((err) => console.error('Save failed:', err));
+  };
+
+  // ─── 7) Cancel Editing ────────────────────────────────────────────
+  const handleCancel = (row) => {
     const isNew = String(row.id).startsWith('__new__');
     if (isNew) {
-      setStandings((prev) => prev.filter((s) => s.id !== row.id));
-    } else {
-      fetch(`http://localhost:8080/standings/${row.id}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          // remove from state
-          setStandings((prev) => prev.filter((s) => s.id !== row.id));
-        })
-        .catch((err) => console.error('Delete failed:', err));
+      // Drop the placeholder entirely
+      setStandings((prev) => prev.filter((r) => r.id !== row.id));
     }
+    setEditingId(null);
+    setDraft(null);
   };
 
-  // ■ 7) Render
+  // ─── 8) Main Render ──────────────────────────────────────────────
   return (
     <>
-      {/* ─── Header (title + “Add Year”) ───────────────────────────── */}
+      {/* Header + “Add Year” */}
       <div className="standings-header">
         <h1>Standings</h1>
         <button className="btn-add-standing" onClick={handleAdd}>
@@ -134,62 +181,67 @@ export default function AdminStandings() {
           return (
             <div
               className={`card-table-container ${isEditing ? 'editing' : ''}`}
-              key={row.id}
+              key={row.id + '_' + row.cacheKey}
             >
-              {/* ── 1) Header Bar ─────────────────────────────────────── */}
+              {/* ── Header Bar: “Calendar Year” ───────────────────── */}
               {isEditing ? (
                 <input
-                  type="number"
+                  type="text"
                   className="header-input"
-                  value={draft.year || ''}
+                  value={draft.calendarYear}
                   onChange={(e) =>
-                    setDraft({ ...draft, year: e.target.value })
+                    setDraft({ ...draft, calendarYear: e.target.value })
                   }
                 />
               ) : (
-                <div className="card-table-header">{row.year}</div>
+                <div className="card-table-header">
+                  {row.calendarYear}
+                </div>
               )}
 
-              {/* ── 2) “Standings” table: Year + Net URL + Gross URL + Actions ───── */}
+              {/* ── Details Table ─────────────────────────────────── */}
               <table className="standings-table">
                 <tbody>
-                  {/* Row 1: Year | Net URL | Actions */}
+                  {/* Row 1: “Calendar Year” | “Season URL” | Actions */}
                   <tr>
-                    <td className="cell-label">Year</td>
+                    <td className="cell-label">Calendar Year</td>
                     <td className="cell-value">
                       {isEditing ? (
                         <input
-                          type="number"
+                          type="text"
                           className="cell-input"
-                          value={draft.year || ''}
+                          value={draft.calendarYear}
                           onChange={(e) =>
-                            setDraft({ ...draft, year: e.target.value })
+                            setDraft({ ...draft, calendarYear: e.target.value })
                           }
                         />
                       ) : (
-                        row.year
+                        row.calendarYear
                       )}
                     </td>
 
-                    <td className="cell-label">Net URL</td>
+                    <td className="cell-label">Season Standings URL</td>
                     <td className="cell-value">
                       {isEditing ? (
                         <input
                           type="text"
                           className="url-input"
                           placeholder="https://..."
-                          value={draft.netUrl || ''}
+                          value={draft.seasonStandingsUrl}
                           onChange={(e) =>
-                            setDraft({ ...draft, netUrl: e.target.value })
+                            setDraft({
+                              ...draft,
+                              seasonStandingsUrl: e.target.value,
+                            })
                           }
                         />
-                      ) : row.netUrl ? (
+                      ) : row.seasonStandingsUrl ? (
                         <a
-                          href={row.netUrl}
+                          href={row.seasonStandingsUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          {stripProtocol(row.netUrl)}
+                          {stripProtocol(row.seasonStandingsUrl)}
                         </a>
                       ) : (
                         '—'
@@ -199,135 +251,61 @@ export default function AdminStandings() {
                     <td className="cell-actions" rowSpan="2">
                       {isEditing ? (
                         <>
-                          <button
-                            className="btn-save"
-                            onClick={() => {
-                              // Build FormData
-                              const form = new FormData();
-                              form.append(
-                                'standing',
-                                JSON.stringify({
-                                  year: draft.year,
-                                  netUrl: draft.netUrl,
-                                  grossUrl: draft.grossUrl,
-                                })
-                              );
-
-                              const url = isNew
-                                ? 'http://localhost:8080/standings'
-                                : `http://localhost:8080/standings/${draft.id}`;
-                              const method = isNew ? 'POST' : 'PUT';
-
-                              fetch(url, {
-                                method,
-                                credentials: 'include',
-                                body: form,
-                              })
-                                .then((res) => {
-                                  if (!res.ok)
-                                    throw new Error(`HTTP ${res.status}`);
-                                  return res.json();
-                                })
-                                .then((returned) => {
-                                  setStandings((prev) => {
-                                    if (isNew) {
-                                      // drop all __new__ placeholders, prepend real
-                                      const filtered = prev.filter(
-                                        (s) => !String(s.id).startsWith('__new__')
-                                      );
-                                      return [
-                                        {
-                                          ...returned,
-                                          cacheKey: Date.now(),
-                                        },
-                                        ...filtered,
-                                      ];
-                                    } else {
-                                      // replace existing row, update cacheKey
-                                      return prev.map((s) =>
-                                        s.id === returned.id
-                                          ? {
-                                              ...returned,
-                                              cacheKey: Date.now(),
-                                            }
-                                          : s
-                                      );
-                                    }
-                                  });
-                                  setEditingId(null);
-                                  setDraft(null);
-                                })
-                                .catch((err) => console.error('Save failed:', err));
-                            }}
-                          >
+                          <button className="btn-save" onClick={handleSave}>
                             Save
                           </button>
                           <button
                             className="btn-cancel"
-                            onClick={() => {
-                              // If it was new, drop it entirely
-                              if (isNew) {
-                                setStandings((prev) =>
-                                  prev.filter((s) => s.id !== row.id)
-                                );
-                              }
-                              setEditingId(null);
-                              setDraft(null);
-                            }}
+                            onClick={() => handleCancel(row)}
                           >
                             Cancel
                           </button>
                         </>
                       ) : (
-                        <>
-                          <button
-                            className="btn-edit"
-                            onClick={() => {
-                              setEditingId(row.id);
-                              setDraft({ ...row });
-                            }}
-                          >
-                            Edit
-                          </button>
-                          <button
-                            className="btn-delete"
-                            onClick={() => handleDelete(row)}
-                          >
-                            Delete
-                          </button>
-                        </>
+                        <button
+                          className="btn-edit"
+                          onClick={() => {
+                            setEditingId(row.id);
+                            setDraft({ ...row });
+                          }}
+                        >
+                          Edit
+                        </button>
                       )}
                     </td>
                   </tr>
 
-                  {/* Row 2: Gross URL (and an empty pair to keep 5 columns) */}
+                  {/* Row 2: “WGR URL” + filler cells */}
                   <tr>
-                    <td className="cell-label">Gross URL</td>
+                    <td className="cell-label">WGR Standings URL</td>
                     <td className="cell-value">
                       {isEditing ? (
                         <input
                           type="text"
                           className="url-input"
                           placeholder="https://..."
-                          value={draft.grossUrl || ''}
+                          value={draft.wgrStandingsUrl}
                           onChange={(e) =>
-                            setDraft({ ...draft, grossUrl: e.target.value })
+                            setDraft({
+                              ...draft,
+                              wgrStandingsUrl: e.target.value,
+                            })
                           }
                         />
-                      ) : row.grossUrl ? (
+                      ) : row.wgrStandingsUrl ? (
                         <a
-                          href={row.grossUrl}
+                          href={row.wgrStandingsUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          {stripProtocol(row.grossUrl)}
+                          {stripProtocol(row.wgrStandingsUrl)}
                         </a>
                       ) : (
                         '—'
                       )}
                     </td>
 
-                    {/* filler pair so that table stays 5 columns wide */}
+                    {/* Two empty cells just to keep 5 columns wide */}
                     <td className="cell-label">&nbsp;</td>
                     <td className="cell-value">&nbsp;</td>
                   </tr>
