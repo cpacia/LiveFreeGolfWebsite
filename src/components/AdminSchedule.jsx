@@ -91,9 +91,20 @@ export default function AdminSchedule() {
   }
 
   // 4) Helper to strip protocol for display
-  function stripProtocol(url) {
-    return url.replace(/^https?:\/\//, '');
-  }
+	function stripProtocol(url) {
+	  // 1) Remove “http://” or “https://”
+	  const withoutProto = url.replace(/^https?:\/\//, '');
+
+	  // 2) Decide on a max length (e.g. 50 chars). Adjust as needed.
+	  const MAX = 25;
+
+	  // 3) If it’s short enough, return as‐is. Otherwise, truncate + “…”.
+	  if (withoutProto.length <= MAX) {
+	    return withoutProto;
+	  } else {
+	    return withoutProto.slice(0, MAX - 1) + '…';
+	  }
+	}
 
   // 5) Handler for Add Event button
   const handleAddEvent = () => {
