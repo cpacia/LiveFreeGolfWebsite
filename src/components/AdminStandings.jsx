@@ -4,15 +4,15 @@ import './AdminStandings.css';
 
 export default function AdminStandings() {
   // ─── 1) State Hooks ──────────────────────────────────────────────
-  const [standings, setStandings] = useState([]); // array of { id, calendarYear, seasonStandingsUrl, wgrStandingsUrl, cacheKey }
+  const [standings, setStandings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [editingId, setEditingId] = useState(null); // which record is in edit mode
-  const [draft, setDraft] = useState(null);         // draft copy of the record being edited
-  const [newCount, setNewCount] = useState(0);      // for generating temporary IDs
+  const [editingId, setEditingId] = useState(null);
+  const [draft, setDraft] = useState(null);
+  const [newCount, setNewCount] = useState(0);
 
-  // ─── 2) Utility: strip protocol + truncate to ~25 chars ──────────
+  // ─── 2) Utility: strip “http(s)://” + truncate ────────────────────
   function stripProtocol(url) {
     if (!url) return '';
     const noProto = url.replace(/^https?:\/\//, '');
@@ -29,12 +29,9 @@ export default function AdminStandings() {
         return res.json();
       })
       .then((data) => {
-        // Expect data to be an array of objects:
-        // [ { ID, calendarYear, seasonStandingsUrl, wgrStandingsUrl, ...gorm fields }, … ]
-        // We’ll only keep the fields we need, plus a cacheKey for re‐rendering
         if (Array.isArray(data)) {
           const normalized = data.map((row) => ({
-            id: row.ID || row.id, // GORM’s ID field
+            id: row.ID || row.id,
             calendarYear: row.calendarYear,
             seasonStandingsUrl: row.seasonStandingsUrl,
             wgrStandingsUrl: row.wgrStandingsUrl,
@@ -91,7 +88,7 @@ export default function AdminStandings() {
     setDraft(placeholder);
   };
 
-  // ─── 6) Save (POST or PUT) ────────────────────────────────────────
+  // ─── 6) Save (POST or PUT) with error dialog ─────────────────────
   const handleSave = () => {
     if (!draft) return;
 
@@ -99,8 +96,6 @@ export default function AdminStandings() {
     const url = 'http://localhost:8080/standings-urls';
     const method = isNew ? 'POST' : 'PUT';
 
-    // We send JSON body: { id?, calendarYear, seasonStandingsUrl, wgrStandingsUrl }
-    // For PUT, GORM expects an ID field in the JSON so it knows which record to update.
     const payload = {
       ...(isNew ? {} : { ID: draft.id }),
       calendarYear: draft.calendarYear,
@@ -115,11 +110,14 @@ export default function AdminStandings() {
       body: JSON.stringify(payload),
     })
       .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        if (!res.ok) {
+          return res.text().then((text) => {
+            throw new Error(text || `HTTP ${res.status}`);
+          });
+        }
         return res.json();
       })
       .then((returned) => {
-        // GORM typically returns the full saved object, including ID for POST.
         const saved = {
           id: returned.ID || returned.id,
           calendarYear: returned.calendarYear,
@@ -130,37 +128,83 @@ export default function AdminStandings() {
 
         setStandings((prev) => {
           if (isNew) {
-            // Remove any “__new__” placeholders, then prepend the real saved row.
             const filtered = prev.filter(
               (r) => !String(r.id).startsWith('__new__')
             );
             return [saved, ...filtered];
           } else {
-            // Replace the edited row in place
-            return prev.map((r) =>
-              r.id === saved.id ? saved : r
-            );
+            return prev.map((r) => (r.id === saved.id ? saved : r));
           }
         });
 
         setEditingId(null);
         setDraft(null);
       })
-      .catch((err) => console.error('Save failed:', err));
+      .catch((err) => {
+        console.error('Save failed:', err);
+        window.alert(`Save failed: ${err.message}`);
+      });
   };
 
   // ─── 7) Cancel Editing ────────────────────────────────────────────
   const handleCancel = (row) => {
     const isNew = String(row.id).startsWith('__new__');
     if (isNew) {
-      // Drop the placeholder entirely
       setStandings((prev) => prev.filter((r) => r.id !== row.id));
     }
     setEditingId(null);
     setDraft(null);
   };
 
-  // ─── 8) Main Render ──────────────────────────────────────────────
+  // ─── 8) Delete (by calendarYear) ─────────────────────────────────
+  const handleDelete = (row) => {
+    if (
+      !window.confirm(
+        `Are you sure you want to delete standings for ${row.calendarYear}?`
+      )
+    ) {
+      return;
+    }
+
+    fetch('http://localhost:8080/standings-urls', {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ calendarYear: row.calendarYear }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        setStandings((prev) =>
+          prev.filter((r) => r.calendarYear !== row.calendarYear)
+        );
+      })
+      .catch((err) => console.error('Delete failed:', err));
+  };
+
+  // ─── 9) Refresh (by calendarYear) ─────────────────────────────────
+  const handleRefresh = (row) => {
+    if (
+      !window.confirm(
+        `Are you sure you want to refresh standings for ${row.calendarYear}?`
+      )
+    ) {
+      return;
+    }
+
+    fetch('http://localhost:8080/refresh-standings', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ calendarYear: row.calendarYear }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        console.log(`Refreshed standings for ${row.calendarYear}`);
+      })
+      .catch((err) => console.error('Refresh failed:', err));
+  };
+
+  // ─── 10) Main Render ─────────────────────────────────────────────
   return (
     <>
       {/* Header + “Add Year” */}
@@ -176,33 +220,18 @@ export default function AdminStandings() {
       ) : (
         standings.map((row) => {
           const isEditing = editingId === row.id;
-          const isNew = String(row.id).startsWith('__new__');
 
           return (
             <div
               className={`card-table-container ${isEditing ? 'editing' : ''}`}
               key={row.id + '_' + row.cacheKey}
             >
-              {/* ── Header Bar: “Calendar Year” ───────────────────── */}
-              {isEditing ? (
-                <input
-                  type="text"
-                  className="header-input"
-                  value={draft.calendarYear}
-                  onChange={(e) =>
-                    setDraft({ ...draft, calendarYear: e.target.value })
-                  }
-                />
-              ) : (
-                <div className="card-table-header">
-                  {row.calendarYear}
-                </div>
-              )}
+              {/* Header Bar: Static “Calendar Year” */}
+              <div className="card-table-header">{row.calendarYear}</div>
 
-              {/* ── Details Table ─────────────────────────────────── */}
               <table className="standings-table">
                 <tbody>
-                  {/* Row 1: “Calendar Year” | “Season URL” | Actions */}
+                  {/* Row 1: Calendar Year + Actions (spanning 3 rows) */}
                   <tr>
                     <td className="cell-label">Calendar Year</td>
                     <td className="cell-value">
@@ -219,7 +248,49 @@ export default function AdminStandings() {
                         row.calendarYear
                       )}
                     </td>
+                    <td className="cell-actions" rowSpan="3">
+                      {isEditing ? (
+                        <>
+                          <button className="btn-save" onClick={handleSave}>
+                            Save
+                          </button>
+                          <button
+                            className="btn-cancel"
+                            onClick={() => handleCancel(row)}
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            className="btn-edit"
+                            onClick={() => {
+                              setEditingId(row.id);
+                              setDraft({ ...row });
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn-delete"
+                            onClick={() => handleDelete(row)}
+                          >
+                            Delete
+                          </button>
+                          <button
+                            className="btn-refresh"
+                            onClick={() => handleRefresh(row)}
+                          >
+                            Refresh
+                          </button>
+                        </>
+                      )}
+                    </td>
+                  </tr>
 
+                  {/* Row 2: Season Standings URL */}
+                  <tr>
                     <td className="cell-label">Season Standings URL</td>
                     <td className="cell-value">
                       {isEditing ? (
@@ -247,35 +318,9 @@ export default function AdminStandings() {
                         '—'
                       )}
                     </td>
-
-                    <td className="cell-actions" rowSpan="2">
-                      {isEditing ? (
-                        <>
-                          <button className="btn-save" onClick={handleSave}>
-                            Save
-                          </button>
-                          <button
-                            className="btn-cancel"
-                            onClick={() => handleCancel(row)}
-                          >
-                            Cancel
-                          </button>
-                        </>
-                      ) : (
-                        <button
-                          className="btn-edit"
-                          onClick={() => {
-                            setEditingId(row.id);
-                            setDraft({ ...row });
-                          }}
-                        >
-                          Edit
-                        </button>
-                      )}
-                    </td>
                   </tr>
 
-                  {/* Row 2: “WGR URL” + filler cells */}
+                  {/* Row 3: WGR Standings URL */}
                   <tr>
                     <td className="cell-label">WGR Standings URL</td>
                     <td className="cell-value">
@@ -304,10 +349,6 @@ export default function AdminStandings() {
                         '—'
                       )}
                     </td>
-
-                    {/* Two empty cells just to keep 5 columns wide */}
-                    <td className="cell-label">&nbsp;</td>
-                    <td className="cell-value">&nbsp;</td>
                   </tr>
                 </tbody>
               </table>

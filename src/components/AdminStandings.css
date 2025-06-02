@@ -37,6 +37,7 @@
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   margin-bottom: 2rem;
+  max-width: 50%;
 }
 
 /* When a card is in editing mode, darken the header bar */
@@ -201,3 +202,20 @@
   }
 }
 
+.btn-refresh {
+  display: inline-block;
+  width: 80px;
+  text-align: center;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #666;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  margin-top: 0.2rem;
+}
+.btn-refresh:hover {
+  background: #f0f0f0;
+  border-color: #555;
+}
