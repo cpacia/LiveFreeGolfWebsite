@@ -23,9 +23,18 @@ export default function AdminSchedule() {
   // File input ref for thumbnail selection
   const fileInputRef = useRef();
 
-  // 2) Fetch existing events on mount
+  // State for season navigation
+  const [calendarYear, setCalendarYear] = useState(null);
+  const [additionalYears, setAdditionalYears] = useState([]);
+
+  // Extract "year" from query parameters
+  const params = new URLSearchParams(window.location.search);
+  const yearParam = params.get('year') || '';
+
+  // 2) Fetch existing events on mount or when yearParam changes
   useEffect(() => {
-    fetch('http://localhost:8080/events', { credentials: 'include' })
+    setLoading(true);
+    fetch(`http://localhost:8080/events?year=${yearParam}`, { credentials: 'include' })
       .then((res) => {
         if (!res.ok) {
           throw new Error(`HTTP ${res.status} – ${res.statusText}`);
@@ -39,6 +48,8 @@ export default function AdminSchedule() {
           console.warn('Unexpected payload:', data);
           setEvents([]);
         }
+        setCalendarYear(data.calendarYear);
+        setAdditionalYears(data.additionalYears || []);
       })
       .catch((err) => {
         console.error('Failed to fetch events:', err);
@@ -47,13 +58,13 @@ export default function AdminSchedule() {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [yearParam]);
 
   // 3) Loading / Error UI
   if (loading) {
     return (
       <div className="schedule-header">
-        <h1>Schedule – 2025</h1>
+        <h1>Schedule – {yearParam || calendarYear || ''}</h1>
         <button className="btn-add-event">Add Event</button>
         <p>Loading events…</p>
       </div>
@@ -62,7 +73,7 @@ export default function AdminSchedule() {
   if (error) {
     return (
       <div className="schedule-header">
-        <h1>Schedule – 2025</h1>
+        <h1>Schedule – {yearParam || calendarYear || ''}</h1>
         <button className="btn-add-event">Add Event</button>
         <p style={{ color: 'red' }}>Error loading events: {error}</p>
       </div>
@@ -140,9 +151,7 @@ export default function AdminSchedule() {
             throw new Error(`HTTP ${res.status}`);
           }
           // Remove from state on success
-          setEvents((prev) =>
-            prev.filter((e) => e.eventID !== evt.eventID)
-          );
+          setEvents((prev) => prev.filter((e) => e.eventID !== evt.eventID));
         })
         .catch((err) => {
           console.error('Delete failed:', err);
@@ -151,12 +160,20 @@ export default function AdminSchedule() {
     }
   };
 
-  // 8) Render the list of event “card‐tables”
+  // 8) Build a sorted list of all seasons (years) lowest→highest
+  let seasons = [];
+  if (calendarYear !== null) {
+    seasons = [calendarYear, ...additionalYears];
+    seasons = Array.from(new Set(seasons.map(Number))) // ensure unique numbers
+      .sort((a, b) => a - b);
+  }
+
+  // 9) Render the list of event “card‐tables” and season links
   return (
     <>
       {/* Page header */}
       <div className="schedule-header">
-        <h1>Schedule – 2025</h1>
+        <h1>Schedule – {calendarYear}</h1>
         <button className="btn-add-event" onClick={handleAddEvent}>
           Add Event
         </button>
@@ -223,10 +240,14 @@ export default function AdminSchedule() {
                         </>
                       ) : (
                         <img
-                          src={`http://localhost:8080/events/${evt.eventID}/thumbnail`}
-                          alt={`${evt.name} thumbnail`}
-                          className="event-thumbnail"
-                        />
+			   src={`http://localhost:8080/events/${evt.eventID}/thumbnail`}
+			   alt={`${evt.name} thumbnail`}
+			   className="event-thumbnail"
+			   onError={(e) => {
+			     e.currentTarget.onerror = null; // prevent infinite loop
+			     e.currentTarget.src = '/images/default-image.webp';
+			   }}
+			 />
                       )}
                     </td>
 
@@ -661,9 +682,25 @@ export default function AdminSchedule() {
           );
         })
       )}
+
+      {/* Season Navigation */}
+      <div className="season-links">
+	  Seasons:&nbsp;
+	  {seasons.map((yr, idx) => (
+	    <React.Fragment key={yr}>
+	      {/* Show “|” before every year except the first */}
+	      {idx > 0 && <> |&nbsp;</>}
+
+	      {yr === calendarYear ? (
+		<span className="current-year">{yr}</span>
+	      ) : (
+		<a href={`?year=${yr}`}>{yr}</a>
+	      )}
+	    </React.Fragment>
+	  ))}
+	</div>
     </>
   );
 }
-
 
 

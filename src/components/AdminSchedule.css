@@ -276,4 +276,36 @@ select {
   border-color: #333;
 }
 
+/* ──────────────────────────────────────────────────
+   Season Navigation Bar (“Seasons: 2025 | 2026”)
+────────────────────────────────────────────────── */
+.season-links {
+  margin-top: 2rem;           /* space above the events list */
+  font-size: 1rem;            /* same size as body text */
+  color: #444;                /* dark gray text */
+  display: flex;
+  justify-content: flex-start; /* align left (adjust if you want centered/right) */
+  align-items: center;
+  flex-wrap: wrap;            /* wrap to next line if too long */
+  gap: 0.25rem;               /* small gap between elements */
+}
+
+.season-links span.current-year {
+  font-weight: 600;           /* bold for the active year */
+  color: #000;                /* pure black to highlight it */
+}
+
+.season-links a {
+  color: #007bff;             /* link blue */
+  text-decoration: none;      /* remove underline */
+  padding: 0.125rem 0.25rem;  /* small padding around each link */
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+
+.season-links a:hover {
+  background-color: #e9f5ff;  /* light blue hover */
+}
+
+
 
