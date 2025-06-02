@@ -214,7 +214,6 @@ export default function AdminStandings() {
           Add Year
         </button>
       </div>
-
       {standings.length === 0 ? (
         <p>No years found.</p>
       ) : (
@@ -223,7 +222,7 @@ export default function AdminStandings() {
 
           return (
             <div
-              className={`card-table-container ${isEditing ? 'editing' : ''}`}
+              className={`card-table-container card-table-width ${isEditing ? 'editing' : ''}`}
               key={row.id + '_' + row.cacheKey}
             >
               {/* Header Bar: Static “Calendar Year” */}

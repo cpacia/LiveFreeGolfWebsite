@@ -1,4 +1,4 @@
-// AdminSchedule.jsx
+// src/components/AdminSchedule.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import './AdminSchedule.css';
 
@@ -91,20 +91,13 @@ export default function AdminSchedule() {
   }
 
   // 4) Helper to strip protocol for display
-	function stripProtocol(url) {
-	  // 1) Remove “http://” or “https://”
-	  const withoutProto = url.replace(/^https?:\/\//, '');
-
-	  // 2) Decide on a max length (e.g. 50 chars). Adjust as needed.
-	  const MAX = 25;
-
-	  // 3) If it’s short enough, return as‐is. Otherwise, truncate + “…”.
-	  if (withoutProto.length <= MAX) {
-	    return withoutProto;
-	  } else {
-	    return withoutProto.slice(0, MAX - 1) + '...';
-	  }
-	}
+  function stripProtocol(url) {
+    const withoutProto = url.replace(/^https?:\/\//, '');
+    const MAX = 25;
+    return withoutProto.length <= MAX
+      ? withoutProto
+      : withoutProto.slice(0, MAX - 1) + '...';
+  }
 
   // 5) Handler for Add Event button
   const handleAddEvent = () => {
@@ -121,7 +114,7 @@ export default function AdminSchedule() {
       state: '',
       handicapAllowance: '',
       blueGolfUrl: '',
-      thumbnail: '', // server‐side value (unused until saved)
+      thumbnail: '',
       registrationOpen: false,
       isComplete: false,
       netLeaderboardUrl: '',
@@ -129,13 +122,10 @@ export default function AdminSchedule() {
       skinsLeaderboardUrl: '',
       teamsLeaderboardUrl: '',
       wgrLeaderboardUrl: '',
-      cacheKey: Date.now(), // initial cacheKey
+      cacheKey: Date.now(),
     };
 
-    // Insert placeholder at the top of the list
     setEvents((prev) => [blank, ...prev]);
-
-    // Enter edit mode with that placeholder
     setEditingId(tempId);
     setDraftEvent(blank);
     setThumbnailFile(null);
@@ -147,20 +137,25 @@ export default function AdminSchedule() {
     const file = e.target.files[0];
     if (file) {
       setThumbnailFile(file);
-
       // Immediately update local preview URL
       const objectUrl = URL.createObjectURL(file);
       setPreviewURL(objectUrl);
     }
   };
 
-  // 7) Handler for Delete button
+  // 7) Handler for Delete button (with confirmation dialog)
   const handleDelete = (evt) => {
     const isNew = evt.eventID.startsWith('__new__');
     if (isNew) {
       // Simply remove the placeholder
       setEvents((prev) => prev.filter((e) => e.eventID !== evt.eventID));
     } else {
+      // Ask for confirmation
+      const confirmed = window.confirm(
+        `Are you sure you want to delete event "${evt.name}"?`
+      );
+      if (!confirmed) return;
+
       // Send DELETE to API
       fetch(`http://localhost:8080/events/${evt.eventID}`, {
         method: 'DELETE',
@@ -168,19 +163,21 @@ export default function AdminSchedule() {
       })
         .then((res) => {
           if (!res.ok) {
-            throw new Error(`HTTP ${res.status}`);
+            return res.text().then((text) => {
+              throw new Error(text || `HTTP ${res.status}`);
+            });
           }
           // Remove from state on success
           setEvents((prev) => prev.filter((e) => e.eventID !== evt.eventID));
         })
         .catch((err) => {
           console.error('Delete failed:', err);
-          // Optionally show an error toast
+          window.alert(`Delete failed: ${err.message}`);
         });
     }
   };
 
-  // 8) Build a sorted list of all seasons (years) lowest→highest
+  // 8) Build a sorted list of all seasons (years) latest→oldest
   let seasons = [];
   if (calendarYear !== null) {
     seasons = [calendarYear, ...additionalYears];
@@ -269,7 +266,7 @@ export default function AdminSchedule() {
                           />
                         </>
                       ) : (
-                        // Read‐only mode: always load the server URL, with cacheBust
+                        // Read‑only mode: always load the server URL, with cacheBust
                         <img
                           src={`http://localhost:8080/events/${evt.eventID}/thumbnail?ck=${evt.cacheKey}`}
                           alt={`${evt.name} thumbnail`}
@@ -381,7 +378,9 @@ export default function AdminSchedule() {
                               })
                                 .then((res) => {
                                   if (!res.ok) {
-                                    throw new Error(`HTTP ${res.status}`);
+                                    return res.text().then((text) => {
+                                      throw new Error(text || `HTTP ${res.status}`);
+                                    });
                                   }
                                   return res.json();
                                 })
@@ -416,6 +415,7 @@ export default function AdminSchedule() {
                                 })
                                 .catch((err) => {
                                   console.error('Save failed:', err);
+                                  window.alert(`Save failed: ${err.message}`);
                                 });
                             }}
                           >
@@ -471,7 +471,10 @@ export default function AdminSchedule() {
                           type="text"
                           value={draftEvent.course || ''}
                           onChange={(e) =>
-                            setDraftEvent({ ...draftEvent, course: e.target.value })
+                            setDraftEvent({
+                              ...draftEvent,
+                              course: e.target.value,
+                            })
                           }
                           className="cell-input"
                           placeholder="Course name"
@@ -541,7 +544,10 @@ export default function AdminSchedule() {
                           type="text"
                           value={draftEvent.town || ''}
                           onChange={(e) =>
-                            setDraftEvent({ ...draftEvent, town: e.target.value })
+                            setDraftEvent({
+                              ...draftEvent,
+                              town: e.target.value,
+                            })
                           }
                           className="cell-input"
                           placeholder="Town"
@@ -617,7 +623,10 @@ export default function AdminSchedule() {
                           type="text"
                           value={draftEvent.state || ''}
                           onChange={(e) =>
-                            setDraftEvent({ ...draftEvent, state: e.target.value })
+                            setDraftEvent({
+                              ...draftEvent,
+                              state: e.target.value,
+                            })
                           }
                           className="cell-input"
                           placeholder="State"
@@ -726,9 +735,7 @@ export default function AdminSchedule() {
         Seasons:&nbsp;
         {seasons.map((yr, idx) => (
           <React.Fragment key={yr}>
-            {/* Separator before every year except the first */}
             {idx > 0 && <>|&nbsp;</>}
-
             {yr === calendarYear ? (
               <span className="current-year">{yr}</span>
             ) : (
