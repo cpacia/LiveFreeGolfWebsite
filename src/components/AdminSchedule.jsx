@@ -173,7 +173,7 @@ export default function AdminSchedule() {
   let seasons = [];
   if (calendarYear !== null) {
     seasons = [calendarYear, ...additionalYears];
-    seasons = Array.from(new Set(seasons.map(Number))).sort((a, b) => a - b);
+    seasons = Array.from(new Set(seasons.map(Number))).sort((a, b) => b - a);
   }
 
   // 9) Render the list of event “card‐tables” and season links

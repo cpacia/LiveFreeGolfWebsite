@@ -16,7 +16,7 @@ export default function AdminPanel() {
           <li><Link to="/admin/colony-cup">Colony Cup</Link></li>
           <li><Link to="/admin/disabled-list">Disabled List</Link></li>
           <li><Link to="/admin/change-password">Change Password</Link></li>
-          <li><Link to="/admin/logout">Logout</Link></li>
+          <li><Link to="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</Link></li>
         </ul>
       </nav>
 
