@@ -11,8 +11,11 @@ export default function AdminSchedule() {
   // Which eventID is currently in edit mode (or null if none)
   const [editingId, setEditingId] = useState(null);
 
-  // The draft copy of the event being edited
+  // The draft copy of the event being edited (excluding thumbnail preview)
   const [draftEvent, setDraftEvent] = useState(null);
+
+  // Local preview URL (blob string) for the newly picked image file
+  const [previewURL, setPreviewURL] = useState(null);
 
   // The selected thumbnail File, if any, during edit
   const [thumbnailFile, setThumbnailFile] = useState(null);
@@ -34,7 +37,9 @@ export default function AdminSchedule() {
   // 2) Fetch existing events on mount or when yearParam changes
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:8080/events?year=${yearParam}`, { credentials: 'include' })
+    fetch(`http://localhost:8080/events?year=${yearParam}`, {
+      credentials: 'include',
+    })
       .then((res) => {
         if (!res.ok) {
           throw new Error(`HTTP ${res.status} – ${res.statusText}`);
@@ -43,7 +48,12 @@ export default function AdminSchedule() {
       })
       .then((data) => {
         if (Array.isArray(data.events)) {
-          setEvents(data.events);
+          // Attach a cacheKey based on current timestamp so we can bust the cache when updating
+          const withCacheKeys = data.events.map((ev) => ({
+            ...ev,
+            cacheKey: Date.now(),
+          }));
+          setEvents(withCacheKeys);
         } else {
           console.warn('Unexpected payload:', data);
           setEvents([]);
@@ -100,7 +110,7 @@ export default function AdminSchedule() {
       state: '',
       handicapAllowance: '',
       blueGolfUrl: '',
-      thumbnail: '', // no preview yet
+      thumbnail: '', // server‐side value (unused until saved)
       registrationOpen: false,
       isComplete: false,
       netLeaderboardUrl: '',
@@ -108,6 +118,7 @@ export default function AdminSchedule() {
       skinsLeaderboardUrl: '',
       teamsLeaderboardUrl: '',
       wgrLeaderboardUrl: '',
+      cacheKey: Date.now(), // initial cacheKey
     };
 
     // Insert placeholder at the top of the list
@@ -117,6 +128,7 @@ export default function AdminSchedule() {
     setEditingId(tempId);
     setDraftEvent(blank);
     setThumbnailFile(null);
+    setPreviewURL(null);
   };
 
   // 6) Handler for thumbnail file selection (in edit mode)
@@ -125,12 +137,9 @@ export default function AdminSchedule() {
     if (file) {
       setThumbnailFile(file);
 
-      // Immediately update preview URL in draftEvent.thumbnail
-      const previewURL = URL.createObjectURL(file);
-      setDraftEvent((prev) => ({
-        ...prev,
-        thumbnail: previewURL,
-      }));
+      // Immediately update local preview URL
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewURL(objectUrl);
     }
   };
 
@@ -164,8 +173,7 @@ export default function AdminSchedule() {
   let seasons = [];
   if (calendarYear !== null) {
     seasons = [calendarYear, ...additionalYears];
-    seasons = Array.from(new Set(seasons.map(Number))) // ensure unique numbers
-      .sort((a, b) => a - b);
+    seasons = Array.from(new Set(seasons.map(Number))).sort((a, b) => a - b);
   }
 
   // 9) Render the list of event “card‐tables” and season links
@@ -219,16 +227,27 @@ export default function AdminSchedule() {
                     <td className="cell-image" rowSpan="5">
                       {isEditing ? (
                         <>
-                          {/* Preview (or default) + clickable to open file chooser */}
+                          {/* 
+                            1) If a new file was picked, use previewURL.
+                            2) Else if event has a thumbnail, load server URL (with cacheBust).
+                            3) Else show default.
+                            onError → fallback to default if server image fails.
+                          */}
                           <img
                             src={
-				    evt.thumbnail
-				      ? `http://localhost:8080/events/${draftEvent.eventID}/thumbnail`
-				      : '/images/default-image.webp'
-				  }
+                              previewURL
+                                ? previewURL
+                                : evt.thumbnail
+                                ? `http://localhost:8080/events/${evt.eventID}/thumbnail?ck=${evt.cacheKey}`
+                                : '/images/default-image.webp'
+                            }
                             alt={`${draftEvent.name} thumbnail`}
                             className="event-thumbnail clickable-image"
                             onClick={() => fileInputRef.current.click()}
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src = '/images/default-image.webp';
+                            }}
                           />
                           <input
                             type="file"
@@ -239,15 +258,16 @@ export default function AdminSchedule() {
                           />
                         </>
                       ) : (
+                        // Read‐only mode: always load the server URL, with cacheBust
                         <img
-			   src={`http://localhost:8080/events/${evt.eventID}/thumbnail`}
-			   alt={`${evt.name} thumbnail`}
-			   className="event-thumbnail"
-			   onError={(e) => {
-			     e.currentTarget.onerror = null; // prevent infinite loop
-			     e.currentTarget.src = '/images/default-image.webp';
-			   }}
-			 />
+                          src={`http://localhost:8080/events/${evt.eventID}/thumbnail?ck=${evt.cacheKey}`}
+                          alt={`${evt.name} thumbnail`}
+                          className="event-thumbnail"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = '/images/default-image.webp';
+                          }}
+                        />
                       )}
                     </td>
 
@@ -361,14 +381,18 @@ export default function AdminSchedule() {
                                       const filtered = prev.filter(
                                         (e) => !e.eventID.startsWith('__new__')
                                       );
-                                      return [returnedEvt, ...filtered];
+                                      return [
+                                        { ...returnedEvt, cacheKey: Date.now() },
+                                        ...filtered,
+                                      ];
                                     } else {
-                                      // Replace existing event
+                                      // Replace existing event, update cacheKey
                                       return prev.map((e) =>
                                         e.eventID === returnedEvt.eventID
                                           ? {
                                               ...returnedEvt,
                                               date: returnedEvt.date || '',
+                                              cacheKey: Date.now(),
                                             }
                                           : e
                                       );
@@ -377,6 +401,7 @@ export default function AdminSchedule() {
                                   setEditingId(null);
                                   setDraftEvent(null);
                                   setThumbnailFile(null);
+                                  setPreviewURL(null);
                                 })
                                 .catch((err) => {
                                   console.error('Save failed:', err);
@@ -397,6 +422,7 @@ export default function AdminSchedule() {
                               setEditingId(null);
                               setDraftEvent(null);
                               setThumbnailFile(null);
+                              setPreviewURL(null);
                             }}
                           >
                             Cancel
@@ -409,6 +435,7 @@ export default function AdminSchedule() {
                             onClick={() => {
                               setEditingId(evt.eventID);
                               setDraftEvent({ ...evt, date: evt.date });
+                              setPreviewURL(null);
                             }}
                           >
                             Edit
@@ -685,22 +712,21 @@ export default function AdminSchedule() {
 
       {/* Season Navigation */}
       <div className="season-links">
-	  Seasons:&nbsp;
-	  {seasons.map((yr, idx) => (
-	    <React.Fragment key={yr}>
-	      {/* Show “|” before every year except the first */}
-	      {idx > 0 && <> |&nbsp;</>}
+        Seasons:&nbsp;
+        {seasons.map((yr, idx) => (
+          <React.Fragment key={yr}>
+            {/* Separator before every year except the first */}
+            {idx > 0 && <>|&nbsp;</>}
 
-	      {yr === calendarYear ? (
-		<span className="current-year">{yr}</span>
-	      ) : (
-		<a href={`?year=${yr}`}>{yr}</a>
-	      )}
-	    </React.Fragment>
-	  ))}
-	</div>
+            {yr === calendarYear ? (
+              <span className="current-year">{yr}</span>
+            ) : (
+              <a href={`?year=${yr}`}>{yr}</a>
+            )}
+          </React.Fragment>
+        ))}
+      </div>
     </>
   );
 }
-
 
