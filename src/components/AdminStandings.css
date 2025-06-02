@@ -43,6 +43,10 @@
   max-width: 50%;
 }
 
+.card-table-header-width {
+  max-width: 48%;
+}
+
 /* When a card is in editing mode, darken the header bar */
 .card-table-container.editing .card-table-header {
   background-color: #3d8a3d; /* darker green */

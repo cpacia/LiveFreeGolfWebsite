@@ -3,6 +3,7 @@ import React from 'react';
 import { Link, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import AdminSchedule from '../components/AdminSchedule';
 import AdminStandings from '../components/AdminStandings'; 
+import AdminChangePassword from '../components/AdminChangePassword'; 
 import './AdminPanel.css';
 
 export default function AdminPanel() {
@@ -75,7 +76,7 @@ export default function AdminPanel() {
             {/* /admin/change-password */}
             <Route
               path="change-password"
-              element={<div>Change Password component goes here</div>}
+              element={<AdminChangePassword />}
             />
 
             {/* Fallback: any other /admin/* → redirect back to /admin */}
