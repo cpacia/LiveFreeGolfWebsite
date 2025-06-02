@@ -102,7 +102,7 @@ export default function AdminSchedule() {
 	  if (withoutProto.length <= MAX) {
 	    return withoutProto;
 	  } else {
-	    return withoutProto.slice(0, MAX - 1) + '…';
+	    return withoutProto.slice(0, MAX - 1) + '...';
 	  }
 	}
 

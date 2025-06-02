@@ -1,10 +1,24 @@
 // src/pages/AdminPanel.jsx
 import React from 'react';
-import { Link, Routes, Route, Navigate } from 'react-router-dom';
+import { Link, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import AdminSchedule from '../components/AdminSchedule'; // import schedule component
 import './AdminPanel.css';
 
 export default function AdminPanel() {
+	const navigate = useNavigate();
+
+	const handleLogout = async () => {
+	  try {
+		await fetch('http://localhost:8080/logout', {
+		  method: 'POST',
+		  credentials: 'include',
+		});
+		window.location.href = '/admin/login';
+	  } catch (err) {
+		console.error('Logout failed', err);
+	  }
+	};
+
   return (
     <div className="admin-layout full-bleed">
       <nav className="admin-sidebar">
@@ -16,7 +30,7 @@ export default function AdminPanel() {
           <li><Link to="/admin/colony-cup">Colony Cup</Link></li>
           <li><Link to="/admin/disabled-list">Disabled List</Link></li>
           <li><Link to="/admin/change-password">Change Password</Link></li>
-          <li><Link to="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</Link></li>
+          <li><Link onClick={handleLogout}><i className="fas fa-sign-out-alt"></i> Logout</Link></li>
         </ul>
       </nav>
 
@@ -64,12 +78,6 @@ export default function AdminPanel() {
             <Route
               path="change-password"
               element={<div>Change Password component goes here</div>}
-            />
-
-            {/* /admin/logout */}
-            <Route
-              path="logout"
-              element={<div>Logout logic goes here</div>}
             />
 
             {/* Fallback: any other /admin/* → redirect back to /admin */}

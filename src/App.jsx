@@ -24,7 +24,7 @@ export default function App() {
         <Route path="/tour-details" element={<TourDetails />} />
         <Route path="/membership" element={<Membership />} />
         <Route path="/courses" element={<Courses />} />
-        <Route path="/admin*" element={<AdminRoute />} />
+        <Route path="/admin/*" element={<AdminRoute />} />
       </Routes>
 
       <div className="full-bleed">
