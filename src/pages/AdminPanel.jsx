@@ -1,7 +1,8 @@
 // src/pages/AdminPanel.jsx
 import React from 'react';
 import { Link, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import AdminSchedule from '../components/AdminSchedule'; // import schedule component
+import AdminSchedule from '../components/AdminSchedule';
+import AdminStandings from '../components/AdminStandings'; 
 import './AdminPanel.css';
 
 export default function AdminPanel() {
@@ -51,10 +52,7 @@ export default function AdminPanel() {
             <Route path="schedule" element={<AdminSchedule />} />
 
             {/* /admin/standings */}
-            <Route
-              path="standings"
-              element={<div>Standings component goes here</div>}
-            />
+            <Route path="standings" element={<AdminStandings />} />
 
             {/* /admin/match-play */}
             <Route
