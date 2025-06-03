@@ -16,7 +16,7 @@ export default function AdminStandings() {
   function stripProtocol(url) {
     if (!url) return '';
     const noProto = url.replace(/^https?:\/\//, '');
-    const MAX = 25;
+    const MAX = 38;
     return noProto.length <= MAX ? noProto : noProto.slice(0, MAX - 1) + '...';
   }
 

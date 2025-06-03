@@ -43,8 +43,9 @@ export default function AdminPanel() {
             <Route
               index
               element={
-                <div style={{ padding: '2rem', fontSize: '1.25rem' }}>
+                <div style={{ padding: '0rem', fontSize: '3.25rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
                   Welcome to the Admin Panel
+                  <img style={{ height: '800px' }} src="images/scottie.jpg"/>
                 </div>
               }
             />
