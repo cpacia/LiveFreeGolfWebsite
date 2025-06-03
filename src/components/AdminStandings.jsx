@@ -233,7 +233,7 @@ export default function AdminStandings() {
                   {/* Row 1: Calendar Year + Actions (spanning 3 rows) */}
                   <tr>
                     <td className="cell-label">Calendar Year</td>
-                    <td className="cell-value">
+                    <td className="cell-value2">
                       {isEditing ? (
                         <input
                           type="text"
@@ -291,7 +291,7 @@ export default function AdminStandings() {
                   {/* Row 2: Season Standings URL */}
                   <tr>
                     <td className="cell-label">Season Standings URL</td>
-                    <td className="cell-value">
+                    <td className="cell-value2">
                       {isEditing ? (
                         <input
                           type="text"
@@ -322,7 +322,7 @@ export default function AdminStandings() {
                   {/* Row 3: WGR Standings URL */}
                   <tr>
                     <td className="cell-label">WGR Standings URL</td>
-                    <td className="cell-value">
+                    <td className="cell-value2">
                       {isEditing ? (
                         <input
                           type="text"
