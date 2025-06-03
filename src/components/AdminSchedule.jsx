@@ -657,7 +657,7 @@ export default function AdminSchedule() {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          {stripProtocol(evt.shpifyUrl)}
+                          {stripProtocol(evt.shopifyUrl)}
                         </a>
                       ) : (
                         '—'
