@@ -229,7 +229,7 @@ export default function AdminSchedule() {
               ─────────────────────────────────────────────────────── */}
               <table className="event-table">
                 <tbody>
-                  {/* Row 1: Date | Registration | Skins URL | Buttons */}
+                  {/* Row 1: Date | Registration | Gross URL | Buttons */}
                   <tr>
                     {/* Column 1: Thumbnail (spans 5 rows) */}
                     <td className="cell-image" rowSpan="5">
@@ -321,29 +321,29 @@ export default function AdminSchedule() {
                       )}
                     </td>
 
-                    {/* Skins URL */}
-                    <td className="cell-label">Skins URL</td>
+                    {/* Gross URL */}
+                    <td className="cell-label">Gross URL</td>
                     <td className="cell-value">
                       {isEditing ? (
                         <input
                           type="text"
                           className="url-input"
-                          value={draftEvent.skinsLeaderboardUrl || ''}
+                          value={draftEvent.grossLeaderboardUrl || ''}
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
-                              skinsLeaderboardUrl: e.target.value,
+                              grossLeaderboardUrl: e.target.value,
                             })
                           }
                           placeholder="https://..."
                         />
-                      ) : evt.skinsLeaderboardUrl ? (
+                      ) : evt.grossLeaderboardUrl ? (
                         <a
-                          href={evt.skinsLeaderboardUrl}
+                          href={evt.grossLeaderboardUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          {stripProtocol(evt.skinsLeaderboardUrl)}
+                          {stripProtocol(evt.grossLeaderboardUrl)}
                         </a>
                       ) : (
                         '—'
@@ -462,7 +462,7 @@ export default function AdminSchedule() {
                     </td>
                   </tr>
 
-                  {/* Row 2: Course | Complete | Teams URL */}
+                  {/* Row 2: Course | Complete | Skins URL */}
                   <tr>
                     <td className="cell-label">Course</td>
                     <td className="cell-value">
@@ -506,28 +506,28 @@ export default function AdminSchedule() {
                       )}
                     </td>
 
-                    <td className="cell-label">Teams URL</td>
+                    <td className="cell-label">Skins URL</td>
                     <td className="cell-value">
                       {isEditing ? (
                         <input
                           type="text"
                           className="url-input"
-                          value={draftEvent.teamsLeaderboardUrl || ''}
+                          value={draftEvent.skinsLeaderboardUrl || ''}
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
-                              teamsLeaderboardUrl: e.target.value,
+                              skinsLeaderboardUrl: e.target.value,
                             })
                           }
                           placeholder="https://..."
                         />
-                      ) : evt.teamsLeaderboardUrl ? (
+                      ) : evt.skinsLeaderboardUrl ? (
                         <a
-                          href={evt.teamsLeaderboardUrl}
+                          href={evt.skinsLeaderboardUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          {stripProtocol(evt.teamsLeaderboardUrl)}
+                          {stripProtocol(evt.skinsLeaderboardUrl)}
                         </a>
                       ) : (
                         '—'
@@ -535,7 +535,7 @@ export default function AdminSchedule() {
                     </td>
                   </tr>
 
-                  {/* Row 3: Town | BlueGolf URL | WGR URL */}
+                  {/* Row 3: Town | BlueGolf URL | Teams URL */}
                   <tr>
                     <td className="cell-label">Town</td>
                     <td className="cell-value">
@@ -585,6 +585,85 @@ export default function AdminSchedule() {
                       )}
                     </td>
 
+                    <td className="cell-label">Teams URL</td>
+                    <td className="cell-value">
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          className="url-input"
+                          value={draftEvent.teamsLeaderboardUrl || ''}
+                          onChange={(e) =>
+                            setDraftEvent({
+                              ...draftEvent,
+                              teamsLeaderboardUrl: e.target.value,
+                            })
+                          }
+                          placeholder="https://..."
+                        />
+                      ) : evt.teamsLeaderboardUrl ? (
+                        <a
+                          href={evt.teamsLeaderboardUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {stripProtocol(evt.teamsLeaderboardUrl)}
+                        </a>
+                      ) : (
+                        '—'
+                      )}
+                    </td>
+                  </tr>
+
+                  {/* Row 4: State | Shopify URL | WGR URL */}
+                  <tr>
+                    <td className="cell-label">State</td>
+                    <td className="cell-value">
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={draftEvent.state || ''}
+                          onChange={(e) =>
+                            setDraftEvent({
+                              ...draftEvent,
+                              state: e.target.value,
+                            })
+                          }
+                          className="cell-input"
+                          placeholder="State"
+                        />
+                      ) : (
+                        evt.state || '—'
+                      )}
+                    </td>
+
+                    <td className="cell-label">Shopify URL</td>
+                    <td className="cell-value">
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          className="url-input"
+                          value={draftEvent.shopifyUrl || ''}
+                          onChange={(e) =>
+                            setDraftEvent({
+                              ...draftEvent,
+                              shopifyUrl: e.target.value,
+                            })
+                          }
+                          placeholder=""
+                        />
+                      ) : evt.shopifyUrl ? (
+                        <a
+                          href={evt.shopifyUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {stripProtocol(evt.shpifyUrl)}
+                        </a>
+                      ) : (
+                        '—'
+                      )}
+                    </td>
+                    
                     <td className="cell-label">WGR URL</td>
                     <td className="cell-value">
                       {isEditing ? (
@@ -612,27 +691,30 @@ export default function AdminSchedule() {
                         '—'
                       )}
                     </td>
+
+                    {/* Empty cells for alignment */}
+                    
                   </tr>
 
-                  {/* Row 4: State | Net URL */}
+                  {/* Row 5: Handicap | Net URL */}
                   <tr>
-                    <td className="cell-label">State</td>
+                    <td className="cell-label">Handicap</td>
                     <td className="cell-value">
                       {isEditing ? (
                         <input
                           type="text"
-                          value={draftEvent.state || ''}
+                          value={draftEvent.handicapAllowance || ''}
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
-                              state: e.target.value,
+                              handicapAllowance: e.target.value,
                             })
                           }
                           className="cell-input"
-                          placeholder="State"
+                          placeholder="e.g. 80%"
                         />
                       ) : (
-                        evt.state || '—'
+                        evt.handicapAllowance || '—'
                       )}
                     </td>
 
@@ -658,61 +740,6 @@ export default function AdminSchedule() {
                           rel="noopener noreferrer"
                         >
                           {stripProtocol(evt.netLeaderboardUrl)}
-                        </a>
-                      ) : (
-                        '—'
-                      )}
-                    </td>
-
-                    {/* Empty cells for alignment */}
-                    <td className="cell-label">&nbsp;</td>
-                    <td className="cell-value">&nbsp;</td>
-                  </tr>
-
-                  {/* Row 5: Handicap | Gross URL */}
-                  <tr>
-                    <td className="cell-label">Handicap</td>
-                    <td className="cell-value">
-                      {isEditing ? (
-                        <input
-                          type="text"
-                          value={draftEvent.handicapAllowance || ''}
-                          onChange={(e) =>
-                            setDraftEvent({
-                              ...draftEvent,
-                              handicapAllowance: e.target.value,
-                            })
-                          }
-                          className="cell-input"
-                          placeholder="e.g. 80%"
-                        />
-                      ) : (
-                        evt.handicapAllowance || '—'
-                      )}
-                    </td>
-
-                    <td className="cell-label">Gross URL</td>
-                    <td className="cell-value">
-                      {isEditing ? (
-                        <input
-                          type="text"
-                          className="url-input"
-                          value={draftEvent.grossLeaderboardUrl || ''}
-                          onChange={(e) =>
-                            setDraftEvent({
-                              ...draftEvent,
-                              grossLeaderboardUrl: e.target.value,
-                            })
-                          }
-                          placeholder="https://..."
-                        />
-                      ) : evt.grossLeaderboardUrl ? (
-                        <a
-                          href={evt.grossLeaderboardUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {stripProtocol(evt.grossLeaderboardUrl)}
                         </a>
                       ) : (
                         '—'
