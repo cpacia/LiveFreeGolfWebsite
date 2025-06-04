@@ -13,9 +13,13 @@ export default function Results() {
   const [errorEvent, setErrorEvent] = useState(null);
 
   // 3) State for which table is selected
-  const [selectedTable, setSelectedTable] = useState('net'); // default = Net Results
+  const [selectedTable, setSelectedTable] = useState('net');
 
   // 4) State for table data + loading / error
+  //    tableData will be either:
+  //      • an Array (for net/gross/teams/wgr), or
+  //      • an Object { players: Array, holes: Array } (for skins),
+  //      • or null while loading/cleared
   const [tableData, setTableData] = useState(null);
   const [loadingTable, setLoadingTable] = useState(false);
   const [errorTable, setErrorTable] = useState(null);
@@ -32,6 +36,8 @@ export default function Results() {
       setLoadingEvent(true);
       setErrorEvent(null);
       try {
+        // NOTE: your backend URL might be /event/${eventID} or /events/${eventID};
+        // adjust if needed. I’ll assume /events here since your code says so.
         const resp = await fetch(`http://localhost:8080/events/${eventID}`);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
@@ -47,15 +53,22 @@ export default function Results() {
     fetchEvent();
   }, [eventID]);
 
+  // Whenever the user changes the dropdown, *immediately* clear tableData + flip loadingTable
+  // so that the next render shows a loading state instead of trying to .map on old data.
+  const onSelectChange = (e) => {
+    const newTable = e.target.value;
+    setLoadingTable(true);
+    setErrorTable(null);
+    setTableData(null);
+    setSelectedTable(newTable);
+  };
+
   // 6) Fetch the selected table’s data whenever selectedTable or eventID changes
   useEffect(() => {
     if (!eventID) return;
-    const fetchTable = async () => {
-      setLoadingTable(true);
-      setErrorTable(null);
-      setTableData(null);
 
-      // decide endpoint based on selectedTable
+    const fetchTable = async () => {
+      // At this point, loadingTable===true and tableData===null already (from onSelectChange).
       let url = '';
       switch (selectedTable) {
         case 'net':
@@ -83,16 +96,33 @@ export default function Results() {
         const resp = await fetch(url);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
+        console.log('raw data for', selectedTable, data);
 
-        // Skins comes back as { players: [...], holes: [...] }
         if (selectedTable === 'skins') {
+          // Expect { players: [...], holes: [...] }
           setTableData({
-            players: data.players || [],
-            holes: data.holes || [],
+            players: Array.isArray(data.players) ? data.players : [],
+            holes:   Array.isArray(data.holes)   ? data.holes   : [],
           });
         } else {
-          // All other endpoints return a JSON array of objects
-          setTableData(data || []);
+          // Force an array for net/gross/teams/wgr—even if backend wrapped it in { something: […] }
+          let arr = [];
+          if (Array.isArray(data)) {
+            arr = data;
+          } else {
+            // find the first array‐valued property:
+            const candidates = Object.keys(data).filter((k) => Array.isArray(data[k]));
+            if (candidates.length > 0) {
+              arr = data[candidates[0]];
+            } else {
+              console.warn(
+                `Unexpected JSON shape for "${selectedTable}". Falling back to empty array.`,
+                data
+              );
+              arr = [];
+            }
+          }
+          setTableData(arr);
         }
       } catch (err) {
         console.error(err);
@@ -107,18 +137,25 @@ export default function Results() {
 
   // 7) Helper to render each table by type
   const renderTable = () => {
+    // A) If we’re actively fetching, show “Loading…”
     if (loadingTable) {
       return <p className="loading-text">Loading results…</p>;
     }
+    // B) If there’s a fetch error, display it
     if (errorTable) {
       return <p className="error-text">{errorTable}</p>;
     }
-    if (!tableData) {
-      return null;
-    }
 
-    // A) Net Results: array of NetResult { rank, player, total, strokes, points, scorecardUrl }
+    // C) Now decide by selectedTable. For each case:
+    //    • If tableData is not yet in the correct shape, show “Loading” (or null)
+    //    • Otherwise, .map over the array(s).
+
     if (selectedTable === 'net') {
+      // We expect tableData to be an Array of NetResult
+      if (!Array.isArray(tableData)) {
+        // either still null or not an array at all → show loading
+        return <p className="loading-text">Loading results…</p>;
+      }
       return (
         <table className="results-table">
           <thead>
@@ -166,8 +203,11 @@ export default function Results() {
       );
     }
 
-    // B) Gross Results: array of GrossResult { rank, player, total, strokes, scorecardUrl }
     if (selectedTable === 'gross') {
+      // We expect tableData to be an Array of GrossResult
+      if (!Array.isArray(tableData)) {
+        return <p className="loading-text">Loading results…</p>;
+      }
       return (
         <table className="results-table">
           <thead>
@@ -213,8 +253,11 @@ export default function Results() {
       );
     }
 
-    // C) Teams Results: array of TeamResult { rank, team, total, strokes }
     if (selectedTable === 'teams') {
+      // We expect tableData to be an Array of TeamResult
+      if (!Array.isArray(tableData)) {
+        return <p className="loading-text">Loading results…</p>;
+      }
       return (
         <table className="results-table">
           <thead>
@@ -247,8 +290,11 @@ export default function Results() {
       );
     }
 
-    // D) WGR Results: array of WGRResult { rank, player, total, strokes, points, scorecardUrl }
     if (selectedTable === 'wgr') {
+      // We expect tableData to be an Array of WGRResult
+      if (!Array.isArray(tableData)) {
+        return <p className="loading-text">Loading results…</p>;
+      }
       return (
         <table className="results-table">
           <thead>
@@ -296,14 +342,22 @@ export default function Results() {
       );
     }
 
-    // E) Skins Results: data = { players: [SkinsPlayerResult,…], holes: [SkinsHolesResult,…] }
     if (selectedTable === 'skins') {
-      const players = tableData.players || [];
-      const holes   = tableData.holes   || [];
+      // We expect tableData to be an object { players: Array, holes: Array }
+      if (
+        !tableData ||
+        !Array.isArray(tableData.players) ||
+        !Array.isArray(tableData.holes)
+      ) {
+        return <p className="loading-text">Loading results…</p>;
+      }
+
+      const players = tableData.players;
+      const holes = tableData.holes;
 
       return (
         <>
-          {/* Player‐based skins */}
+          {/* Player‐based Skins */}
           <h3 className="skins-subheading">Skins – Player Standings</h3>
           <table className="results-table">
             <thead>
@@ -345,7 +399,7 @@ export default function Results() {
             </tbody>
           </table>
 
-          {/* Hole‐by‐hole skins */}
+          {/* Hole‐by‐hole Skins */}
           <h3 className="skins-subheading">Skins – Hole Details</h3>
           <table className="results-table">
             <thead>
@@ -381,7 +435,6 @@ export default function Results() {
       );
     }
 
-    // fallback (shouldn't hit)
     return null;
   };
 
@@ -432,7 +485,7 @@ export default function Results() {
                 id="results-select"
                 className="results-dropdown"
                 value={selectedTable}
-                onChange={(e) => setSelectedTable(e.target.value)}
+                onChange={onSelectChange}
               >
                 <option value="net">Net Results</option>
                 <option value="gross">Gross Results</option>
