@@ -13,57 +13,29 @@ export default function EventsAndRankingsSection() {
         return res.json();
       })
       .then((data) => {
-        // The API returns an object:
-        // {
-        //   calendarYear: null,
-        //   additionalYears: [],
-        //   events: [
-        //     {
-        //       eventID: "abc123",
-        //       date:    "2025-07-12",   // <-- ISO‐date string (YYYY‑MM‑DD)
-        //       name:    "Summer Open",
-        //       course:  "Willow Creek",
-        //       town:    "...",
-        //       state:   "...",
-        //       handicapAllowance: "...",
-        //       blueGolfUrl:       "...",
-        //       shopifyUrl:        "...",
-        //       thumbnail:         "...",
-        //       registrationOpen:  true/false,
-        //       isComplete:        true/false,
-        //       netLeaderboardUrl: "...",
-        //       grossLeaderboardUrl: "...",
-        //       skinsLeaderboardUrl: "...",
-        //       teamsLeaderboardUrl: "...",
-        //       wgrLeaderboardUrl:  "...",
-        //       CreatedAt: "...", UpdatedAt: "...", DeletedAt: null
-        //     },
-        //     // … more events …
-        //   ]
-        // }
         const rawEvents = Array.isArray(data.events) ? data.events : [];
 
-        // Convert `date` string → Date object (at midnight)
+        // Convert date string → Date object at midnight
         const withDateObj = rawEvents.map((e) => ({
           ...e,
           dateObj: new Date(e.date + 'T00:00:00'),
         }));
 
-        // Filter out past events and sort by date ascending
+        // Filter out past events, sort ascending, take first 3
         const today = new Date();
         const upcoming = withDateObj
           .filter((e) => e.dateObj >= today)
           .sort((a, b) => a.dateObj - b.dateObj)
-          .slice(0, 3); // only take the next three
+          .slice(0, 3);
 
         setEvents(upcoming);
       })
       .catch((err) => {
         console.error('Failed to fetch events:', err);
-        setEvents([]); // fallback to empty list
+        setEvents([]);
       });
 
-    // ─── “WORLD GOLF RANKINGS” FETCH (unchanged) ─────────────────────────────────
+    // ─── “WORLD GOLF RANKINGS” FETCH ────────────────────────────────────────────
     fetch('http://localhost:8080/standings')
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -73,8 +45,7 @@ export default function EventsAndRankingsSection() {
         const rawWGR = Array.isArray(data.wgr) ? data.wgr : [];
 
         const parsed = rawWGR.map((p) => {
-          // strip commas so parseFloat("1,100") → parseFloat("1100")
-          const stripped = p.points.replace(/,/g, '');
+          const stripped = p.points.replace(/,/g, '');          // "1,100" → "1100"
           const numPoints = parseFloat(stripped) || 0;
           return {
             ID:             p.ID,
@@ -83,8 +54,8 @@ export default function EventsAndRankingsSection() {
             player:         p.player,
             total:          p.total,
             strokes:        p.strokes,
-            originalPoints: p.points,   // e.g. "1,100"
-            numericPoints:  numPoints,  // e.g. 1100
+            originalPoints: p.points,    // keep "1,100" for display
+            numericPoints:  numPoints,   // 1100
             scorecardUrl:   p.scorecardUrl,
           };
         });
@@ -101,7 +72,7 @@ export default function EventsAndRankingsSection() {
       });
   }, []);
 
-  // Helper for converting a Date to { month: "MMM", day: D }
+  // Helper: format month/day
   const monthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
   const fmtBadge = (dateObj) => ({
     month: monthNames[dateObj.getMonth()],
@@ -114,32 +85,39 @@ export default function EventsAndRankingsSection() {
       <div className="panel events-panel">
         <h2>Upcoming Events</h2>
         <ul className="events-list">
-          {events.map((e) => {
-            const { month, day } = fmtBadge(e.dateObj);
+          {events.length > 0 ? (
+            events.map((e) => {
+              const { month, day } = fmtBadge(e.dateObj);
+              const detailsUrl = e.blueGolfUrl || e.shopifyUrl || '#';
 
-            // Choose which URL to show as “Details”:
-            // In this example, we link to e.blueGolfUrl (if it exists);
-            // otherwise fallback to e.shopifyUrl. Adjust as needed.
-            const detailsUrl = e.blueGolfUrl || e.shopifyUrl || '#';
-
-            return (
-              <li key={e.eventID} className="event-item">
-                <div className="date-badge">
-                  <div className="badge-text">
-                    <span className="month">{month}</span>
-                    <span className="day">{day}</span>
+              return (
+                <li key={e.eventID} className="event-item">
+                  <div className="date-badge">
+                    <div className="badge-text">
+                      <span className="month">{month}</span>
+                      <span className="day">{day}</span>
+                    </div>
                   </div>
-                </div>
-                <div className="event-details">
-                  <h3 className="event-title">{e.name}</h3>
-                  <p className="event-course">{e.course}</p>
-                  <a href={detailsUrl} className="event-link" target="_blank" rel="noopener noreferrer">
-                    Details
-                  </a>
-                </div>
-              </li>
-            );
-          })}
+                  <div className="event-details">
+                    <h3 className="event-title">{e.name}</h3>
+                    <p className="event-course">{e.course}</p>
+                    <a
+                      href={detailsUrl}
+                      className="event-link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Details
+                    </a>
+                  </div>
+                </li>
+              );
+            })
+          ) : (
+            <li className="no-events-message">
+              Check back soon for next year’s events.
+            </li>
+          )}
         </ul>
       </div>
 
