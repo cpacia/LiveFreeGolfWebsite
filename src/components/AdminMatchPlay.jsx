@@ -72,6 +72,27 @@ export default function AdminMatchPlay() {
     });
     setIsEditing(true);
   };
+  
+  const handleRefresh = () => {
+    if (
+      !window.confirm(
+        `Are you sure you want to refresh the match play bracket?`
+      )
+    ) {
+      return;
+    }
+
+    fetch('http://localhost:8080/refresh-match-play-bracket', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        console.log(`Refreshed standings for ${row.calendarYear}`);
+      })
+      .catch((err) => console.error('Refresh failed:', err));
+  };
 
   // ─── 5) Handle “Cancel” ───────────────────────────────────────────
   const handleCancel = () => {
@@ -174,9 +195,17 @@ export default function AdminMatchPlay() {
                     </button>
                   </>
                 ) : (
+                  <>
                   <button className="btn-edit" onClick={handleEdit}>
                     Edit
                   </button>
+                  <button
+                    className="btn-refresh"
+                    onClick={() => handleRefresh()}
+                  >
+                    Refresh
+                  </button>
+                  </>
                 )}
               </td>
             </tr>
@@ -256,7 +285,7 @@ export default function AdminMatchPlay() {
                     rel="noopener noreferrer"
                   >
                     {info.shopifyUrl.replace(/^https?:\/\//, '').slice(0, 45) +
-                      (info.shopifyUrl.length > 45 ? '…' : '')}
+                      (info.shopifyUrl.length > 5 ? '…' : '')}
                   </a>
                 ) : (
                   '—'
