@@ -25,7 +25,7 @@ const tiers = [
 export default function MembershipSection() {
   return (
     <section className="membership-section full-bleed">
-      <h2 className="section-title">Join the League</h2>
+      <h2 className="section-title">Join the Tour</h2>
       <div className="membership-grid">
         {tiers.map((tier) => (
           <div key={tier.id} className="tier-card">
