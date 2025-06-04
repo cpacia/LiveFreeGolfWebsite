@@ -238,5 +238,45 @@
     "state": "MA",
     "thumbnail": "far-corner.jpg",
     "link": "https://farcornergolf.com/"
+  },
+  {
+    "id": "birch-hill",
+    "name": "Birch Hill Country Club",
+    "city": "Moultonborough",
+    "state": "NH",
+    "thumbnail": "birch-hill.jpg",
+    "link": "https://www.birchhillcc.com/"
+  },
+  {
+    "id": "links-at-outlook",
+    "name": "The Links @ Outlook",
+    "city": "South Berwick",
+    "state": "ME",
+    "thumbnail": "links-at-outlook.jpg",
+    "link": "https://www.outlookgolf.com/"
+  },
+  {
+    "id": "george-wright",
+    "name": "George Wright Golf Course",
+    "city": "Hyde Park",
+    "state": "MA",
+    "thumbnail": "george-wright.jpg",
+    "link": "https://www.cityofbostongolf.com/course/george-wright-golf-course"
+  },
+  {
+    "id": "maplewood",
+    "name": "Maplewood Golf Course",
+    "city": "Bethlehem",
+    "state": "NH",
+    "thumbnail": "maplewood.webp",
+    "link": "https://www.maplewoodgolfresort.com/"
+  },
+  {
+    "id": "fox-run",
+    "name": "Fox Run Golf Club",
+    "city": "Ludlow",
+    "state": "VT",
+    "thumbnail": "fox-run.webp",
+    "link": "https://www.foxrungolfclubvt.com/"
   }
 ]

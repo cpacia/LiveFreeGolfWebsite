@@ -49,10 +49,12 @@ export default function AdminSchedule() {
       .then((data) => {
         if (Array.isArray(data.events)) {
           // Attach a cacheKey based on current timestamp so we can bust the cache when updating
-          const withCacheKeys = data.events.map((ev) => ({
-            ...ev,
-            cacheKey: Date.now(),
-          }));
+          const withCacheKeys = data.events
+			  .map((ev) => ({
+				...ev,
+				cacheKey: Date.now(),
+			  }))
+			  .sort((a, b) => new Date(a.date) - new Date(b.date)); // earliest to latest
           setEvents(withCacheKeys);
         } else {
           console.warn('Unexpected payload:', data);

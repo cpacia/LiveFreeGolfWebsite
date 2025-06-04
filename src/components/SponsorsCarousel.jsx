@@ -5,7 +5,7 @@ const sponsors = [
   { src: '/images/FASTENAL.png', link: 'https://www.fastenal.com/' },
   { src: '/images/impact-fire.png', link: 'https://impactfireservices.com/' },
   { src: '/images/izzo.png', link: 'https://izzo.com' },
-  { src: '/images/bnice.avif', link: 'https://bnicedetailing.com/' },
+  { src: '/images/bnice.png', link: 'https://bnicedetailing.com/' },
 ];
 
 export default function SponsorsCarousel() {
