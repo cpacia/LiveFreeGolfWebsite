@@ -1,0 +1,197 @@
+/* File: Results.css */
+
+/* ===== 1) Outer “full-bleed” / content wrapper ===== */
+.results-content {
+  padding-top: 2rem;    /* a bit of breathing room under the nav/header */
+  padding-bottom: 2rem;
+  background-color: var(--color-light);
+}
+
+.content-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== 2) Loading & Error texts ===== */
+.loading-text,
+.error-text {
+  text-align: center;
+  font-size: 1rem;
+  margin: 1rem 0;
+  color: var(--color-dark);
+}
+
+/* ===== 3) Event Header (thumbnail + details) ===== */
+.event-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.event-thumbnail {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border: 2px solid var(--color-primary-green);
+  border-radius: 8px;
+}
+
+.event-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.event-name {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  color: var(--color-primary-green);
+  margin: 0 0 0.5rem 0;
+}
+
+.event-meta {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--color-dark);
+  margin: 0.25rem 0;
+}
+
+/* ===== 4) Dropdown container ===== */
+.results-dropdown-container {
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.results-dropdown-label {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--color-primary-green);
+}
+
+.results-dropdown {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: var(--color-dark);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.results-dropdown:focus {
+  outline: none;
+  border-color: var(--color-primary-green);
+}
+
+/* ===== 5) Table styles (very close to Standings) ===== */
+.results-table-container {
+  margin-bottom: 2rem;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  table-layout: fixed;
+  margin-bottom: 0.5rem;
+}
+
+.results-table th,
+.results-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-dark);
+}
+
+.results-table th {
+  background-color: var(--color-primary-green);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: 500;
+}
+
+/* Column 1 = Rank (centered, narrow) */
+.results-table th:nth-child(1),
+.results-table td:nth-child(1) {
+  text-align: center;
+  width: 5%;
+}
+
+/* Column 2 = Player / Team / Hole (adjust widths lightly) */
+/* For “Player” or “Team”, take up the bulk of the width */
+.results-table th:nth-child(2),
+.results-table td:nth-child(2) {
+  width: 50%;
+  text-align: left;
+}
+
+/* Further columns are centered, small widths */
+.results-table td:nth-child(n+3) {
+  text-align: center;
+}
+
+/* Zebra striping */
+.results-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Hyperlinks inside table */
+.results-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+.results-link:hover {
+  color: #0056b3;
+}
+
+/* ===== 6) Sub‐heading for Skins tables ===== */
+.skins-subheading {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: var(--color-primary-green);
+}
+
+/* Make sure the “holes” table columns (Hole, Par, Score, Won, Tie) fit nicely */
+.results-table th:nth-child(1),
+.results-table td:nth-child(1) {
+  width: 10%;
+}
+
+.results-table th:nth-child(2),
+.results-table td:nth-child(2) {
+  width: 10%;
+}
+
+.results-table th:nth-child(3),
+.results-table td:nth-child(3) {
+  width: 10%;
+}
+
+.results-table th:nth-child(4),
+.results-table td:nth-child(4) {
+  width: 10%;
+}
+
+.results-table th:nth-child(5),
+.results-table td:nth-child(5) {
+  width: 10%;
+}
+
+/* (Any leftover width is distributed evenly.) */
+

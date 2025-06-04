@@ -188,8 +188,7 @@ export default function Schedule() {
                   // If event is complete, link to “Results”
                   <div className="results-link">
                     <a
-                      href={evt.netLeaderboardUrl || '#'}
-                      target="_blank"
+                      href={`/results?eventID=${evt.eventID}`}
                       rel="noopener noreferrer"
                     >
                       Results

@@ -10,6 +10,7 @@ import Standings from './pages/Standings';
 import Schedule from './pages/Schedule';
 import AdminLogin from './pages/AdminLogin';
 import AdminPanel from './pages/AdminPanel';
+import Results from './pages/Results';
 import AdminRoute from './components/AdminRoute';
 import AdminSchedule from './components/AdminSchedule';
 import './App.css';
@@ -28,6 +29,7 @@ export default function App() {
         <Route path="/courses" element={<Courses />} />
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/standings" element={<Standings />} />
+        <Route path="/results" element={<Results />} />
         <Route path="/admin/*" element={<AdminRoute />} />
       </Routes>
 
