@@ -1,0 +1,159 @@
+/* Standings.css */
+
+/* Container padding is inherited from .content (index.css). */
+.standings-content {
+  padding-top: 2rem;     /* give some breathing room below the header */
+  padding-bottom: 2rem;
+  background-color: var(--color-light);
+}
+
+.content-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Loading & error messages */
+.loading-text,
+.error-text {
+  text-align: center;
+  font-size: 1rem;
+  margin: 1rem 0;
+  color: var(--color-dark);
+}
+
+/* 1) Tabs */
+.standings-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.tab {
+  padding: 0.5rem 1rem;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  color: var(--color-primary-green);
+}
+
+.tab:hover {
+  color: var(--color-accent-yellow);
+  border-color: var(--color-primary-green);
+}
+
+.tab-active {
+  border-color: var(--color-accent-yellow);
+  font-weight: 600;
+  color: var(--color-primary-green);
+}
+
+.tab:focus,
+.tab:active {
+  outline: none;               /* kills the blue/black outline on click/focus */
+}
+
+/* Some browsers (Firefox) add an inner border on buttons – kill that too */
+.tab::-moz-focus-inner {
+  border: 0;
+}
+
+/* 2) Year heading */
+.standings-year-heading {
+  text-align: left;  
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  color: var(--color-primary-green);
+  margin-bottom: 0.5rem;
+}
+
+/* 3) Blurb */
+.standings-blurb {
+  text-align: left;  
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--color-dark);
+  margin-bottom: 1.5rem;
+}
+
+/* 4) Table */
+.standings-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  table-layout: fixed;
+  margin-bottom: -.5rem;
+}
+
+.standings-table th,
+.standings-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-dark);
+}
+
+.standings-table th {
+  background-color: var(--color-primary-green);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: 500;
+}
+
+/* Column 1 = Rank */
+.standings-table th:nth-child(1),
+.standings-table td:nth-child(1) {
+  text-align: center;
+  width: 2%;
+}
+
+/* Column 2 = Player */
+.standings-table th:nth-child(2),
+.standings-table td:nth-child(2) {
+  width: 50%;
+}
+
+/* Column 3 = Events */
+.standings-table th:nth-child(3),
+.standings-table td:nth-child(3) {
+  width: 3%;
+  text-align: center;
+}
+
+/* Column 4 = Points */
+.standings-table td:nth-child(4) {
+  text-align: right;
+  width: 3%;
+}
+
+.standings-table th:nth-child(4) {
+  text-align: center;
+  width: 3%;
+}
+
+
+/* Zebra striping (optional) */
+.standings-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.standings-blurb a {
+  color: #007bff;           /* blue link color */
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+.standings-blurb a:hover {
+  color: #0056b3;           /* darker blue on hover */
+}
+

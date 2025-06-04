@@ -228,7 +228,7 @@ export default function AdminStandings() {
               {/* Header Bar: Static “Calendar Year” */}
               <div className="card-table-header">{row.calendarYear}</div>
 
-              <table className="standings-table">
+              <table className="admin-standings-table">
                 <tbody>
                   {/* Row 1: Calendar Year + Actions (spanning 3 rows) */}
                   <tr>

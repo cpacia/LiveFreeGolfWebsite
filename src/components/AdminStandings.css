@@ -42,16 +42,16 @@
 /* ──────────────────────────────────────────────────────────────────
    4) STANDINGS TABLE (Unique class name and structure)
 ────────────────────────────────────────────────────────────────── */
-.standings-table {
+.admin-standings-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.standings-table tr:nth-child(even) td {
+.admin-standings-table tr:nth-child(even) td {
   background-color: #f9f9f9;
 }
 
-.standings-table td {
+.admin-standings-table td {
   border: 1px solid #ddd;
   padding: 0.5rem;
   vertical-align: top;
@@ -72,10 +72,10 @@
   .card‑table-container {
     margin: 1rem;
   }
-  .standings-table,
-  .standings-table tbody,
-  .standings-table tr,
-  .standings-table td {
+  .admin-standings-table,
+  .admin-standings-table tbody,
+  .admin-standings-table tr,
+  .admin-standings-table td {
     display: block;
     width: 100%;
   }
