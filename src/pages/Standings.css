@@ -120,6 +120,7 @@
 .standings-table th:nth-child(2),
 .standings-table td:nth-child(2) {
   width: 50%;
+  text-align: left;
 }
 
 /* Column 3 = Events */

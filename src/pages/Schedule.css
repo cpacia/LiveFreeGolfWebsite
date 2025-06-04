@@ -1,0 +1,245 @@
+/* ----------------------------------------------------------- */
+/*  Schedule.css (UPDATED to match the site-wide motif)       */
+/* ----------------------------------------------------------- */
+
+/* ----------------------------------------------------------- */
+/*  1) Container & Base Fonts                                  */
+/* ----------------------------------------------------------- */
+
+.schedule-container {
+  max-width: 1200px;                     /* match your .container width */
+  margin: 0 auto;
+  padding: 1rem;                         /* a little breathing room */
+  font-family: var(--font-body);         /* Lora, serif */
+  color: var(--color-dark);             /* #333333 */
+}
+
+/* ----------------------------------------------------------- */
+/*  2) Visually-hidden (if you’re using it for labels)        */
+/* ----------------------------------------------------------- */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* ----------------------------------------------------------- */
+/*  3) Filters (Season + View dropdowns)                       */
+/* ----------------------------------------------------------- */
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.filters label {
+  font-family: var(--font-heading);      /* Montserrat */
+  font-size: 1rem;
+  color: var(--color-dark);
+}
+
+.filters select {
+  padding: 0.5rem 1.5rem;
+  padding-left: 1rem;
+  font-size: 1rem;
+  border: 1px solid #e0e0e0; 
+  border-radius: 4px;
+  background: #ffffff;
+  color: var(--color-dark);
+  font-family: var(--font-body);
+  cursor: pointer;
+  cursor: pointer;
+  appearance: none;
+  /* move the arrow icon 1rem from the right edge instead of 0.75rem */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%23666' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .5rem center;
+  background-size: 10px 6px;
+}
+
+.filters select:focus {
+  outline: none;
+  border-color: var(--color-accent-yellow); /* #F2C14E */
+}
+
+.schedule-dropdown {
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.schedule-dropdown:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* ----------------------------------------------------------- */
+/*  4) Season Header (“2025 Season”)                           */
+/* ----------------------------------------------------------- */
+
+.season-header {
+  font-size: 2rem;
+  font-family: var(--font-heading);      /* Montserrat */
+  color: var(--color-primary-green);    
+  margin-bottom: 1rem;
+  text-align: center;
+  text-align: left;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: .75rem;
+  border-color: var(--color-primary-green);
+}
+
+/* ----------------------------------------------------------- */
+/*  5) Loading / No-Events message                             */
+/* ----------------------------------------------------------- */
+
+.loading,
+.no-events {
+  text-align: center;
+  color: #666666;
+  font-size: 1rem;
+  margin-top: 2rem;
+}
+
+/* ----------------------------------------------------------- */
+/*  6) Event List & Items                                      */
+/* ----------------------------------------------------------- */
+
+.events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* we rely on each .event-item’s border */
+}
+
+.event-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* ----- 6a) Left side: thumbnail + info ----- */
+
+.event-left {
+  display: flex;
+  align-items: center;
+}
+
+.thumbnail {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 1rem;
+  background: #f0f0f0;
+}
+
+.event-info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.event-name {
+  font-size: 1.125rem;                   /* 18px */
+  font-family: var(--font-heading);      /* Montserrat */
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: var(--color-dark);
+}
+
+.event-meta {
+  font-size: 0.875rem;                   /* 14px */
+  color: #555555;
+}
+
+/* ----- 6b) Right side: handicap + action ----- */
+
+.event-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.handicap {
+  font-size: 0.875rem;                   /* 14px */
+  color: var(--color-dark);
+}
+
+/* ----------------------------------------------------------- */
+/*  7) Action Link (“Register” / “Results” button)             */
+/* ----------------------------------------------------------- */
+
+.action-link a {
+  display: inline-block;
+  background-color: var(--color-accent-yellow); /* #F2C14E */
+  color: var(--color-dark);                     /* #333333 */
+  text-decoration: none;
+  padding: 0.5rem 1rem;                         /* 8px 16px */
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.action-link a:hover {
+  color: #111;
+  background-color: #d1a640;                    /* darker #F2C14E */
+}
+
+.action-link span {
+  font-style: italic;
+  font-size: 0.875rem;                          /* 14px */
+}
+
+.results-link a {
+  display: inline-block;
+  background-color: var(--color-primary-green);
+  color: #fff;
+  text-decoration: none;
+  padding: 0.5rem 1rem;                         /* 8px 16px */
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.results-link a:hover {
+  color: #fff;
+  background-color: #264C3C;                  
+}
+
+.results-link span {
+  font-style: italic;
+  font-size: 0.875rem;                          /* 14px */
+}
+
+/* ----------------------------------------------------------- */
+/*  8) Responsive tweaks                                        */
+/* ----------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .event-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .event-right {
+    align-self: flex-end;
+  }
+}
+
