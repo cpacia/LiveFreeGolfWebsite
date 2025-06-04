@@ -162,9 +162,10 @@ export default function Schedule() {
                   src={`http://localhost:8080/events/${evt.eventID}/thumbnail`}
                   alt={`${evt.name} thumbnail`}
                   onError={(e) => {
-                    // fallback if thumbnail is missing
-                    e.currentTarget.src =
-                      'https://via.placeholder.com/80x80?text=No+Image';
+                    // Remove this handler so we don't loop if default-logo.png also fails
+                    e.currentTarget.onerror = null;
+                    // Fallback to our local default logo
+                    e.currentTarget.src = '/images/default-logo.png';
                   }}
                 />
 

@@ -27,6 +27,28 @@ export default function TourDetailsPage() {
     return () => sections.forEach((section) => observer.unobserve(section));
   }, []);
 
+  // ---- NEW: on first render (and on future hash changes), scroll to the section
+  useEffect(() => {
+    function scrollToHash() {
+      const hash = window.location.hash;
+      if (hash) {
+        // Remove the leading “#”
+        const id = hash.substring(1);
+        const target = document.getElementById(id);
+        if (target) {
+          // scrollIntoView will cause the inner “scrolling-content” to move
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+    }
+
+    // On mount, try to scroll if there’s already a hash
+    scrollToHash();
+
+    // Also listen for any future hash changes (e.g. user clicks another anchor)
+    window.addEventListener("hashchange", scrollToHash);
+    return () => window.removeEventListener("hashchange", scrollToHash);
+  }, []);
 
   return (
     <div className="tour-details-layout">
