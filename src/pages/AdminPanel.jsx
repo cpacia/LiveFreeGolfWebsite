@@ -4,6 +4,7 @@ import { Link, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import AdminSchedule from '../components/AdminSchedule';
 import AdminStandings from '../components/AdminStandings'; 
 import AdminChangePassword from '../components/AdminChangePassword'; 
+import AdminDisabledList from '../components/AdminDisabledList';
 import './AdminPanel.css';
 
 export default function AdminPanel() {
@@ -69,10 +70,7 @@ export default function AdminPanel() {
             />
 
             {/* /admin/disabled-list */}
-            <Route
-              path="disabled-list"
-              element={<div>Disabled List component goes here</div>}
-            />
+            <Route path="disabled-list" element={<AdminDisabledList />} />
 
             {/* /admin/change-password */}
             <Route
