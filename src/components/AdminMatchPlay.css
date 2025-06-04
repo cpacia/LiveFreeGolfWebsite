@@ -12,24 +12,6 @@
 }
 
 /* ──────────────────────────────────────────────────────────────────
-   4) MATCH PLAY TABLE (Uses same class name as standings, but retained if needed)
-────────────────────────────────────────────────────────────────── */
-.standings-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.standings-table tr:nth-child(even) td {
-  background-color: #f9f9f9;
-}
-
-.standings-table td {
-  border: 1px solid #ddd;
-  padding: 0.5rem;
-  vertical-align: top;
-}
-
-/* ──────────────────────────────────────────────────────────────────
    5) COLUMN VALUE (Unique width)
 ────────────────────────────────────────────────────────────────── */
 .cell-value2 {
@@ -53,13 +35,6 @@
 @media (max-width: 800px) {
   .card‑table-container {
     margin: 1rem;
-  }
-  .standings-table,
-  .standings-table tbody,
-  .standings-table tr,
-  .standings-table td {
-    display: block;
-    width: 100%;
   }
   .cell-label,
   .cell-value {
