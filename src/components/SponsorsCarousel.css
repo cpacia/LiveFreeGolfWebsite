@@ -8,7 +8,7 @@
 .sponsors-track {
   display: flex;
   justify-content: center; /* centers items horizontally */
-  gap: 11rem; /* optional: adds space between logos */
+  gap: 4rem; /* optional: adds space between logos */
 }
 
 .sponsor-item {
