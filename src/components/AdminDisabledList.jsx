@@ -225,7 +225,7 @@ export default function AdminDisabledList() {
               </div>
 
               {/* ─── Table Body: Name, Reason, Duration + Actions ─────────────────── */}
-              <table className="standings-table">
+              <table className="admin-standings-table">
                 <tbody>
                   {/* Row 1: Name + Actions (rowSpan=3) */}
                   <tr>

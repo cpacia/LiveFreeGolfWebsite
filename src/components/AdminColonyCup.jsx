@@ -180,7 +180,7 @@ export default function AdminColonyCup() {
       </div>
 
       <div className={`card-table-container card-table-width ${isEditing ? 'editing' : ''}`}>
-        <table className="standings-table">
+        <table className="admin-standings-table">
           <tbody>
             {/* Row 1: Year + Actions (rowSpan=3) */}
             <tr>
