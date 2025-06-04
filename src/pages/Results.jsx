@@ -358,7 +358,6 @@ export default function Results() {
       return (
         <>
           {/* Player‐based Skins */}
-          <h3 className="skins-subheading">Skins – Player Standings</h3>
           <table className="results-table">
             <thead>
               <tr>
@@ -400,8 +399,7 @@ export default function Results() {
           </table>
 
           {/* Hole‐by‐hole Skins */}
-          <h3 className="skins-subheading">Skins – Hole Details</h3>
-          <table className="results-table">
+          <table className="results-table skins-margin">
             <thead>
               <tr>
                 <th>Hole</th>
@@ -477,21 +475,18 @@ export default function Results() {
             </div>
 
             {/* ===== 2) Dropdown Selector ===== */}
-            <div className="results-dropdown-container">
-              <label htmlFor="results-select" className="results-dropdown-label">
-                Show Results:
-              </label>
+            <div className="filters results-dropdown-width">
               <select
                 id="results-select"
-                className="results-dropdown"
+                className="schedule-dropdown"
                 value={selectedTable}
                 onChange={onSelectChange}
               >
-                <option value="net">Net Results</option>
-                <option value="gross">Gross Results</option>
-                <option value="skins">Skins Results</option>
-                <option value="teams">Team Results</option>
-                <option value="wgr">WGR Results</option>
+                <option value="net">Net</option>
+                <option value="gross">Gross</option>
+                <option value="skins">Skins</option>
+                <option value="teams">Teams</option>
+                <option value="wgr">WGR</option>
               </select>
             </div>
 

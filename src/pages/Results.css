@@ -7,6 +7,10 @@
   background-color: var(--color-light);
 }
 
+.results-dropdown-width {
+  max-width: 150px;
+}
+
 .content-container {
   max-width: 900px;
   margin: 0 auto;
@@ -165,6 +169,10 @@
   font-family: var(--font-heading);
   font-size: 1.25rem;
   color: var(--color-primary-green);
+}
+
+.skins-margin {
+  margin-top: 2rem;
 }
 
 /* Make sure the “holes” table columns (Hole, Par, Score, Won, Tie) fit nicely */
