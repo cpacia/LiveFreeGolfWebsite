@@ -6,6 +6,7 @@ import AdminStandings from '../components/AdminStandings';
 import AdminChangePassword from '../components/AdminChangePassword'; 
 import AdminDisabledList from '../components/AdminDisabledList';
 import AdminMatchPlay from '../components/AdminMatchPlay';
+import AdminColonyCup from '../components/AdminColonyCup';
 import './AdminPanel.css';
 
 export default function AdminPanel() {
@@ -62,10 +63,7 @@ export default function AdminPanel() {
             <Route path="match-play" element={<AdminMatchPlay />} />
 
             {/* /admin/colony-cup */}
-            <Route
-              path="colony-cup"
-              element={<div>Colony Cup component goes here</div>}
-            />
+            <Route path="colony-cup" element={<AdminColonyCup />} />
 
             {/* /admin/disabled-list */}
             <Route path="disabled-list" element={<AdminDisabledList />} />
