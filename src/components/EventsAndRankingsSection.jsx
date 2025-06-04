@@ -6,7 +6,7 @@ export default function EventsAndRankingsSection() {
   const [rankings, setRankings] = useState([]);
 
   useEffect(() => {
-    // Fetch upcoming events
+    // (1) Fetch upcoming events (unchanged)
     fetch('/events.json')
       .then(res => res.json())
       .then(all => {
@@ -20,17 +20,49 @@ export default function EventsAndRankingsSection() {
       })
       .catch(console.error);
 
-    // Fetch world golf rankings
-    fetch('/wgr-rankings.json')
-      .then(res => res.json())
-      .then(all => {
-        const top = all
-          .sort((a, b) => a.points - b.points)
-          .reverse()
-          .slice(0, 7);
-        setRankings(top);
+    // (2) Fetch world golf rankings from our updated /standings endpoint
+    fetch('http://localhost:8080/standings')
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
       })
-      .catch(console.error);
+      .then((data) => {
+        // The API returns an object shaped like:
+        // {
+        //   calendarYear: null,
+        //   additionalYears: [],
+        //   season: [],
+        //   wgr: [ { eventID, rank, player, total, strokes, points, scorecardUrl, … }, … ]
+        // }
+        const rawWGR = Array.isArray(data.wgr) ? data.wgr : [];
+
+        const parsed = rawWGR.map((p) => {
+          const stripped = p.points.replace(/,/g, '');                // "1,100" → "1100"
+          const numPoints = parseFloat(stripped) || 0;                 // 1100
+          return {
+            ID:             p.ID,
+            eventID:        p.eventID,
+            rank:           p.rank,
+            player:         p.player,
+            total:          p.total,
+            strokes:        p.strokes,
+            originalPoints: p.points,     // keep "1,100" for display
+            numericPoints:  numPoints,    // use 1100 for sorting
+            scorecardUrl:   p.scorecardUrl,
+          };
+        });
+        
+        // Sort by descending points and take top 7
+        const top7 = parsed
+          .sort((a, b) => b.points - a.points)
+          .slice(0, 7);
+
+        setRankings(top7);
+      })
+      .catch((err) => {
+        console.error('Failed to fetch WGR:', err);
+        setRankings([]);
+      });
   }, []);
 
   // Helper: format month/day badge
@@ -52,8 +84,8 @@ export default function EventsAndRankingsSection() {
               <li key={e.id} className="event-item">
                 <div className="date-badge">
                   <div className="badge-text">
-		              <span className="month">{month}</span>
-		              <span className="day">{day}</span>
+                    <span className="month">{month}</span>
+                    <span className="day">{day}</span>
                   </div>
                 </div>
                 <div className="event-details">
@@ -73,11 +105,12 @@ export default function EventsAndRankingsSection() {
       <div className="panel wgr-panel">
         <h2>World Golf Rankings</h2>
         <ul className="wgr-list">
-          {rankings.map((p, i) => (
-            <li key={p.id || p.name} className="wgr-item">
+          {rankings.map((p) => (
+            <li key={p.ID} className="wgr-item">
               <span className="rank">{p.rank}</span>
-              <span className="player-name">{p.name}</span>
-              <span className="points">{p.points}</span>
+              <span className="player-name">{p.player}</span>
+              {/* Show the original string (e.g. “1,100”) rather than forcing decimals */}
+              <span className="points">{p.originalPoints}</span>
             </li>
           ))}
         </ul>
