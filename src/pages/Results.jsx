@@ -460,17 +460,17 @@ export default function Results() {
                 }}
               />
               <div className="event-details">
-                <h1 className="event-name">{eventData.name}</h1>
-                <p className="event-meta">
+                <h1 className="results-event-name">{eventData.name}</h1>
+                <p className="results-event-meta">
                   <strong>Date:</strong> {eventData.dateString}
                 </p>
-                <p className="event-meta">
+                <p className="results-event-meta">
                   <strong>Course:</strong> {eventData.course}
                 </p>
-                <p className="event-meta">
+                <p className="results-event-meta">
                   <strong>Location:</strong> {eventData.town}, {eventData.state}
                 </p>
-                <p className="event-meta">
+                <p className="results-event-meta">
                   <strong>Handicap Allowance:</strong> {eventData.handicapAllowance}
                 </p>
               </div>

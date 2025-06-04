@@ -46,14 +46,14 @@
   justify-content: flex-start;
 }
 
-.event-name {
+.results-event-name {
   font-family: var(--font-heading);
   font-size: 1.75rem;
   color: var(--color-primary-green);
   margin: 0 0 0.5rem 0;
 }
 
-.event-meta {
+.results-event-meta {
   font-family: var(--font-body);
   font-size: 1rem;
   color: var(--color-dark);
