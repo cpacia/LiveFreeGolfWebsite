@@ -1,44 +1,8 @@
-/* AdminStandings.css */
+/* AdminMatchPlay.css (deduplicated) */
 
 /* ──────────────────────────────────────────────────────────────────
-   1) PAGE HEADER: Standings Page Title + Add Year Button
+   1) CARD WIDTH TWEAKS (Match Play Specific)
 ────────────────────────────────────────────────────────────────── */
-.standings-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.standings-header h1 {
-  margin: 0;
-  font-size: 1.5rem;
-}
-
-.btn-add-standing {
-  background-color: var(--color-accent-yellow);
-  color: var(--color-primary-green);
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-.btn-add-standing:hover {
-  background-color: #d1a640;
-}
-
-/* ──────────────────────────────────────────────────────────────────
-   2) CARD‐AS‐TABLE CONTAINER
-────────────────────────────────────────────────────────────────── */
-.card-table-container {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  margin-bottom: 2rem;
-}
-
 .card-table-width2 {
   max-width: 50%;
 }
@@ -47,48 +11,18 @@
   max-width: 97%;
 }
 
-/* When a card is in editing mode, darken the header bar */
-.card-table-container.editing .card-table-header {
-  background-color: #3d8a3d; /* darker green */
-}
-
 /* ──────────────────────────────────────────────────────────────────
-   3) GREEN HEADER BAR (“Year”) 
-────────────────────────────────────────────────────────────────── */
-.card-table-header {
-  background-color: var(--color-primary-green);
-  color: #fff;
-  font-size: 1.25rem;
-  font-weight: 600;
-  padding: 0.75rem 1rem;
-}
-
-/* Editable header input style */
-.header-input {
-  width: 100%;
-  box-sizing: border-box;
-  font-size: 1.25rem;
-  font-weight: 600;
-  padding: 0.4rem 0.8rem;
-  border: 1px solid #bbb;
-  border-radius: 4px;
-  margin: 0;
-}
-
-/* ──────────────────────────────────────────────────────────────────
-   4) STANDINGS DETAILS TABLE
+   4) MATCH PLAY TABLE (Uses same class name as standings, but retained if needed)
 ────────────────────────────────────────────────────────────────── */
 .standings-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-/* Zebra‑striping (optional): even rows get light gray background */
 .standings-table tr:nth-child(even) td {
   background-color: #f9f9f9;
 }
 
-/* Table cells common style */
 .standings-table td {
   border: 1px solid #ddd;
   padding: 0.5rem;
@@ -96,41 +30,15 @@
 }
 
 /* ──────────────────────────────────────────────────────────────────
-   5) COLUMN LABEL AND VALUE
+   5) COLUMN VALUE (Unique width)
 ────────────────────────────────────────────────────────────────── */
-.cell-label {
-  font-weight: 500;
-  white-space: nowrap;
-  width: 12%;
-}
-
 .cell-value2 {
   word-break: break-word;
   width: 30%;
 }
 
-/* Editable text inputs in cells */
-.cell-input {
-  width: 100%;
-  box-sizing: border-box;
-  font-size: 0.9rem;
-  padding: 0.3rem 0.4rem;
-  border: 1px solid #bbb;
-  border-radius: 4px;
-}
-
-/* Editable URL inputs (same style as text inputs) */
-.url-input {
-  width: 100%;
-  box-sizing: border-box;
-  font-size: 0.9rem;
-  padding: 0.3rem 0.4rem;
-  border: 1px solid #bbb;
-  border-radius: 4px;
-}
-
 /* ──────────────────────────────────────────────────────────────────
-   6) ACTION BUTTONS (Edit / Save / Cancel / Delete)
+   6) ACTION BUTTONS CONTAINER (Unique class name)
 ────────────────────────────────────────────────────────────────── */
 .cell-actions3 {
   text-align: right;
@@ -139,48 +47,8 @@
   width: 2%;
 }
 
-/* All these button classes share a basic style */
-.btn-edit,
-.btn-save,
-.btn-cancel,
-.btn-delete {
-  display: inline-block;
-  width: 80px;           /* same width across all buttons */
-  text-align: center;
-  font-size: 0.9rem;
-  padding: 0.4rem 0.8rem;
-  border: 1px solid #666;
-  background: #fff;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-left: 0.5rem;
-  margin-top: 0.2rem;
-}
-.btn-edit:hover,
-.btn-save:hover,
-.btn-cancel:hover,
-.btn-delete:hover {
-  background: #f0f0f0;
-  border-color: #555;
-}
-
-/* DELETE button: red on hover */
-.btn-delete:hover {
-  background: #f8d7da;
-  border-color: #d9534f;
-  color: #d9534f;
-}
-
-/* You can override .btn-save to be green if desired */
-.btn-save {
-  border-color: #28a745;
-}
-.btn-save:hover {
-  background: #e6f5e6;
-}
-
 /* ──────────────────────────────────────────────────────────────────
-   7) RESPONSIVE: Stack columns on narrow screens
+   7) RESPONSIVE FIXES (Redundant in others but kept if used locally)
 ────────────────────────────────────────────────────────────────── */
 @media (max-width: 800px) {
   .card‑table-container {
@@ -209,6 +77,9 @@
   }
 }
 
+/* ──────────────────────────────────────────────────────────────────
+   8) MATCH PLAY PAGE REFRESH BUTTON
+────────────────────────────────────────────────────────────────── */
 .btn-refresh {
   display: inline-block;
   width: 80px;
@@ -226,3 +97,4 @@
   background: #f0f0f0;
   border-color: #555;
 }
+
