@@ -8,6 +8,7 @@ import Membership from "./pages/Membership";
 import Courses from "./pages/Courses";
 import Standings from "./pages/Standings";
 import Schedule from "./pages/Schedule";
+import MatchPlay from "./pages/MatchPlay";
 import AdminLogin from "./pages/AdminLogin";
 import AdminPanel from "./pages/AdminPanel";
 import Results from "./pages/Results";
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/courses" element={<Courses />} />
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/standings" element={<Standings />} />
+        <Route path="/match-play" element={<MatchPlay />} />
         <Route path="/results" element={<Results />} />
         <Route path="/admin/*" element={<AdminRoute />} />
       </Routes>

@@ -1,0 +1,179 @@
+/* MatchPlay.css */
+
+/* 1) Overall page container just like .standings-content */
+.matchplay-content {
+  padding-top: 2rem; /* same breathing room as Standings */
+  padding-bottom: 2rem;
+  background-color: var(--color-light);
+}
+
+/* 2) Re-use the same “content-container” concept as Standings.jsx */
+.matchplay-content-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 3) Tabs container: spans full width, with tabs on the left and register button on the right */
+.matchplay-tabs-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+/* 4) The two tabs themselves: identical to .standings-tabs + .tab classes */
+.matchplay-tabs {
+  display: flex;
+  gap: 1rem;
+}
+
+.match-play-tab {
+  padding: 0.5rem 1rem;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
+  color: var(--color-primary-green);
+}
+
+.match-play-tab:hover {
+  color: var(--color-accent-yellow);
+  border-color: var(--color-primary-green);
+}
+
+.matchplay-tab-active {
+  border-color: var(--color-accent-yellow);
+  font-weight: 600;
+  color: var(--color-primary-green);
+}
+
+.match-play-tab:focus,
+.match-play-tab:active {
+  outline: none;
+}
+
+.match-play-tab::-moz-focus-inner {
+  border: 0;
+}
+
+/* 6) Blurb text for “About” */
+.matchplay-blurb {
+  margin-top: 1.5rem;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--color-dark);
+  line-height: 1.5;
+}
+
+/* 7) Placeholder for bracket—add your own styles later */
+.matchplay-bracket {
+  margin-top: 1.5rem;
+  min-height: 200px; /* just so you see some space */
+  text-align: center;
+  font-family: var(--font-body);
+  color: var(--color-dark);
+}
+
+/* ──────────────────────────────────────────────────────────── */
+/* BRACKET-SPECIFIC STYLING (append these to MatchPlay.css)   */
+/* ──────────────────────────────────────────────────────────── */
+
+/* Wraps all the columns side by side and allows horizontal scrolling */
+.bracket-container {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  overflow-x: auto;
+  padding-top: 1rem;
+}
+
+/* One column per round */
+.bracket-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Round header (e.g. "Round of 32") */
+.bracket-header {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--color-primary-green);
+  text-align: center;
+}
+
+/* Each match’s box (white background + subtle border) */
+.bracket-match {
+  background: #ffffff;
+  border: 1px solid var(--color-gray-light);
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  width: 140px;
+}
+
+/* Each player row within a match box */
+.bracket-player {
+  padding: 0.25rem 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--color-dark);
+  border-bottom: 1px solid var(--color-gray-lighter);
+}
+
+/* Remove bottom border on the last player row */
+.bracket-player:last-child {
+  border-bottom: none;
+}
+
+/* Highlight the winner in each match */
+.bracket-winner {
+  font-weight: 600;
+  color: var(--color-accent-yellow);
+}
+
+/* ──────────────────────────────────────────────────────────── */
+/* “Year” links at the bottom (2025, 2024, 2023, …)            */
+/* ──────────────────────────────────────────────────────────── */
+.year-links {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.year-link {
+  padding: 0.4rem 0.8rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  background: none;
+  border: 1px solid var(--color-primary-green);
+  border-radius: 4px;
+  color: var(--color-primary-green);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.year-link:hover {
+  background-color: var(--color-primary-green);
+  color: #ffffff;
+}
+
+/* Highlight the currently selected year */
+.year-active {
+  background-color: var(--color-primary-green);
+  color: #ffffff;
+}
+
+
