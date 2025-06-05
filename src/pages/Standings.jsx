@@ -99,7 +99,7 @@ export default function Standings() {
             {activeTab === 'season' ? (
               <>Players earn points toward the season standings based on how they finish in each event. Only each player’s top six point results will count toward their total, so consistent high finishes are crucial. For a full breakdown of how points are awarded, see the <a href="http://localhost:5173/tour-details#points">Point System</a>.</>
             ) : (
-              <>The World Golf Rankings use a different points system than the season standings. Players are ranked based on their results from the last two seasons, with a 70% handicap allowance applied to each event score. </>
+              <>The World Golf Rankings use a different points system than the season standings. Players are ranked based on their results from the last two seasons, with a 60% handicap allowance applied to each event score. </>
             )}
           </p>
 

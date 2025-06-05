@@ -163,6 +163,10 @@
   text-align: left;
 }
 
+.event-info a:hover {
+  color: #111;
+}
+
 .event-name {
   font-size: 1.125rem;                   /* 18px */
   font-family: var(--font-heading);      /* Montserrat */

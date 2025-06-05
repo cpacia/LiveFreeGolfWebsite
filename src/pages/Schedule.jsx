@@ -170,7 +170,9 @@ export default function Schedule() {
                 />
 
                 <div className="event-info">
-                  <div className="event-name">{evt.name}</div>
+                  <div className="event-name"><a href={evt.blueGolfUrl} target="_blank" rel="noopener noreferrer">
+						{evt.name}
+					  </a></div>
                   <div className="event-meta">
                     {formatDateWithoutYear(evt.date)} &nbsp;|&nbsp; {evt.course}
                     <br />
