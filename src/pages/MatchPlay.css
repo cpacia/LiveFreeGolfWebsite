@@ -129,9 +129,47 @@
 }
 
 .player2 {
-  padding-top: 2rem;
   border-right: 2px solid;
+  padding-top: 2rem;
 }
+
+.player1-round2 {
+	margin-top: 2rem;
+}
+
+.player2-round2 {
+	padding-top: 6.5rem;
+	margin-bottom: 2rem;
+}
+
+.player1-round3 {
+	margin-top: 6.5rem;
+}
+
+.player2-round3 {
+	padding-top: 15rem;
+	margin-bottom: 6rem;
+}
+
+.player1-round4 {
+	margin-top: 15rem;
+}
+
+.player2-round4 {
+	padding-top: 32rem;
+	margin-bottom: 14rem;
+}
+
+.player1-round5 {
+	margin-top: 32rem;
+}
+
+.player2-round5 {
+	padding-top: 65rem;
+	margin-bottom: 14rem;
+}
+
+
 
 /* ──────────────────────────────────────────────────────────── */
 /* “Year” links at the bottom (2025, 2024, 2023, …)            */

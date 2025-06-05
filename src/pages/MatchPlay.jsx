@@ -202,6 +202,21 @@ export default function MatchPlay() {
               {/* Loop over each “slot” index j = 0 … expectedMatches−1 */}
               {Array.from({ length: expectedMatches }).map((_, j) => {
                 const match = roundMatches[j]; // may be undefined if API didn’t return
+                let player1Extra = "";
+                let player2Extra = "";
+				if (c === 1) {
+					player1Extra = " player1-round2";
+					player2Extra = " player2-round2";       
+				} else if (c === 2) {
+					player1Extra = " player1-round3";
+					player2Extra = " player2-round3";       
+				} else if (c === 3) {
+					player1Extra = " player1-round4"; 
+					player2Extra = " player2-round4";         
+				} else if (c === 4) {
+					player1Extra = " player1-round5";   
+					player2Extra = " player2-round5";
+				} 
                 if (match) {
                   // We have a real match here
                   const isP1Winner = match.Winner === match.Player1;
@@ -212,18 +227,10 @@ export default function MatchPlay() {
                       key={match.id || `${match.Round}-${match.MatchNum}`}
                       className="bracket-match"
                     >
-                      <div
-                        className={`bracket-player ${
-                          isP1Winner ? "bracket-winner" : ""
-                        }`}
-                      >
+                      <div className={`bracket-player${player1Extra}`}>
                         {match.Player1 || "TBD"}
                       </div>
-                      <div
-                        className={`player2 bracket-player ${
-                          isP2Winner ? "bracket-winner" : ""
-                        }`}
-                      >
+                      <div className={`player2 bracket-player${player2Extra}`}>
                         {match.Player2 || "TBD"}
                       </div>
                     </div>
@@ -231,9 +238,9 @@ export default function MatchPlay() {
                 } else {
                   // Placeholder “empty” slot (the same size as a real match)
                   return (
-                    <div key={`empty-${roundName}-${j}`} className="bracket-match-empty">
-                      <div className="bracket-player">—</div>
-                      <div className="player2 bracket-player">—</div>
+                    <div key={`empty-${roundName}-${j}`} className="bracket-match">
+                      <div className={`bracket-player${player1Extra}`}>--</div>
+                      <div className={`player2 bracket-player${player2Extra}`}>--</div>
                     </div>
                   );
                 }
@@ -422,4 +429,3 @@ export default function MatchPlay() {
     </div>
   );
 }
-
