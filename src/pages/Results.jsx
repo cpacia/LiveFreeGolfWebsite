@@ -409,7 +409,7 @@ export default function Results() {
           </table>
 
           {/* Hole‐by‐hole Skins */}
-          <table className="results-table skins-hole-table">
+          <table className="results-table skins-hole-table skins-margin">
             <thead>
               <tr>
                 <th>Hole</th>
