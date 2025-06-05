@@ -1,0 +1,101 @@
+/* DisabledGolfers.css */
+
+/*  • This matches the same padding + background style as Standings.css,
+     using your existing CSS variables (--color-light, --color-primary-green, etc.). */
+
+.disabled-content {
+  padding-top: 2rem; /* breathing room under header */
+  padding-bottom: 2rem;
+  background-color: var(--color-light);
+}
+
+/* Reuse the same container constraints as other “.content-container” */
+.dl-content-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Loading & error messages (same styling as Standings) */
+.disabled-loading-text,
+.disabled-error-text {
+  text-align: center;
+  font-size: 1rem;
+  margin: 1rem 0;
+  color: var(--color-dark);
+}
+
+/* 1) Page heading */
+.disabled-heading {
+  text-align: left;
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  color: var(--color-primary-green);
+  margin-bottom: 0.5rem;
+}
+
+/* 2) Blurb text */
+.disabled-blurb {
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--color-dark);
+  margin-bottom: 1.5rem;
+}
+
+/* 3) Table */
+.disabled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  table-layout: fixed;
+}
+
+/* Cells (th & td) */
+.disabled-table th,
+.disabled-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-dark);
+}
+
+/* Header row */
+.disabled-table th {
+  background-color: var(--color-primary-green);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: 500;
+}
+
+/* Column widths and text alignment */
+/* Column 1 = Name */
+.disabled-table th:nth-child(1),
+.disabled-table td:nth-child(1) {
+  width: 40%;
+  text-align: left;
+}
+
+/* Column 2 = Reason */
+.disabled-table th:nth-child(2),
+.disabled-table td:nth-child(2) {
+  width: 40%;
+  text-align: left;
+}
+
+/* Column 3 = Duration */
+.disabled-table th:nth-child(3),
+.disabled-table td:nth-child(3) {
+  width: 20%;
+  text-align: center;
+}
+
+/* Zebra striping */
+.disabled-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}

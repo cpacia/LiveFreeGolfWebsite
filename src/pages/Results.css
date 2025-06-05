@@ -2,7 +2,7 @@
 
 /* ===== 1) Outer “full-bleed” / content wrapper ===== */
 .results-content {
-  padding-top: 2rem;    /* a bit of breathing room under the nav/header */
+  padding-top: 2rem; /* a bit of breathing room under the nav/header */
   padding-bottom: 2rem;
   background-color: var(--color-light);
 }
@@ -10,7 +10,6 @@
 .results-dropdown-width {
   max-width: 150px;
 }
-
 
 /* ===== 2) Loading & Error texts ===== */
 .loading-text,
@@ -57,7 +56,7 @@
   outline: none;
   box-shadow: none;
   /* Force the same border as the unfocused state */
-  border: 1px solid #e0e0e0; 
+  border: 1px solid #e0e0e0;
 }
 
 /* ===== 5) Table styles (very close to Standings) ===== */
@@ -69,7 +68,7 @@
   width: 100%;
   border-collapse: collapse;
   background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   table-layout: fixed;
   margin-bottom: 0.5rem;
 }
@@ -105,7 +104,7 @@
 }
 
 /* Further columns are centered, small widths */
-.results-table td:nth-child(n+3) {
+.results-table td:nth-child(n + 3) {
   text-align: center;
 }
 
@@ -151,111 +150,111 @@
 
 .net-table th:nth-child(1),
 .net-table td:nth-child(1) {
-  width: 2%;    /* Rank (narrow) */
+  width: 2%; /* Rank (narrow) */
 }
 
 .net-table th:nth-child(2),
 .net-table td:nth-child(2) {
-  width: 50%;    /* Rank (narrow) */
+  width: 50%; /* Rank (narrow) */
 }
 
 .net-table th:nth-child(3),
 .net-table td:nth-child(3) {
-  width: 3%;    /* Rank (narrow) */
+  width: 3%; /* Rank (narrow) */
 }
 
 .net-table th:nth-child(4),
 .net-table td:nth-child(4) {
-  width: 4%;    /* Rank (narrow) */
+  width: 4%; /* Rank (narrow) */
 }
 
 .net-table th:nth-child(5),
 .net-table td:nth-child(5) {
-  width: 4%;    /* Rank (narrow) */
+  width: 4%; /* Rank (narrow) */
 }
 
 .gross-table th:nth-child(1),
 .gross-table td:nth-child(1) {
-  width: 2%;    /* Rank (narrow) */
+  width: 2%; /* Rank (narrow) */
 }
 
 .gross-table th:nth-child(2),
 .gross-table td:nth-child(2) {
-  width: 50%;    /* Rank (narrow) */
+  width: 50%; /* Rank (narrow) */
 }
 
 .gross-table th:nth-child(3),
 .gross-table td:nth-child(3) {
-  width: 3%;    /* Rank (narrow) */
+  width: 3%; /* Rank (narrow) */
 }
 
 .gross-table th:nth-child(4),
 .gross-table td:nth-child(4) {
-  width: 4%;    /* Rank (narrow) */
+  width: 4%; /* Rank (narrow) */
 }
 
 .skins-player-table th:nth-child(1),
 .skins-player-table td:nth-child(1) {
-  width: 4%;    /* Rank (narrow) */
+  width: 4%; /* Rank (narrow) */
 }
 
 .skins-player-table th:nth-child(2),
 .skins-player-table td:nth-child(2) {
-  width: 80%;    /* Rank (narrow) */
+  width: 80%; /* Rank (narrow) */
 }
 
 .skins-hole-table th:nth-child(3),
 .skins-hole-table td:nth-child(3) {
-  width: 3%;    /* Rank (narrow) */
+  width: 3%; /* Rank (narrow) */
 }
 
 .skins-hole-table th:nth-child(1),
 .skins-hole-table td:nth-child(1) {
-  width: 3%;    /* Rank (narrow) */
+  width: 3%; /* Rank (narrow) */
 }
 
 .skins-hole-table th:nth-child(2),
 .skins-hole-table td:nth-child(2) {
-  width: 3%;    /* Rank (narrow) */
+  width: 3%; /* Rank (narrow) */
   text-align: center;
 }
 
 .skins-hole-table th:nth-child(3),
 .skins-hole-table td:nth-child(3) {
-  width: 3%;    /* Rank (narrow) */
+  width: 3%; /* Rank (narrow) */
 }
 
 .skins-hole-table th:nth-child(4),
 .skins-hole-table td:nth-child(4) {
-  width: 10%;    /* Rank (narrow) */
+  width: 10%; /* Rank (narrow) */
   text-align: left;
 }
 
 .skins-hole-table th:nth-child(5),
 .skins-hole-table td:nth-child(5) {
   text-align: left;
-  width: 30%;    /* Rank (narrow) */
-  white-space: normal; !important;  /* allow wrapping */
-  word-wrap: break-word; !important;/* break long words if necessary */
-  overflow-wrap: break-word; !important; /* newer name for word-wrap */
+  width: 30%; /* Rank (narrow) */
+  white-space: normal; /* allow wrapping */
+  word-wrap: break-word; /* break long words if necessary */
+  overflow-wrap: break-word; /* newer name for word-wrap */
 }
 
 .teams-table th:nth-child(1),
 .teams-table td:nth-child(1) {
-  width: 2%;    /* Rank (narrow) */
+  width: 2%; /* Rank (narrow) */
 }
 
 .teams-table th:nth-child(2),
 .teams-table td:nth-child(2) {
-  width: 50%;    /* Rank (narrow) */
+  width: 50%; /* Rank (narrow) */
 }
 
 .teams-table th:nth-child(3),
 .teams-table td:nth-child(3) {
-  width: 3%;    /* Rank (narrow) */
+  width: 3%; /* Rank (narrow) */
 }
 
 .teams-table th:nth-child(4),
 .teams-table td:nth-child(4) {
-  width: 3%;    /* Rank (narrow) */
+  width: 3%; /* Rank (narrow) */
 }

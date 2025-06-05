@@ -10,7 +10,6 @@
   background-color: #fdfdf7;
 }
 
-
 /* 1) Overall page container just like .standings-content */
 .matchplay-content {
   width: 100%;
@@ -149,52 +148,50 @@
 }
 
 .player1-round2 {
-	margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .player2-round2 {
-	padding-top: 6.45rem;
-	margin-bottom: 2rem;
+  padding-top: 6.45rem;
+  margin-bottom: 2rem;
 }
 
 .player1-round3 {
-	margin-top: 6.5rem;
+  margin-top: 6.5rem;
 }
 
 .player2-round3 {
-	padding-top: 14.8rem;
-	margin-bottom: 6rem;
+  padding-top: 14.8rem;
+  margin-bottom: 6rem;
 }
 
 .player1-round4 {
-	margin-top: 15rem;
+  margin-top: 15rem;
 }
 
 .player2-round4 {
-	padding-top: 32rem;
-	margin-bottom: 14rem;
+  padding-top: 32rem;
+  margin-bottom: 14rem;
 }
 
 .player1-round5 {
-	margin-top: 32rem;
+  margin-top: 32rem;
 }
 
 .player2-round5 {
-	padding-top: 65rem;
-	margin-bottom: 14rem;
+  padding-top: 65rem;
+  margin-bottom: 14rem;
 }
 
 /* Champion */
 .player1-round6 {
-	margin-top: 66rem;
+  margin-top: 66rem;
 }
 
 .player2-round6 {
-	border-bottom: 2px transparent;
-	border-right: 2px transparent;
+  border-bottom: 2px transparent;
+  border-right: 2px transparent;
 }
-
-
 
 /* ──────────────────────────────────────────────────────────── */
 /* “Year” links at the bottom (2025, 2024, 2023, …)            */
@@ -216,7 +213,9 @@
   border-radius: 4px;
   color: var(--color-primary-green);
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
 }
 
 .year-link:hover {
@@ -257,4 +256,3 @@
   left: auto;
   right: 0;
 }
-

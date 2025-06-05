@@ -9,6 +9,8 @@ import Courses from "./pages/Courses";
 import Standings from "./pages/Standings";
 import Schedule from "./pages/Schedule";
 import MatchPlay from "./pages/MatchPlay";
+import DisabledList from "./pages/DisabledList";
+import ColonyCup from "./pages/ColonyCup";
 import AdminLogin from "./pages/AdminLogin";
 import AdminPanel from "./pages/AdminPanel";
 import Results from "./pages/Results";
@@ -30,7 +32,9 @@ export default function App() {
         <Route path="/courses" element={<Courses />} />
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/standings" element={<Standings />} />
+        <Route path="/disabled-list" element={<DisabledList />} />
         <Route path="/match-play" element={<MatchPlay />} />
+        <Route path="/colony-cup" element={<ColonyCup />} />
         <Route path="/results" element={<Results />} />
         <Route path="/admin/*" element={<AdminRoute />} />
       </Routes>

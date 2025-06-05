@@ -1,0 +1,95 @@
+/* ColonyCup.css */
+
+/* 1) Full‐bleed wrapper: same background & padding as other pages */
+.colonycup-content {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  background-color: var(--color-light);
+}
+
+/* 2) Centered container: identical to Standings & Disabled pages */
+.colonycup-content-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 3) Loading & error lines: reuse same style as before */
+.colonycup-loading-text,
+.colonycup-error-text {
+  text-align: center;
+  font-size: 1rem;
+  margin: 1rem 0;
+  color: var(--color-dark);
+}
+
+/* 4) Main heading (h2) */
+.colonycup-heading {
+  text-align: left;
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  color: var(--color-primary-green);
+  margin-bottom: 0.5rem;
+}
+
+/* 5) Blurb paragraph */
+.colonycup-blurb {
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--color-dark);
+  margin-bottom: 2rem;
+}
+
+/* 6) Subheading for Winning Team */
+.winning-team-heading {
+  text-align: left;
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  color: var(--color-primary-green);
+  margin-bottom: 1rem;
+}
+
+/* 7) If no winners found */
+.no-team-text {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--color-dark);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* 8) 4×3 Table styling */
+.winning-team-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  table-layout: fixed;
+}
+
+/* 9) Table cells */
+.winning-team-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-dark);
+  text-align: center; /* center each cell’s text */
+  vertical-align: middle;
+  word-break: break-word;
+}
+
+/* 10) Zebra striping */
+.winning-team-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* 11) Hover effect on cells (optional) */
+.winning-team-table td:hover {
+  background-color: #eef2e9;
+  cursor: default;
+}

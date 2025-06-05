@@ -22,7 +22,7 @@ export default function MatchPlay() {
         if (Array.isArray(data) && data.length > 0) {
           // Sort purely to identify the “latest” year
           const sorted = data.sort(
-            (a, b) => parseInt(b.year, 10) - parseInt(a.year, 10)
+            (a, b) => parseInt(b.year, 10) - parseInt(a.year, 10),
           );
           const latest = sorted[0];
           setLatestYear(latest.year);
@@ -59,7 +59,7 @@ export default function MatchPlay() {
         // Build “years” list for the bottom links
         if (Array.isArray(data.additionalYears)) {
           const filtered = data.additionalYears.filter(
-            (y) => y !== selectedYear
+            (y) => y !== selectedYear,
           );
           setYears([selectedYear, ...filtered]);
         }
@@ -94,8 +94,7 @@ export default function MatchPlay() {
   // bracket size is 16 matches (32 players), we inject "Round 2 Matches", etc.
   const buildFullRoundList = (firstRoundName) => {
     // Count how many matches share exactly the first round name
-    const firstCount = matches.filter((m) => m.round === firstRoundName)
-      .length;
+    const firstCount = matches.filter((m) => m.round === firstRoundName).length;
 
     // If there is no data or an unexpected count, just show whatever rounds we saw
     if (![8, 16, 32].includes(firstCount)) {
@@ -166,7 +165,7 @@ export default function MatchPlay() {
 
   // ────────────────────────────────────────────────────────────────────────────
   // Render bracket columns in the exact order determined above
-    // ────────────────────────────────────────────────────────────────────────────
+  // ────────────────────────────────────────────────────────────────────────────
   // Render bracket columns in the exact order determined above, but ALWAYS
   // create “expectedMatches” slots per column (real matches + placeholders).
   const renderBracket = () => {
@@ -184,257 +183,283 @@ export default function MatchPlay() {
     const allRoundNames = buildFullRoundList(firstRoundName);
 
     return (
-  <div className="bracket-container">
-    {(() => {
-      const winnerToScoreMap = new Map(); // winner -> score
+      <div className="bracket-container">
+        {(() => {
+          const winnerToScoreMap = new Map(); // winner -> score
 
-      return allRoundNames.map((roundName, c) => {
-        const roundMatches = matches.filter((m) => m.round === roundName);
+          return allRoundNames.map((roundName, c) => {
+            const roundMatches = matches.filter((m) => m.round === roundName);
 
-        let expectedMatches = Math.floor(firstCount / Math.pow(2, c));
-        if (expectedMatches < 1 && c === allRoundNames.length - 1) {
-          expectedMatches = 1;
-        }
+            let expectedMatches = Math.floor(firstCount / Math.pow(2, c));
+            if (expectedMatches < 1 && c === allRoundNames.length - 1) {
+              expectedMatches = 1;
+            }
 
-        return (
-          <div key={roundName} className="bracket-column">
-            <div className="bracket-header">{roundName}</div>
+            return (
+              <div key={roundName} className="bracket-column">
+                <div className="bracket-header">{roundName}</div>
 
-            {Array.from({ length: expectedMatches }).map((_, j) => {
-              const match = roundMatches[j];
-              let player1Extra = "", player2Extra = "";
+                {Array.from({ length: expectedMatches }).map((_, j) => {
+                  const match = roundMatches[j];
+                  let player1Extra = "",
+                    player2Extra = "";
 
-              if (c === 1) {
-                player1Extra = " player1-round2";
-                player2Extra = " player2-round2";
-              } else if (c === 2) {
-                player1Extra = " player1-round3";
-                player2Extra = " player2-round3";
-              } else if (c === 3) {
-                player1Extra = " player1-round4";
-                player2Extra = " player2-round4";
-              } else if (c === 4) {
-                player1Extra = " player1-round5";
-                player2Extra = " player2-round5";
-              } else if (c === 5) {
-                player1Extra = " player1-round6";
-                player2Extra = " player2-round6";
-              }
+                  if (c === 1) {
+                    player1Extra = " player1-round2";
+                    player2Extra = " player2-round2";
+                  } else if (c === 2) {
+                    player1Extra = " player1-round3";
+                    player2Extra = " player2-round3";
+                  } else if (c === 3) {
+                    player1Extra = " player1-round4";
+                    player2Extra = " player2-round4";
+                  } else if (c === 4) {
+                    player1Extra = " player1-round5";
+                    player2Extra = " player2-round5";
+                  } else if (c === 5) {
+                    player1Extra = " player1-round6";
+                    player2Extra = " player2-round6";
+                  }
 
-              if (match) {
-                // Store winner -> score in map
-                if (match.winner && match.score) {
-                  winnerToScoreMap.set(match.winner, match.score);
-                }
+                  if (match) {
+                    // Store winner -> score in map
+                    if (match.winner && match.score) {
+                      winnerToScoreMap.set(match.winner, match.score);
+                    }
 
-                // Retrieve previous scores if available
-                const p1ScoreFromLastRound = winnerToScoreMap.get(match.player1);
-                const p2ScoreFromLastRound = winnerToScoreMap.get(match.player2);
+                    // Retrieve previous scores if available
+                    const p1ScoreFromLastRound = winnerToScoreMap.get(
+                      match.player1,
+                    );
+                    const p2ScoreFromLastRound = winnerToScoreMap.get(
+                      match.player2,
+                    );
 
-                return (
-                  <div
-                    key={match.id || `${match.round}-${match.matchNum}`}
-                    className="bracket-match"
-                  >
-                    <div className={`bracket-player1 bracket-player${player1Extra}`} data-score={p1ScoreFromLastRound || ""}>
-                      {match.player1 || '\u200B'}
-                    </div>
-                    <div className={`bracket-player2 player2 bracket-player${player2Extra}`} data-score={p2ScoreFromLastRound || ""}>
-                      {match.player2 || '\u200B'}
-                    </div>
-                  </div>
-                );
-              } else {
-                return (
-                  <div key={`empty-${roundName}-${j}`} className="bracket-match">
-                    <div className={`bracket-player${player1Extra}`}>&#8203;</div>
-                    <div className={`player2 bracket-player${player2Extra}`}>&#8203;</div>
-                  </div>
-                );
-              }
-            })}
-          </div>
-        );
-      });
-    })()}
-  </div>
-);
-}
+                    return (
+                      <div
+                        key={match.id || `${match.round}-${match.matchNum}`}
+                        className="bracket-match"
+                      >
+                        <div
+                          className={`bracket-player1 bracket-player${player1Extra}`}
+                          data-score={p1ScoreFromLastRound || ""}
+                        >
+                          {match.player1 || "\u200B"}
+                        </div>
+                        <div
+                          className={`bracket-player2 player2 bracket-player${player2Extra}`}
+                          data-score={p2ScoreFromLastRound || ""}
+                        >
+                          {match.player2 || "\u200B"}
+                        </div>
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div
+                        key={`empty-${roundName}-${j}`}
+                        className="bracket-match"
+                      >
+                        <div className={`bracket-player${player1Extra}`}>
+                          &#8203;
+                        </div>
+                        <div
+                          className={`player2 bracket-player${player2Extra}`}
+                        >
+                          &#8203;
+                        </div>
+                      </div>
+                    );
+                  }
+                })}
+              </div>
+            );
+          });
+        })()}
+      </div>
+    );
+  };
 
   return (
     <div className="matchplay-wrapper">
-    <div className="matchplay-content full-bleed">
-      <div className="matchplay-content-container">
-        {/* ─── TABS + REGISTER BUTTON ───────────────────────────────────────── */}
-        <div className="matchplay-tabs-container">
-          <div className="matchplay-tabs">
-            <button
-              className={`tab ${activeTab === "about" ? "tab-active" : ""}`}
-              onClick={() => handleTabClick("about")}
-            >
-              About
-            </button>
-            <button
-              className={`tab ${activeTab === "bracket" ? "tab-active" : ""}`}
-              onClick={() => handleTabClick("bracket")}
-            >
-              Bracket
-            </button>
-          </div>
+      <div className="matchplay-content full-bleed">
+        <div className="matchplay-content-container">
+          {/* ─── TABS + REGISTER BUTTON ───────────────────────────────────────── */}
+          <div className="matchplay-tabs-container">
+            <div className="matchplay-tabs">
+              <button
+                className={`tab ${activeTab === "about" ? "tab-active" : ""}`}
+                onClick={() => handleTabClick("about")}
+              >
+                About
+              </button>
+              <button
+                className={`tab ${activeTab === "bracket" ? "tab-active" : ""}`}
+                onClick={() => handleTabClick("bracket")}
+              >
+                Bracket
+              </button>
+            </div>
 
-          {registrationOpen && (
-            <a
-              href={shopifyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-register"
-            >
-              Register For Match Play ►
-            </a>
-          )}
-        </div>
-
-        {/* ─── ABOUT TAB ───────────────────────────────────────────────────── */}
-        {activeTab === "about" && (
-          <div className="matchplay-blurb">
-            <h2 className="standings-year-heading">LFG Match Play Tournament</h2>
-
-            <p>
-              This season-long match play tournament will feature either{" "}
-              <strong>16, 24, or 32 players</strong>, depending on the number
-              of entries. Each match must be completed within a{" "}
-              <strong>one-month window</strong>, at a time and location agreed
-              upon by both players.
-            </p>
-
-            <h3>Match Format</h3>
-            <ul>
-              <li>All matches are <strong>18 holes</strong>.</li>
-              <li>GHIN Course Handicaps will be used for both players.</li>
-              <li>
-                Players can choose one of two handicap formats:
-                <ul>
-                  <li>
-                    <strong>Option A:</strong> Stroke off the lower handicap.
-                    (e.g., a 12 vs. a 6 — the 12 receives strokes on the 6
-                    hardest holes.)
-                  </li>
-                  <li>
-                    <strong>Option B:</strong> Each player receives strokes
-                    based on their handicap. (e.g., the 12 receives strokes on
-                    holes 7–12.)
-                  </li>
-                </ul>
-              </li>
-              <li>All matches are played under <strong>LFG Rules</strong>.</li>
-              <li>
-                Please be flexible in scheduling — do not offer only one or
-                two limited dates to your opponent.
-              </li>
-            </ul>
-
-            <h3>Tie Breaker Procedures</h3>
-            <ul>
-              <li>
-                If extra holes cannot be played, proceed to the putting green
-                for a <strong>putt/chip-off</strong>.
-              </li>
-              <li>
-                If still tied, the player with the <strong>biggest lead during
-                the match</strong> is the winner.
-              </li>
-              <li>
-                If still tied, the <strong>last player to hold a lead</strong>{" "}
-                is the winner.
-              </li>
-              <li>
-                Players may also agree to any other tie-breaking method, as
-                long as both participants agree.
-              </li>
-            </ul>
-
-            <h3>Schedule (Based on 32 Players)</h3>
-            <ul>
-              <li>
-                <strong>Round 1:</strong> May 15 – June 15
-              </li>
-              <li>
-                <strong>Round 2:</strong> June 16 – July 15
-              </li>
-              <li>
-                <strong>Quarterfinals:</strong> July 16 – August 15
-              </li>
-              <li>
-                <strong>Semi-Finals:</strong> August 16 – September 15
-              </li>
-              <li>
-                <strong>Finals &amp; Consolation Match:</strong> September 15 – 
-                October 15
-              </li>
-            </ul>
-
-            <p>
-              Note: The tournament may be expedited after Round 2 as fewer
-              players remain. Once matchups are set, players may play early if
-              both agree.
-            </p>
-
-            <h3>Entry &amp; Payouts</h3>
-            <ul>
-              <li>
-                <strong>Entry Fee:</strong> $25
-              </li>
-              <li>
-                All green/cart fees are the responsibility of the players.
-              </li>
-            </ul>
-
-            <h4>Payouts:</h4>
-            <ul>
-              <li>
-                <strong>Champion:</strong> $225
-              </li>
-              <li>
-                <strong>Runner-Up:</strong> $125
-              </li>
-              <li>
-                <strong>3rd Place:</strong> $50
-              </li>
-              <li>
-                <strong>4th Place:</strong> $50
-              </li>
-            </ul>
-          </div>
-        )}
-
-        {/* ─── BRACKET TAB ───────────────────────────────────────────────────── */}
-        {activeTab === "bracket" && (
-          <div className="matchplay-bracket">
-            {matches.length > 0 ? (
-              <>
-                {renderBracket()}
-
-                {/* Links to switch between years’ brackets */}
-			   <div className="season-links">
-				  {years.map((yr, idx) => (
-					<React.Fragment key={yr}>
-					  {idx > 0 && <>|&nbsp;</>}
-					  {yr === selectedYear ? (
-						<span className="current-year">{yr}</span>
-					  ) : (
-						<a href={`?year=${yr}`}>{yr}</a>
-					  )}
-					</React.Fragment>
-				  ))}
-				</div>
-              </>
-            ) : (
-              <p>Loading bracket…</p>
+            {registrationOpen && (
+              <a
+                href={shopifyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-register"
+              >
+                Register For Match Play ►
+              </a>
             )}
           </div>
-        )}
+
+          {/* ─── ABOUT TAB ───────────────────────────────────────────────────── */}
+          {activeTab === "about" && (
+            <div className="matchplay-blurb">
+              <h2 className="standings-year-heading">
+                LFG Match Play Tournament
+              </h2>
+
+              <p>
+                This season-long match play tournament will feature either{" "}
+                <strong>16, 24, or 32 players</strong>, depending on the number
+                of entries. Each match must be completed within a{" "}
+                <strong>one-month window</strong>, at a time and location agreed
+                upon by both players.
+              </p>
+
+              <h3>Match Format</h3>
+              <ul>
+                <li>
+                  All matches are <strong>18 holes</strong>.
+                </li>
+                <li>GHIN Course Handicaps will be used for both players.</li>
+                <li>
+                  Players can choose one of two handicap formats:
+                  <ul>
+                    <li>
+                      <strong>Option A:</strong> Stroke off the lower handicap.
+                      (e.g., a 12 vs. a 6 — the 12 receives strokes on the 6
+                      hardest holes.)
+                    </li>
+                    <li>
+                      <strong>Option B:</strong> Each player receives strokes
+                      based on their handicap. (e.g., the 12 receives strokes on
+                      holes 7–12.)
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  All matches are played under <strong>LFG Rules</strong>.
+                </li>
+                <li>
+                  Please be flexible in scheduling — do not offer only one or
+                  two limited dates to your opponent.
+                </li>
+              </ul>
+
+              <h3>Tie Breaker Procedures</h3>
+              <ul>
+                <li>
+                  If extra holes cannot be played, proceed to the putting green
+                  for a <strong>putt/chip-off</strong>.
+                </li>
+                <li>
+                  If still tied, the player with the{" "}
+                  <strong>biggest lead during the match</strong> is the winner.
+                </li>
+                <li>
+                  If still tied, the <strong>last player to hold a lead</strong>{" "}
+                  is the winner.
+                </li>
+                <li>
+                  Players may also agree to any other tie-breaking method, as
+                  long as both participants agree.
+                </li>
+              </ul>
+
+              <h3>Schedule (Based on 32 Players)</h3>
+              <ul>
+                <li>
+                  <strong>Round 1:</strong> May 15 – June 15
+                </li>
+                <li>
+                  <strong>Round 2:</strong> June 16 – July 15
+                </li>
+                <li>
+                  <strong>Quarterfinals:</strong> July 16 – August 15
+                </li>
+                <li>
+                  <strong>Semi-Finals:</strong> August 16 – September 15
+                </li>
+                <li>
+                  <strong>Finals &amp; Consolation Match:</strong> September 15
+                  – October 15
+                </li>
+              </ul>
+
+              <p>
+                Note: The tournament may be expedited after Round 2 as fewer
+                players remain. Once matchups are set, players may play early if
+                both agree.
+              </p>
+
+              <h3>Entry &amp; Payouts</h3>
+              <ul>
+                <li>
+                  <strong>Entry Fee:</strong> $25
+                </li>
+                <li>
+                  All green/cart fees are the responsibility of the players.
+                </li>
+              </ul>
+
+              <h4>Payouts:</h4>
+              <ul>
+                <li>
+                  <strong>Champion:</strong> $225
+                </li>
+                <li>
+                  <strong>Runner-Up:</strong> $125
+                </li>
+                <li>
+                  <strong>3rd Place:</strong> $50
+                </li>
+                <li>
+                  <strong>4th Place:</strong> $50
+                </li>
+              </ul>
+            </div>
+          )}
+
+          {/* ─── BRACKET TAB ───────────────────────────────────────────────────── */}
+          {activeTab === "bracket" && (
+            <div className="matchplay-bracket">
+              {matches.length > 0 ? (
+                <>
+                  {renderBracket()}
+
+                  {/* Links to switch between years’ brackets */}
+                  <div className="season-links">
+                    {years.map((yr, idx) => (
+                      <React.Fragment key={yr}>
+                        {idx > 0 && <>|&nbsp;</>}
+                        {yr === selectedYear ? (
+                          <span className="current-year">{yr}</span>
+                        ) : (
+                          <a href={`?year=${yr}`}>{yr}</a>
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <p>Loading bracket…</p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
     </div>
   );
 }
