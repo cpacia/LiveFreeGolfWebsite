@@ -148,13 +148,13 @@ export default function Schedule() {
 
       {/* ─────── Event List ─────── */}
       {!loading && (
-        <div className="events-list">
+        <div className="schedule-events-list">
           {filteredEvents.length === 0 && (
             <div className="no-events">No events to display.</div>
           )}
 
           {filteredEvents.map((evt) => (
-            <div key={evt.eventID} className="event-item">
+            <div key={evt.eventID} className="schedule-event-item">
               {/* ─────── Left Side: Thumbnail + Basic Info ─────── */}
               <div className="event-left">
                 <img

@@ -127,13 +127,13 @@
 /*  6) Event List & Items                                      */
 /* ----------------------------------------------------------- */
 
-.events-list {
+.schedule-events-list {
   display: flex;
   flex-direction: column;
   gap: 0; /* we rely on each .event-item’s border */
 }
 
-.event-item {
+.schedule-event-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
