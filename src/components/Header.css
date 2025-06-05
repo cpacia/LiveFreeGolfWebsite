@@ -113,6 +113,7 @@
   font-size: 0.95rem;
   padding: 0.5rem;
   cursor: pointer;
+  margin-top: 0.16rem;
 }
 
 .dropbtn:hover {

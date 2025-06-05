@@ -254,8 +254,9 @@ export default function MatchPlay() {
 
 
   return (
+    <div className="matchplay-wrapper">
     <div className="matchplay-content full-bleed">
-      <div className="content-container">
+      <div className="matchplay-content-container">
         {/* ─── TABS + REGISTER BUTTON ───────────────────────────────────────── */}
         <div className="matchplay-tabs-container">
           <div className="matchplay-tabs">
@@ -426,6 +427,7 @@ export default function MatchPlay() {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 }

@@ -1,7 +1,19 @@
 /* MatchPlay.css */
 
+.matchplay-wrapper {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  background-color: #fdfdf7;
+}
+
+
 /* 1) Overall page container just like .standings-content */
 .matchplay-content {
+  width: 100%;
   padding-top: 2rem; /* same breathing room as Standings */
   padding-bottom: 2rem;
   background-color: var(--color-light);
@@ -9,7 +21,7 @@
 
 /* 2) Re-use the same “content-container” concept as Standings.jsx */
 .matchplay-content-container {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 0 1rem;
   display: flex;
