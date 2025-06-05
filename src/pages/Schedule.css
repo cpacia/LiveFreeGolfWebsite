@@ -57,7 +57,6 @@
   color: var(--color-dark);
   font-family: var(--font-body);
   cursor: pointer;
-  cursor: pointer;
   appearance: none;
   /* move the arrow icon 1rem from the right edge instead of 0.75rem */
   background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%23666' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
@@ -68,7 +67,6 @@
 
 .filters select:focus {
   outline: none;
-  border-color: var(--color-accent-yellow); /* #F2C14E */
 }
 
 .schedule-dropdown {
@@ -84,6 +82,18 @@
   outline: none;
   border-color: #007bff;
 }
+
+/* ----------------------------------------------------------- */
+/* 1) Remove the default focus “blue” ring and keep the same border */
+/* ----------------------------------------------------------- */
+.filters select:focus,
+.schedule-dropdown:focus {
+  outline: none;
+  box-shadow: none;
+  /* Force the same border as the unfocused state */
+  border: 1px solid #e0e0e0; 
+}
+
 
 /* ----------------------------------------------------------- */
 /*  4) Season Header (“2025 Season”)                           */

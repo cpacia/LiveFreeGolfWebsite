@@ -11,13 +11,6 @@
   max-width: 150px;
 }
 
-.content-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 1rem;
-  display: flex;
-  flex-direction: column;
-}
 
 /* ===== 2) Loading & Error texts ===== */
 .loading-text,
@@ -28,41 +21,8 @@
   color: var(--color-dark);
 }
 
-/* ===== 3) Event Header (thumbnail + details) ===== */
-.event-header {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.event-thumbnail {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border: 2px solid var(--color-primary-green);
-  border-radius: 8px;
-}
-
-.event-details {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.results-event-name {
-  font-family: var(--font-heading);
-  font-size: 1.75rem;
-  color: var(--color-primary-green);
-  margin: 0 0 0.5rem 0;
-}
-
-.results-event-meta {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  color: var(--color-dark);
-  margin: 0.25rem 0;
-}
+/* ===== 3) (Remove any previous .event-header rules) ===== */
+/* We no longer use .event-header / .event-thumbnail / .results-event-name, because we’re reusing Schedule.css */
 
 /* ===== 4) Dropdown container ===== */
 .results-dropdown-container {
@@ -72,27 +32,32 @@
   gap: 0.5rem;
 }
 
-.results-dropdown-label {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  color: var(--color-primary-green);
+.results-dropdown-width {
+  max-width: 150;
 }
 
 .results-dropdown {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  padding: 0.4rem 0.6rem;
-  border: 1px solid #cccccc;
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: #ffffff;
-  color: var(--color-dark);
+  background: #fff;
   cursor: pointer;
-  transition: border-color 0.2s;
 }
 
+.result-dropdown:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* ----------------------------------------------------------- */
+/* 1) Remove the default focus “blue” ring and keep the same border */
+/* ----------------------------------------------------------- */
 .results-dropdown:focus {
   outline: none;
-  border-color: var(--color-primary-green);
+  box-shadow: none;
+  /* Force the same border as the unfocused state */
+  border: 1px solid #e0e0e0; 
 }
 
 /* ===== 5) Table styles (very close to Standings) ===== */
@@ -133,7 +98,6 @@
 }
 
 /* Column 2 = Player / Team / Hole (adjust widths lightly) */
-/* For “Player” or “Team”, take up the bulk of the width */
 .results-table th:nth-child(2),
 .results-table td:nth-child(2) {
   width: 50%;
@@ -160,6 +124,16 @@
 
 .results-link:hover {
   color: #0056b3;
+}
+
+.result-event-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e0e0e0;
+  background‐color: var(--color-light);
+  margin-bottom: 1rem;
 }
 
 /* ===== 6) Sub‐heading for Skins tables ===== */

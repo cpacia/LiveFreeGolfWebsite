@@ -1,6 +1,7 @@
 // File: Results.jsx
 import React, { useState, useEffect } from 'react';
 import './Results.css';
+import './Schedule.css'; // <-- pull in the same Schedule‐page styles for the header
 
 export default function Results() {
   // 1) Get eventID from the query string
@@ -24,6 +25,16 @@ export default function Results() {
   const [loadingTable, setLoadingTable] = useState(false);
   const [errorTable, setErrorTable] = useState(null);
 
+  // ─── New: helper to format "2025-05-26" as "May 26"
+  function formatDateWithoutYear(isoDateString) {
+    if (!isoDateString) return '';
+    const dt = new Date(isoDateString);
+    return dt.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    });
+  }
+
   // 5) Fetch event metadata upon mount (or if eventID changes)
   useEffect(() => {
     if (!eventID) {
@@ -36,8 +47,6 @@ export default function Results() {
       setLoadingEvent(true);
       setErrorEvent(null);
       try {
-        // NOTE: your backend URL might be /event/${eventID} or /events/${eventID};
-        // adjust if needed. I’ll assume /events here since your code says so.
         const resp = await fetch(`http://localhost:8080/events/${eventID}`);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
@@ -68,7 +77,6 @@ export default function Results() {
     if (!eventID) return;
 
     const fetchTable = async () => {
-      // At this point, loadingTable===true and tableData===null already (from onSelectChange).
       let url = '';
       switch (selectedTable) {
         case 'net':
@@ -102,7 +110,7 @@ export default function Results() {
           // Expect { players: [...], holes: [...] }
           setTableData({
             players: Array.isArray(data.players) ? data.players : [],
-            holes:   Array.isArray(data.holes)   ? data.holes   : [],
+            holes: Array.isArray(data.holes) ? data.holes : [],
           });
         } else {
           // Force an array for net/gross/teams/wgr—even if backend wrapped it in { something: […] }
@@ -153,11 +161,10 @@ export default function Results() {
     if (selectedTable === 'net') {
       // We expect tableData to be an Array of NetResult
       if (!Array.isArray(tableData)) {
-        // either still null or not an array at all → show loading
         return <p className="loading-text">Loading results…</p>;
       }
       return (
-        <table className="results-table">
+        <table className="results-table net-table">
           <thead>
             <tr>
               <th>Rank</th>
@@ -258,20 +265,27 @@ export default function Results() {
       if (!Array.isArray(tableData)) {
         return <p className="loading-text">Loading results…</p>;
       }
+
+      // Determine whether ALL rows have a defined, non‐empty 'total'
+      const hasTotalColumn = tableData.every(
+        (row) => row.total !== null && row.total !== undefined && row.total !== ''
+      );
+
       return (
         <table className="results-table">
           <thead>
             <tr>
               <th>Rank</th>
               <th>Team</th>
-              <th>Total</th>
+              {hasTotalColumn && <th>Total</th>}
               <th>Strokes</th>
             </tr>
           </thead>
           <tbody>
             {tableData.length === 0 ? (
               <tr>
-                <td colSpan="4" style={{ textAlign: 'center' }}>
+                {/* If no rows, colspan should match the number of rendered columns */}
+                <td colSpan={hasTotalColumn ? 4 : 3} style={{ textAlign: 'center' }}>
                   No data available.
                 </td>
               </tr>
@@ -280,7 +294,7 @@ export default function Results() {
                 <tr key={idx}>
                   <td>{row.rank}</td>
                   <td>{row.team}</td>
-                  <td style={{ textAlign: 'center' }}>{row.total}</td>
+                  {hasTotalColumn && <td style={{ textAlign: 'center' }}>{row.total}</td>}
                   <td style={{ textAlign: 'center' }}>{row.strokes}</td>
                 </tr>
               ))
@@ -344,11 +358,7 @@ export default function Results() {
 
     if (selectedTable === 'skins') {
       // We expect tableData to be an object { players: Array, holes: Array }
-      if (
-        !tableData ||
-        !Array.isArray(tableData.players) ||
-        !Array.isArray(tableData.holes)
-      ) {
+      if (!tableData || !Array.isArray(tableData.players) || !Array.isArray(tableData.holes)) {
         return <p className="loading-text">Loading results…</p>;
       }
 
@@ -399,7 +409,7 @@ export default function Results() {
           </table>
 
           {/* Hole‐by‐hole Skins */}
-          <table className="results-table skins-margin">
+          <table className="results-table">
             <thead>
               <tr>
                 <th>Hole</th>
@@ -439,46 +449,42 @@ export default function Results() {
   return (
     <div className="full-bleed results-content">
       <div className="content-container">
-        {loadingEvent && (
-          <p className="loading-text">Loading event information…</p>
-        )}
+        {loadingEvent && <p className="loading-text">Loading event information…</p>}
         {errorEvent && <p className="error-text">{errorEvent}</p>}
 
         {!loadingEvent && !errorEvent && eventData && (
           <>
-            {/* ===== 1) Event Header ===== */}
-            <div className="event-header">
-              <img
-                className="event-thumbnail"
-                src={`http://localhost:8080/events/${eventID}/thumbnail`}
-                alt={`${eventData.name} thumbnail`}
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = '/images/default-logo.png';
-                }}
-              />
-              <div className="event-details">
-                <h1 className="results-event-name">{eventData.name}</h1>
-                <p className="results-event-meta">
-                  <strong>Date:</strong> {eventData.dateString}
-                </p>
-                <p className="results-event-meta">
-                  <strong>Course:</strong> {eventData.course}
-                </p>
-                <p className="results-event-meta">
-                  <strong>Location:</strong> {eventData.town}, {eventData.state}
-                </p>
-                <p className="results-event-meta">
-                  <strong>Handicap Allowance:</strong> {eventData.handicapAllowance}
-                </p>
+            {/* ===== 1) Event Header (exactly like Schedule.jsx) ===== */}
+            <div className="result-event-item">
+              <div className="event-left">
+                <img
+                  className="thumbnail"
+                  src={`http://localhost:8080/events/${eventID}/thumbnail`}
+                  alt={`${eventData.name} thumbnail`}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = '/images/default-logo.png';
+                  }}
+                />
+                <div className="event-info">
+                  <div className="event-name">{eventData.name}</div>
+                  <div className="event-meta">
+                    {formatDateWithoutYear(eventData.date)} &nbsp;|&nbsp; {eventData.course}
+                    <br />
+                    {eventData.town}, {eventData.state}
+                  </div>
+                  <div className="event-meta">
+                    {eventData.handicapAllowance} Handicap Allowance
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* ===== 2) Dropdown Selector ===== */}
-            <div className="filters results-dropdown-width">
+            <div className="results-dropdown-container results-dropdown-width">
               <select
                 id="results-select"
-                className="schedule-dropdown"
+                className="results-dropdown schedule-dropdown"
                 value={selectedTable}
                 onChange={onSelectChange}
               >
