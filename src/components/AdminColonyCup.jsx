@@ -1,59 +1,56 @@
 // src/components/AdminColonyCup.jsx
 import React, { useState, useEffect } from "react";
-import "./AdminStandings.css"; // Reuse card/table styling
+import "./AdminColonyCup.css";
 
 export default function AdminColonyCup() {
   // ─── 1) State Hooks ──────────────────────────────────────────────
-  const [info, setInfo] = useState(null);
-  const [draft, setDraft] = useState(null);
+  const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
 
-  // Temporary input for adding a new golfer to the list
-  const [newGolfer, setNewGolfer] = useState("");
+  const [editingId, setEditingId] = useState(null);
+  const [draft, setDraft] = useState(null);
+  const [newCount, setNewCount] = useState(0);
 
-  // ─── 2) Fetch single ColonyCupInfo on mount ──────────────────────
+  // ─── 2) Fetch existing colony-cup entries on mount ────────────────
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:8080/colony-cup", { credentials: "include" })
+    fetch("http://localhost:8080/colony-cup/all", { credentials: "include" })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
       })
       .then((data) => {
-        // Expect data = { ID, year, winningTeam: [ "Name1", "Name2", ... ], … }
-        // winningTeam might already be a JS array or string—normalize to array:
-        let teamArray = [];
-        if (Array.isArray(data.winningTeam)) {
-          teamArray = data.winningTeam;
-        } else if (typeof data.winningTeam === "string") {
-          try {
-            teamArray = JSON.parse(data.winningTeam);
-          } catch {
-            teamArray = [];
-          }
+        if (Array.isArray(data)) {
+          const normalized = data.map((row) => ({
+            // gorm.Model yields an "ID" field
+            id: row.ID ?? row.id,
+            year: row.year,
+            // "team" is a JSON list (array of player names)
+            team: Array.isArray(row.team) ? row.team : [],
+            winningTeam: !!row.winningTeam,
+            cacheKey: Date.now(),
+          }));
+          setEntries(normalized);
+        } else {
+          setEntries([]);
         }
-        const fresh = {
-          id: data.ID || data.id,
-          year: data.year || "",
-          winningTeam: teamArray,
-        };
-        setInfo(fresh);
-        setDraft({ ...fresh });
       })
       .catch((err) => {
-        console.error("Error fetching colony cup info:", err);
+        console.error("Error fetching colony cup:", err);
         setError(err.message || "Unknown error");
       })
       .finally(() => setLoading(false));
   }, []);
 
-  // ─── 3) Loading / Error UI ───────────────────────────────────────
+  // ─── 3) Loading / Error States ───────────────────────────────────
   if (loading) {
     return (
       <div className="standings-header">
-        <h1>Colony Cup Settings</h1>
+        <h1>Colony Cup</h1>
+        <button className="btn-add-standing" disabled>
+          Add Year
+        </button>
         <p>Loading…</p>
       </div>
     );
@@ -61,236 +58,308 @@ export default function AdminColonyCup() {
   if (error) {
     return (
       <div className="standings-header">
-        <h1>Colony Cup Settings</h1>
-        <p style={{ color: "red" }}>Error: {error}</p>
+        <h1>Colony Cup</h1>
+        <button className="btn-add-standing" disabled>
+          Add Year
+        </button>
+        <p className="error-text">Error: {error}</p>
       </div>
     );
   }
-  if (!info) {
-    return null;
-  }
 
-  // ─── 4) Handle “Edit” ─────────────────────────────────────────────
-  const handleEdit = () => {
-    setDraft({
-      year: info.year,
-      winningTeam: [...info.winningTeam], // clone array
-    });
-    setIsEditing(true);
-    setNewGolfer("");
+  // ─── 4) “Add Year” Handler ────────────────────────────────────────
+  const handleAdd = () => {
+    const tempId = `__new__${newCount + 1}`;
+    setNewCount((n) => n + 1);
+
+    const todayYear = new Date().getFullYear().toString();
+    const placeholder = {
+      id: tempId,
+      year: todayYear,
+      team: [], // start with no players by default
+      winningTeam: false,
+      cacheKey: Date.now(),
+    };
+
+    setEntries((prev) => [placeholder, ...prev]);
+    setEditingId(tempId);
+    setDraft(placeholder);
   };
 
-  // ─── 5) Handle “Cancel” ───────────────────────────────────────────
-  const handleCancel = () => {
-    // Discard draft, revert to info
-    setDraft({ year: info.year, winningTeam: [...info.winningTeam] });
-    setIsEditing(false);
-    setNewGolfer("");
-  };
-
-  // ─── 6) Handle adding a new golfer to the list ────────────────────
-  const handleAddGolfer = () => {
-    const name = newGolfer.trim();
-    if (!name) return;
-    if (draft.winningTeam.includes(name)) {
-      window.alert("This golfer is already in the winning team list.");
-      return;
-    }
-    setDraft({
-      ...draft,
-      winningTeam: [...draft.winningTeam, name],
-    });
-    setNewGolfer("");
-  };
-
-  // ─── 7) Handle removing a golfer by index ─────────────────────────
-  const handleRemoveGolfer = (index) => {
-    const updated = draft.winningTeam.filter((_, i) => i !== index);
-    setDraft({ ...draft, winningTeam: updated });
-  };
-
-  // ─── 8) Handle “Save” (PUT) with error dialog ──────────────────────
+  // ─── 5) Handle Save (POST or PUT) ─────────────────────────────────
   const handleSave = () => {
-    if (!draft.year.trim()) {
-      window.alert("Year cannot be empty.");
-      return;
-    }
-    // You could also enforce at least one golfer
-    // if (draft.winningTeam.length === 0) {
-    //   window.alert('Winning team must include at least one name.');
-    //   return;
-    // }
+    if (!draft) return;
 
+    const isNew = String(draft.id).startsWith("__new__");
+    const url = "http://localhost:8080/colony-cup";
+    const method = isNew ? "POST" : "PUT";
+
+    // Prepare payload: if updating, include ID; otherwise omit
     const payload = {
-      ID: info.id,
+      ...(isNew ? {} : { ID: draft.id }),
       year: draft.year,
+      team: JSON.stringify(draft.team.filter((p) => p.trim() !== "")),
       winningTeam: draft.winningTeam,
     };
-    console.log("Saving ColonyCup payload:", payload);
 
-    fetch("http://localhost:8080/colony-cup", {
-      method: "PUT",
+    fetch(url, {
+      method,
       credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     })
-      .then(async (res) => {
-        const text = await res.text();
+      .then((res) => {
         if (!res.ok) {
-          throw new Error(text || `HTTP ${res.status}`);
+          return res.text().then((text) => {
+            throw new Error(text || `HTTP ${res.status}`);
+          });
         }
-        // If server returned JSON, parse it; else ignore
-        return text ? JSON.parse(text) : null;
+        return res.json();
       })
       .then((returned) => {
-        if (returned) {
-          // Ensure winningTeam is array
-          let teamArr = [];
-          if (Array.isArray(returned.winningTeam)) {
-            teamArr = returned.winningTeam;
-          } else if (typeof returned.winningTeam === "string") {
-            try {
-              teamArr = JSON.parse(returned.winningTeam);
-            } catch {
-              teamArr = [];
-            }
+        const saved = {
+          id: returned.ID ?? returned.id,
+          year: returned.year,
+          team: Array.isArray(returned.team)
+            ? returned.team
+            : JSON.parse(returned.team || "[]"),
+          winningTeam: !!returned.winningTeam,
+          cacheKey: Date.now(),
+        };
+
+        setEntries((prev) => {
+          if (isNew) {
+            // Remove any "__new__" placeholder, then prepend saved
+            const filtered = prev.filter(
+              (r) => !String(r.id).startsWith("__new__")
+            );
+            return [saved, ...filtered];
+          } else {
+            // Replace the updated entry in place
+            return prev.map((r) => (r.id === saved.id ? saved : r));
           }
-          setInfo({
-            id: returned.ID || returned.id,
-            year: returned.year,
-            winningTeam: teamArr,
-          });
-        } else {
-          setInfo({
-            id: info.id,
-            year: draft.year,
-            winningTeam: [...draft.winningTeam],
-          });
-        }
-        setIsEditing(false);
+        });
+
+        setEditingId(null);
+        setDraft(null);
       })
       .catch((err) => {
         console.error("Save failed:", err);
-        window.alert(`Error saving colony cup info: ${err.message}`);
+        window.alert(`Save failed: ${err.message}`);
       });
   };
 
-  // ─── 9) Render the card/table ─────────────────────────────────────
+  // ─── 6) Cancel Editing ────────────────────────────────────────────
+  const handleCancel = (entry) => {
+    const isNew = String(entry.id).startsWith("__new__");
+    if (isNew) {
+      setEntries((prev) => prev.filter((r) => r.id !== entry.id));
+    }
+    setEditingId(null);
+    setDraft(null);
+  };
+
+  // ─── 7) Delete Entry ──────────────────────────────────────────────
+  const handleDelete = (entry) => {
+    if (
+      !window.confirm(
+        `Are you sure you want to delete the Colony Cup entry for ${entry.year}?`
+      )
+    ) {
+      return;
+    }
+
+    fetch("http://localhost:8080/colony-cup", {
+      method: "DELETE",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ID: entry.id }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        setEntries((prev) => prev.filter((r) => r.id !== entry.id));
+      })
+      .catch((err) => console.error("Delete failed:", err));
+  };
+
+  // ─── 8) Add a new player field in edit mode ──────────────────────
+  const handleAddPlayer = () => {
+    setDraft((prev) => ({
+      ...prev,
+      team: [...prev.team, ""],
+    }));
+  };
+
+  // ─── 9) Remove a player field in edit mode ───────────────────────
+  const handleRemovePlayer = (index) => {
+    setDraft((prev) => {
+      const newTeam = prev.team.slice();
+      newTeam.splice(index, 1);
+      return { ...prev, team: newTeam };
+    });
+  };
+
+  // ─── 10) Main Render ─────────────────────────────────────────────
   return (
-    <div className="colony-cup-page">
-      {/* Header */}
-      <div
-        className="card-table-header card-table-header-width"
-        style={{ marginBottom: "1rem" }}
-      >
-        Colony Cup Settings
+    <>
+      {/* Header + “Add Year” */}
+      <div className="standings-header">
+        <h1>Colony Cup</h1>
+        <button className="btn-add-standing" onClick={handleAdd}>
+          Add Year
+        </button>
       </div>
 
-      <div
-        className={`card-table-container card-table-width ${isEditing ? "editing" : ""}`}
-      >
-        <table className="admin-standings-table">
-          <tbody>
-            {/* Row 1: Year + Actions (rowSpan=3) */}
-            <tr>
-              <td className="cell-label">Year</td>
-              <td className="cell-value">
-                {isEditing ? (
-                  <input
-                    type="text"
-                    className="cell-input"
-                    value={draft.year}
-                    onChange={(e) =>
-                      setDraft({ ...draft, year: e.target.value })
-                    }
-                  />
-                ) : (
-                  info.year
-                )}
-              </td>
-              <td className="cell-actions" rowSpan="3">
-                {isEditing ? (
-                  <>
-                    <button className="btn-save" onClick={handleSave}>
-                      Save
-                    </button>
-                    <button className="btn-cancel" onClick={handleCancel}>
-                      Cancel
-                    </button>
-                  </>
-                ) : (
-                  <button className="btn-edit" onClick={handleEdit}>
-                    Edit
-                  </button>
-                )}
-              </td>
-            </tr>
+      {entries.length === 0 ? (
+        <p>No entries found.</p>
+      ) : (
+        entries.map((entry) => {
+          const isEditing = editingId === entry.id;
+          return (
+            <div
+              className={`card-table-container card-table-width ${
+                isEditing ? "editing" : ""
+              }`}
+              key={`${entry.id}_${entry.cacheKey}`}
+            >
+              {/* Header Bar: Static Year */}
+              <div className="card-table-header">{entry.year}</div>
 
-            {/* Row 2: Winning Team label + dynamic list/editor */}
-            <tr>
-              <td className="cell-label">Winning Team</td>
-              <td className="cell-value">
-                {isEditing ? (
-                  <div className="winning-list-editor">
-                    {draft.winningTeam.map((name, idx) => (
-                      <div key={idx} className="winning-item">
+              <table className="admin-standings-table">
+                <tbody>
+                  {/* Row 1: Year + Actions */}
+                  <tr>
+                    <td className="cell-label">Year</td>
+                    <td className="cell-value">
+                      {isEditing ? (
                         <input
                           type="text"
                           className="cell-input"
-                          value={name}
-                          onChange={(e) => {
-                            const updated = [...draft.winningTeam];
-                            updated[idx] = e.target.value;
-                            setDraft({ ...draft, winningTeam: updated });
-                          }}
+                          value={draft.year}
+                          onChange={(e) =>
+                            setDraft({ ...draft, year: e.target.value })
+                          }
                         />
-                        <button
-                          className="btn-delete"
-                          style={{
-                            marginLeft: "0.5rem",
-                            padding: "0.3rem 0.6rem",
-                          }}
-                          onClick={() => handleRemoveGolfer(idx)}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    ))}
+                      ) : (
+                        entry.year
+                      )}
+                    </td>
+                    <td className="cell-actions" rowSpan="4">
+                      {isEditing ? (
+                        <>
+                          <button className="btn-save" onClick={handleSave}>
+                            Save
+                          </button>
+                          <button
+                            className="btn-cancel"
+                            onClick={() => handleCancel(entry)}
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            className="btn-edit"
+                            onClick={() => {
+                              setEditingId(entry.id);
+                              setDraft({ ...entry });
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn-delete"
+                            onClick={() => handleDelete(entry)}
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
+                    </td>
+                  </tr>
 
-                    {/* Input to add a new golfer */}
-                    <div
-                      className="add-new-golfer"
-                      style={{ marginTop: "0.5rem" }}
-                    >
-                      <input
-                        type="text"
-                        className="cell-input"
-                        placeholder="New golfer name"
-                        value={newGolfer}
-                        onChange={(e) => setNewGolfer(e.target.value)}
-                      />
-                      <button
-                        className="btn-save"
-                        style={{
-                          marginLeft: "0.5rem",
-                          padding: "0.3rem 0.6rem",
-                        }}
-                        onClick={handleAddGolfer}
-                      >
-                        Add
-                      </button>
-                    </div>
-                  </div>
-                ) : info.winningTeam.length > 0 ? (
-                  <span>{info.winningTeam.join(", ")}</span>
-                ) : (
-                  <span>—</span>
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+                  {/* Row 2: Winning Team */}
+                  <tr>
+                    <td className="cell-label">Winning Team?</td>
+                    <td className="cell-value">
+                      {isEditing ? (
+                        <select
+                          value={draft.winningTeam ? "yes" : "no"}
+                          onChange={(e) =>
+                            setDraft({
+                              ...draft,
+                              winningTeam: e.target.value === "yes",
+                            })
+                          }
+                        >
+                          <option value="yes">Yes</option>
+                          <option value="no">No</option>
+                        </select>
+                      ) : entry.winningTeam ? (
+                        <span className="status-yes">Yes</span>
+                      ) : (
+                        <span className="status-no">No</span>
+                      )}
+                    </td>
+                  </tr>
+
+                  {/* Row 3: Team Members Label */}
+                  <tr>
+                    <td className="cell-label">Team Members</td>
+                    <td className="cell-value">
+                      {isEditing ? (
+                        <div className="team-edit-container">
+                          {draft.team.map((player, idx) => (
+                            <div
+                              className="player-row"
+                              key={`player-${entry.id}-${idx}`}
+                            >
+                              <input
+                                type="text"
+                                className="player-input"
+                                placeholder={`Player #${idx + 1}`}
+                                value={player}
+                                onChange={(e) => {
+                                  const updated = draft.team.slice();
+                                  updated[idx] = e.target.value;
+                                  setDraft({ ...draft, team: updated });
+                                }}
+                              />
+                              <button
+                                className="btn-remove-player"
+                                onClick={() => handleRemovePlayer(idx)}
+                                title="Remove this player"
+                              >
+                                ×
+                              </button>
+                            </div>
+                          ))}
+                          <button
+                            className="btn-add-player"
+                            onClick={handleAddPlayer}
+                          >
+                            + Add Player
+                          </button>
+                        </div>
+                      ) : entry.team.length > 0 ? (
+                        <ul className="team-list">
+                          {entry.team.map((p, i) => (
+                            <li key={`view-${entry.id}-${i}`}>{p}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <span className="status-none">—</span>
+                      )}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          );
+        })
+      )}
+    </>
   );
 }
+

@@ -1,0 +1,96 @@
+.colonycup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.colonycup-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.team-edit-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.player-input {
+  flex: 1;
+  height: 25px;
+}
+
+.btn-remove-player {
+  background: #f1807e;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 1.6rem;
+  height: 1.6rem;
+  font-size: 1rem;
+  line-height: 1rem;
+  text-align: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.btn-remove-player:hover {
+  background: #a71d2a;
+}
+
+.btn-add-player {
+  align-self: flex-start;
+  background: #28a745;
+  color: #fff;
+  border: none;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn-add-player:hover {
+  background: #1e7e34;
+}
+
+.btn-add-standing {
+  background-color: var(--color-accent-yellow);
+  color: var(--color-primary-green);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn-add-standing:hover {
+  background-color: #d1a640;
+}
+
+.team-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.status-yes {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.status-no {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.status-none {
+  color: #999;
+  font-style: italic;
+}
