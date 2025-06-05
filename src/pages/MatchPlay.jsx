@@ -415,19 +415,18 @@ export default function MatchPlay() {
                 {renderBracket()}
 
                 {/* Links to switch between years’ brackets */}
-                <div className="year-links">
-                  {years.map((yr) => (
-                    <button
-                      key={yr}
-                      className={`year-link ${
-                        yr === selectedYear ? "year-active" : ""
-                      }`}
-                      onClick={() => setSelectedYear(yr)}
-                    >
-                      {yr}
-                    </button>
-                  ))}
-                </div>
+			   <div className="season-links">
+				  {years.map((yr, idx) => (
+					<React.Fragment key={yr}>
+					  {idx > 0 && <>|&nbsp;</>}
+					  {yr === selectedYear ? (
+						<span className="current-year">{yr}</span>
+					  ) : (
+						<a href={`?year=${yr}`}>{yr}</a>
+					  )}
+					</React.Fragment>
+				  ))}
+				</div>
               </>
             ) : (
               <p>Loading bracket…</p>
