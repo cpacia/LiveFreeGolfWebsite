@@ -216,7 +216,7 @@ export default function Results() {
         return <p className="loading-text">Loading results…</p>;
       }
       return (
-        <table className="results-table">
+        <table className="results-table gross-table">
           <thead>
             <tr>
               <th>Rank</th>
@@ -272,7 +272,7 @@ export default function Results() {
       );
 
       return (
-        <table className="results-table">
+        <table className="results-table teams-table">
           <thead>
             <tr>
               <th>Rank</th>
@@ -310,7 +310,7 @@ export default function Results() {
         return <p className="loading-text">Loading results…</p>;
       }
       return (
-        <table className="results-table">
+        <table className="results-table net-table">
           <thead>
             <tr>
               <th>Rank</th>
@@ -368,7 +368,7 @@ export default function Results() {
       return (
         <>
           {/* Player‐based Skins */}
-          <table className="results-table">
+          <table className="results-table skins-player-table">
             <thead>
               <tr>
                 <th>Rank</th>
@@ -409,7 +409,7 @@ export default function Results() {
           </table>
 
           {/* Hole‐by‐hole Skins */}
-          <table className="results-table">
+          <table className="results-table skins-hole-table">
             <thead>
               <tr>
                 <th>Hole</th>
@@ -432,8 +432,8 @@ export default function Results() {
                     <td style={{ textAlign: 'center' }}>{row.hole}</td>
                     <td style={{ textAlign: 'center' }}>{row.par}</td>
                     <td style={{ textAlign: 'center' }}>{row.score}</td>
-                    <td style={{ textAlign: 'center' }}>{row.won}</td>
-                    <td style={{ textAlign: 'center' }}>{row.tie}</td>
+                    <td style={{ textAlign: 'left' }}>{row.won}</td>
+                    <td style={{ textAlign: 'left' }}>{row.tie}</td>
                   </tr>
                 ))
               )}

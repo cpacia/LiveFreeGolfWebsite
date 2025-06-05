@@ -149,31 +149,108 @@
   margin-top: 2rem;
 }
 
-/* Make sure the “holes” table columns (Hole, Par, Score, Won, Tie) fit nicely */
-.results-table th:nth-child(1),
-.results-table td:nth-child(1) {
-  width: 10%;
+.net-table th:nth-child(1),
+.net-table td:nth-child(1) {
+  width: 2%;    /* Rank (narrow) */
 }
 
-.results-table th:nth-child(2),
-.results-table td:nth-child(2) {
-  width: 10%;
+.net-table th:nth-child(2),
+.net-table td:nth-child(2) {
+  width: 50%;    /* Rank (narrow) */
 }
 
-.results-table th:nth-child(3),
-.results-table td:nth-child(3) {
-  width: 10%;
+.net-table th:nth-child(3),
+.net-table td:nth-child(3) {
+  width: 3%;    /* Rank (narrow) */
 }
 
-.results-table th:nth-child(4),
-.results-table td:nth-child(4) {
-  width: 10%;
+.net-table th:nth-child(4),
+.net-table td:nth-child(4) {
+  width: 4%;    /* Rank (narrow) */
 }
 
-.results-table th:nth-child(5),
-.results-table td:nth-child(5) {
-  width: 10%;
+.net-table th:nth-child(5),
+.net-table td:nth-child(5) {
+  width: 4%;    /* Rank (narrow) */
 }
 
-/* (Any leftover width is distributed evenly.) */
+.gross-table th:nth-child(1),
+.gross-table td:nth-child(1) {
+  width: 2%;    /* Rank (narrow) */
+}
 
+.gross-table th:nth-child(2),
+.gross-table td:nth-child(2) {
+  width: 50%;    /* Rank (narrow) */
+}
+
+.gross-table th:nth-child(3),
+.gross-table td:nth-child(3) {
+  width: 3%;    /* Rank (narrow) */
+}
+
+.gross-table th:nth-child(4),
+.gross-table td:nth-child(4) {
+  width: 4%;    /* Rank (narrow) */
+}
+
+.skins-player-table th:nth-child(1),
+.skins-player-table td:nth-child(1) {
+  width: 4%;    /* Rank (narrow) */
+}
+
+.skins-player-table th:nth-child(2),
+.skins-player-table td:nth-child(2) {
+  width: 80%;    /* Rank (narrow) */
+}
+
+.skins-hole-table th:nth-child(3),
+.skins-hole-table td:nth-child(3) {
+  width: 3%;    /* Rank (narrow) */
+}
+
+.skins-hole-table th:nth-child(1),
+.skins-hole-table td:nth-child(1) {
+  width: 3%;    /* Rank (narrow) */
+}
+
+.skins-hole-table th:nth-child(2),
+.skins-hole-table td:nth-child(2) {
+  width: 3%;    /* Rank (narrow) */
+  text-align: center;
+}
+
+.skins-hole-table th:nth-child(3),
+.skins-hole-table td:nth-child(3) {
+  width: 3%;    /* Rank (narrow) */
+}
+
+.skins-hole-table th:nth-child(4),
+.skins-hole-table td:nth-child(4) {
+  width: 10%;    /* Rank (narrow) */
+  text-align: left;
+}
+
+.skins-hole-table th:nth-child(5),
+.skins-hole-table td:nth-child(5) {
+  text-align: left;
+  width: 30%;    /* Rank (narrow) */
+  white-space: normal; !important;  /* allow wrapping */
+  word-wrap: break-word; !important;/* break long words if necessary */
+  overflow-wrap: break-word; !important; /* newer name for word-wrap */
+}
+
+.teams-table th:nth-child(1),
+.teams-table td:nth-child(1) {
+  width: 2%;    /* Rank (narrow) */
+}
+
+.teams-table th:nth-child(2),
+.teams-table td:nth-child(2) {
+  width: 50%;    /* Rank (narrow) */
+}
+
+.teams-table th:nth-child(3),
+.teams-table td:nth-child(3) {
+  width: 3%;    /* Rank (narrow) */
+}
