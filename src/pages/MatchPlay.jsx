@@ -81,8 +81,8 @@ export default function MatchPlay() {
   const extractRoundOrder = () => {
     const seen = [];
     matches.forEach((m) => {
-      if (!seen.includes(m.Round)) {
-        seen.push(m.Round);
+      if (!seen.includes(m.round)) {
+        seen.push(m.round);
       }
     });
     return seen; // e.g. ["Round 1 Matches", "Round 2 Matches", "Quarterfinals", …]
@@ -94,7 +94,7 @@ export default function MatchPlay() {
   // bracket size is 16 matches (32 players), we inject "Round 2 Matches", etc.
   const buildFullRoundList = (firstRoundName) => {
     // Count how many matches share exactly the first round name
-    const firstCount = matches.filter((m) => m.Round === firstRoundName)
+    const firstCount = matches.filter((m) => m.round === firstRoundName)
       .length;
 
     // If there is no data or an unexpected count, just show whatever rounds we saw
@@ -178,7 +178,7 @@ export default function MatchPlay() {
     // 2) Determine Round 1’s name and its match count:
     const roundOrder = extractRoundOrder();
     const firstRoundName = roundOrder[0];
-    const firstCount = matches.filter((m) => m.Round === firstRoundName).length;
+    const firstCount = matches.filter((m) => m.round === firstRoundName).length;
 
     // 3) Build the full list of round headings (e.g. ["Round 1", "Round 2", "Quarterfinals", …])
     const allRoundNames = buildFullRoundList(firstRoundName);
@@ -187,7 +187,7 @@ export default function MatchPlay() {
       <div className="bracket-container">
         {allRoundNames.map((roundName, c) => {
           // All matches that the API returned for this round:
-          const roundMatches = matches.filter((m) => m.Round === roundName);
+          const roundMatches = matches.filter((m) => m.round === roundName);
 
           // Compute how many “slots” this round should have:
           //   expectedMatches = firstCount / (2^c), floored to integer
@@ -227,19 +227,19 @@ export default function MatchPlay() {
 				} 
                 if (match) {
                   // We have a real match here
-                  const isP1Winner = match.Winner === match.Player1;
-                  const isP2Winner = match.Winner === match.Player2;
+                  const isP1Winner = match.winner === match.player1;
+                  const isP2Winner = match.winner === match.player2;
 
                   return (
                     <div
-                      key={match.id || `${match.Round}-${match.MatchNum}`}
+                      key={match.id || `${match.round}-${match.matchNum}`}
                       className="bracket-match"
                     >
                       <div className={`bracket-player${player1Extra}`}>
-                        {match.Player1 || '\u200B'}
+                        {match.player1 || '\u200B'}
                       </div>
                       <div className={`player2 bracket-player${player2Extra}`}>
-                        {match.Player2 || '\u200B'}
+                        {match.player2 || '\u200B'}
                       </div>
                     </div>
                   );
