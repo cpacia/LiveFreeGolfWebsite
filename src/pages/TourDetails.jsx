@@ -81,7 +81,7 @@ Ready to see how you perform under pressure? Join the Live Free Golf Tour and te
             <li>There are 12 regular season events plus two playoff events and a Championship.</li>
             <li>Similar to the FedEx Cup, players earn points based on their leaderboard finish.</li>
             <li>Only your top six point totals count toward your season total.</li>
-            <li>The top X [ask chad to clarify] players in points after the regular season for the first playoff event.</li>
+            <li>The top X [ask chad to clarify] players in points after the regular season qualify for the first playoff event.</li>
             <li>The top X [ask chad to clarify] players in points after the first playoff event qualify for the second playoff event.</li>
             <li>The top X [ask chad to clarify] players in points after the second playoff event qualify for the Championship.</li>
             <li>The Championship uses a "starting strokes" format whereby players start the tournament with different scores relative to par based on their season long point total.</li>
@@ -95,7 +95,7 @@ Ready to see how you perform under pressure? Join the Live Free Golf Tour and te
 
         <section id="teams">
           <h2>Teams</h2>
-          <p>Every event except the Championship has a team event that runs simultaneously. Players are placed into better ball teams of four. The lowest individual score on the hole is your team's score for that hole. Each member of the winning team earns 15 bonus points toward the season‑long race. 90% of handicap strokes are typically used for team play.</p>
+          <p>Every event except the Championship has a team event that runs simultaneously. Players are placed into better ball teams of four. The lowest individual score on the hole is your team's score for that hole. Each member of the winning team earns 15 bonus points toward the season‑long race. 85% of handicap strokes are typically used for team play.</p>
         </section>
 
         <section id="rules">
