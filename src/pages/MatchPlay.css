@@ -90,7 +90,6 @@
 /* Wraps all the columns side by side and allows horizontal scrolling */
 .bracket-container {
   display: flex;
-  gap: 2rem;
   justify-content: center;
   overflow-x: auto;
   padding-top: 1rem;
@@ -115,31 +114,23 @@
 
 /* Each match’s box (white background + subtle border) */
 .bracket-match {
-  background: #ffffff;
-  border: 1px solid var(--color-gray-light);
   border-radius: 4px;
-  margin-bottom: 1.5rem;
-  width: 140px;
+  margin-bottom: 2rem;
+  width: 180px;
 }
 
 /* Each player row within a match box */
 .bracket-player {
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 0.5rem;
   font-family: var(--font-body);
   font-size: 0.9rem;
   color: var(--color-dark);
-  border-bottom: 1px solid var(--color-gray-lighter);
+  border-bottom: 2px solid;
 }
 
-/* Remove bottom border on the last player row */
-.bracket-player:last-child {
-  border-bottom: none;
-}
-
-/* Highlight the winner in each match */
-.bracket-winner {
-  font-weight: 600;
-  color: var(--color-accent-yellow);
+.player2 {
+  padding-top: 2rem;
+  border-right: 2px solid;
 }
 
 /* ──────────────────────────────────────────────────────────── */

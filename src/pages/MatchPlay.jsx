@@ -166,28 +166,44 @@ export default function MatchPlay() {
 
   // ────────────────────────────────────────────────────────────────────────────
   // Render bracket columns in the exact order determined above
+    // ────────────────────────────────────────────────────────────────────────────
+  // Render bracket columns in the exact order determined above, but ALWAYS
+  // create “expectedMatches” slots per column (real matches + placeholders).
   const renderBracket = () => {
-    const roundOrder = extractRoundOrder();
-    if (roundOrder.length === 0) {
-      // No matches at all
+    // 1) If there are no matches at all:
+    if (matches.length === 0) {
       return <p>No bracket data yet.</p>;
     }
 
+    // 2) Determine Round 1’s name and its match count:
+    const roundOrder = extractRoundOrder();
     const firstRoundName = roundOrder[0];
+    const firstCount = matches.filter((m) => m.Round === firstRoundName).length;
+
+    // 3) Build the full list of round headings (e.g. ["Round 1", "Round 2", "Quarterfinals", …])
     const allRoundNames = buildFullRoundList(firstRoundName);
 
     return (
       <div className="bracket-container">
-        {allRoundNames.map((roundName) => {
-          // Filter matches whose Round string exactly equals this column header
+        {allRoundNames.map((roundName, c) => {
+          // All matches that the API returned for this round:
           const roundMatches = matches.filter((m) => m.Round === roundName);
+
+          // Compute how many “slots” this round should have:
+          //   expectedMatches = firstCount / (2^c), floored to integer
+          // (e.g., if firstCount=16, c=0 → 16; c=1 → 8; c=2 → 4, etc.)
+          const expectedMatches = Math.floor(firstCount / Math.pow(2, c));
 
           return (
             <div key={roundName} className="bracket-column">
+              {/* Column header */}
               <div className="bracket-header">{roundName}</div>
 
-              {roundMatches.length > 0 ? (
-                roundMatches.map((match) => {
+              {/* Loop over each “slot” index j = 0 … expectedMatches−1 */}
+              {Array.from({ length: expectedMatches }).map((_, j) => {
+                const match = roundMatches[j]; // may be undefined if API didn’t return
+                if (match) {
+                  // We have a real match here
                   const isP1Winner = match.Winner === match.Player1;
                   const isP2Winner = match.Winner === match.Player2;
 
@@ -204,7 +220,7 @@ export default function MatchPlay() {
                         {match.Player1 || "TBD"}
                       </div>
                       <div
-                        className={`bracket-player ${
+                        className={`player2 bracket-player ${
                           isP2Winner ? "bracket-winner" : ""
                         }`}
                       >
@@ -212,20 +228,23 @@ export default function MatchPlay() {
                       </div>
                     </div>
                   );
-                })
-              ) : (
-                // No matches for this column → show a placeholder pair of “—”
-                <div className="bracket-match-empty">
-                  <div className="bracket-player-empty">—</div>
-                  <div className="bracket-player-empty">—</div>
-                </div>
-              )}
+                } else {
+                  // Placeholder “empty” slot (the same size as a real match)
+                  return (
+                    <div key={`empty-${roundName}-${j}`} className="bracket-match-empty">
+                      <div className="bracket-player">—</div>
+                      <div className="player2 bracket-player">—</div>
+                    </div>
+                  );
+                }
+              })}
             </div>
           );
         })}
       </div>
     );
   };
+
 
   return (
     <div className="matchplay-content full-bleed">
