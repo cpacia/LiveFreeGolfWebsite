@@ -184,82 +184,82 @@ export default function MatchPlay() {
     const allRoundNames = buildFullRoundList(firstRoundName);
 
     return (
-      <div className="bracket-container">
-        {allRoundNames.map((roundName, c) => {
-          // All matches that the API returned for this round:
-          const roundMatches = matches.filter((m) => m.round === roundName);
+  <div className="bracket-container">
+    {(() => {
+      const winnerToScoreMap = new Map(); // winner -> score
 
-          // Compute how many “slots” this round should have:
-          //   expectedMatches = firstCount / (2^c), floored to integer
-          // (e.g., if firstCount=16, c=0 → 16; c=1 → 8; c=2 → 4, etc.)
-          
-          let expectedMatches = Math.floor(firstCount / Math.pow(2, c));
-			// If this is the very last column in allRoundNames, ensure at least one slot:
-			if (expectedMatches < 1 && c === allRoundNames.length - 1) {
-			  expectedMatches = 1;
-			}
+      return allRoundNames.map((roundName, c) => {
+        const roundMatches = matches.filter((m) => m.round === roundName);
 
-          return (
-            <div key={roundName} className="bracket-column">
-              {/* Column header */}
-              <div className="bracket-header">{roundName}</div>
+        let expectedMatches = Math.floor(firstCount / Math.pow(2, c));
+        if (expectedMatches < 1 && c === allRoundNames.length - 1) {
+          expectedMatches = 1;
+        }
 
-              {/* Loop over each “slot” index j = 0 … expectedMatches−1 */}
-              {Array.from({ length: expectedMatches }).map((_, j) => {
-                const match = roundMatches[j]; // may be undefined if API didn’t return
-                let player1Extra = "";
-                let player2Extra = "";
-				if (c === 1) {
-					player1Extra = " player1-round2";
-					player2Extra = " player2-round2";       
-				} else if (c === 2) {
-					player1Extra = " player1-round3";
-					player2Extra = " player2-round3";       
-				} else if (c === 3) {
-					player1Extra = " player1-round4"; 
-					player2Extra = " player2-round4";         
-				} else if (c === 4) {
-					player1Extra = " player1-round5";   
-					player2Extra = " player2-round5";
-				} else if (c === 5) {
-					player1Extra = " player1-round6";   
-					player2Extra = " player2-round6";
-				} 
-                if (match) {
-                  // We have a real match here
-                  const isP1Winner = match.winner === match.player1;
-                  const isP2Winner = match.winner === match.player2;
+        return (
+          <div key={roundName} className="bracket-column">
+            <div className="bracket-header">{roundName}</div>
 
-                  return (
-                    <div
-                      key={match.id || `${match.round}-${match.matchNum}`}
-                      className="bracket-match"
-                    >
-                      <div className={`bracket-player${player1Extra}`}>
-                        {match.player1 || '\u200B'}
-                      </div>
-                      <div className={`player2 bracket-player${player2Extra}`}>
-                        {match.player2 || '\u200B'}
-                      </div>
-                    </div>
-                  );
-                } else {
-                  // Placeholder “empty” slot (the same size as a real match)
-                  return (
-                    <div key={`empty-${roundName}-${j}`} className="bracket-match">
-                      <div className={`bracket-player${player1Extra}`}>&#8203;</div>
-                      <div className={`player2 bracket-player${player2Extra}`}>&#8203;</div>
-                    </div>
-                  );
+            {Array.from({ length: expectedMatches }).map((_, j) => {
+              const match = roundMatches[j];
+              let player1Extra = "", player2Extra = "";
+
+              if (c === 1) {
+                player1Extra = " player1-round2";
+                player2Extra = " player2-round2";
+              } else if (c === 2) {
+                player1Extra = " player1-round3";
+                player2Extra = " player2-round3";
+              } else if (c === 3) {
+                player1Extra = " player1-round4";
+                player2Extra = " player2-round4";
+              } else if (c === 4) {
+                player1Extra = " player1-round5";
+                player2Extra = " player2-round5";
+              } else if (c === 5) {
+                player1Extra = " player1-round6";
+                player2Extra = " player2-round6";
+              }
+
+              if (match) {
+                // Store winner -> score in map
+                if (match.winner && match.score) {
+                  winnerToScoreMap.set(match.winner, match.score);
                 }
-              })}
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
 
+                // Retrieve previous scores if available
+                const p1ScoreFromLastRound = winnerToScoreMap.get(match.player1);
+                const p2ScoreFromLastRound = winnerToScoreMap.get(match.player2);
+
+                return (
+                  <div
+                    key={match.id || `${match.round}-${match.matchNum}`}
+                    className="bracket-match"
+                  >
+                    <div className={`bracket-player1 bracket-player${player1Extra}`} data-score={p1ScoreFromLastRound || ""}>
+                      {match.player1 || '\u200B'}
+                    </div>
+                    <div className={`bracket-player2 player2 bracket-player${player2Extra}`} data-score={p2ScoreFromLastRound || ""}>
+                      {match.player2 || '\u200B'}
+                    </div>
+                  </div>
+                );
+              } else {
+                return (
+                  <div key={`empty-${roundName}-${j}`} className="bracket-match">
+                    <div className={`bracket-player${player1Extra}`}>&#8203;</div>
+                    <div className={`player2 bracket-player${player2Extra}`}>&#8203;</div>
+                  </div>
+                );
+              }
+            })}
+          </div>
+        );
+      });
+    })()}
+  </div>
+);
+}
 
   return (
     <div className="matchplay-wrapper">

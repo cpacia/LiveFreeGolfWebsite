@@ -133,6 +133,7 @@
 
 /* Each player row within a match box */
 .bracket-player {
+  position: relative;
   padding: 0.5rem 0.5rem;
   font-family: var(--font-body);
   font-size: 0.9rem;
@@ -229,4 +230,31 @@
   color: #ffffff;
 }
 
+.bracket-player1::after {
+  content: attr(data-score);
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translateY(45px) translateX(-80px);
+  font-size: 0.85rem;
+  color: #555;
+  white-space: nowrap;
+  z-index: 1;
+  left: auto;
+  right: 0;
+}
+
+.bracket-player2::after {
+  content: attr(data-score);
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translateY(140px) translateX(-80px);
+  font-size: 0.85rem;
+  color: #555;
+  white-space: nowrap;
+  z-index: 1;
+  left: auto;
+  right: 0;
+}
 
