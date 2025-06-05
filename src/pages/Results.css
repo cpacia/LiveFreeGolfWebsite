@@ -254,3 +254,8 @@
 .teams-table td:nth-child(3) {
   width: 3%;    /* Rank (narrow) */
 }
+
+.teams-table th:nth-child(4),
+.teams-table td:nth-child(4) {
+  width: 3%;    /* Rank (narrow) */
+}
