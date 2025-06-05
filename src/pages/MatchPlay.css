@@ -21,7 +21,7 @@
 
 /* 2) Re-use the same “content-container” concept as Standings.jsx */
 .matchplay-content-container {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 0 1rem;
   display: flex;
@@ -179,6 +179,16 @@
 .player2-round5 {
 	padding-top: 65rem;
 	margin-bottom: 14rem;
+}
+
+/* Champion */
+.player1-round6 {
+	margin-top: 66rem;
+}
+
+.player2-round6 {
+	border-bottom: 2px transparent;
+	border-right: 2px transparent;
 }
 
 

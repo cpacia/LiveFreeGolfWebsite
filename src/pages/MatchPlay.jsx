@@ -192,7 +192,12 @@ export default function MatchPlay() {
           // Compute how many “slots” this round should have:
           //   expectedMatches = firstCount / (2^c), floored to integer
           // (e.g., if firstCount=16, c=0 → 16; c=1 → 8; c=2 → 4, etc.)
-          const expectedMatches = Math.floor(firstCount / Math.pow(2, c));
+          
+          let expectedMatches = Math.floor(firstCount / Math.pow(2, c));
+			// If this is the very last column in allRoundNames, ensure at least one slot:
+			if (expectedMatches < 1 && c === allRoundNames.length - 1) {
+			  expectedMatches = 1;
+			}
 
           return (
             <div key={roundName} className="bracket-column">
@@ -216,6 +221,9 @@ export default function MatchPlay() {
 				} else if (c === 4) {
 					player1Extra = " player1-round5";   
 					player2Extra = " player2-round5";
+				} else if (c === 5) {
+					player1Extra = " player1-round6";   
+					player2Extra = " player2-round6";
 				} 
                 if (match) {
                   // We have a real match here
@@ -228,10 +236,10 @@ export default function MatchPlay() {
                       className="bracket-match"
                     >
                       <div className={`bracket-player${player1Extra}`}>
-                        {match.Player1 || "TBD"}
+                        {match.Player1 || '\u200B'}
                       </div>
                       <div className={`player2 bracket-player${player2Extra}`}>
-                        {match.Player2 || "TBD"}
+                        {match.Player2 || '\u200B'}
                       </div>
                     </div>
                   );
@@ -239,8 +247,8 @@ export default function MatchPlay() {
                   // Placeholder “empty” slot (the same size as a real match)
                   return (
                     <div key={`empty-${roundName}-${j}`} className="bracket-match">
-                      <div className={`bracket-player${player1Extra}`}>--</div>
-                      <div className={`player2 bracket-player${player2Extra}`}>--</div>
+                      <div className={`bracket-player${player1Extra}`}>&#8203;</div>
+                      <div className={`player2 bracket-player${player2Extra}`}>&#8203;</div>
                     </div>
                   );
                 }
