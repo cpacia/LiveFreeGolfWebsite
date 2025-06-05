@@ -20,27 +20,28 @@
   /* Instead of minmax(240px,1fr), allow more breathing room: */
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1rem;
-  max-width: 960px;        /* up from 1200px if you’d like, or keep as is */
+  max-width: 960px; /* up from 1200px if you’d like, or keep as is */
   margin: 0 auto;
 }
 
 @media (min-width: 900px) {
   .membership-grid {
-    grid-template-columns: repeat(3, 1fr);  /* always 3 columns */
-   }
+    grid-template-columns: repeat(3, 1fr); /* always 3 columns */
+  }
 }
-
 
 /* Card base */
 .tier-card {
-  background: #fcfcf9; 
+  background: #fcfcf9;
   border: 2px solid var(--color-primary-green);
   border-radius: 8px;
   padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
   max-width: 320px;
   margin: 0 auto;
 }
@@ -62,7 +63,7 @@
 }
 
 .tier-card:nth-child(1) .tier-cta:hover {
-  background: #d1a640;  
+  background: #d1a640;
   color: var(--color-dark);
 }
 
@@ -72,7 +73,7 @@
 }
 
 .tier-card:nth-child(3) .tier-cta:hover {
-  background: #d1a640;  
+  background: #d1a640;
   color: var(--color-dark);
 }
 
@@ -115,7 +116,9 @@
   font-family: var(--font-heading);
   font-weight: 600;
   text-decoration: none;
-  transition: background 0.2s, transform 0.1s;
+  transition:
+    background 0.2s,
+    transform 0.1s;
 }
 
 .tier-cta:hover {
@@ -123,4 +126,3 @@
   background: var(--color-accent-yellow);
   color: var(--color-dark);
 }
-

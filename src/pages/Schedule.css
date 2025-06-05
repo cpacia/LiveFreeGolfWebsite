@@ -7,11 +7,11 @@
 /* ----------------------------------------------------------- */
 
 .schedule-container {
-  max-width: 1200px;                     /* match your .container width */
+  max-width: 1200px; /* match your .container width */
   margin: 0 auto;
-  padding: 1rem;                         /* a little breathing room */
-  font-family: var(--font-body);         /* Lora, serif */
-  color: var(--color-dark);             /* #333333 */
+  padding: 1rem; /* a little breathing room */
+  font-family: var(--font-body); /* Lora, serif */
+  color: var(--color-dark); /* #333333 */
 }
 
 /* ----------------------------------------------------------- */
@@ -42,7 +42,7 @@
 }
 
 .filters label {
-  font-family: var(--font-heading);      /* Montserrat */
+  font-family: var(--font-heading); /* Montserrat */
   font-size: 1rem;
   color: var(--color-dark);
 }
@@ -51,7 +51,7 @@
   padding: 0.5rem 1.5rem;
   padding-left: 1rem;
   font-size: 1rem;
-  border: 1px solid #e0e0e0; 
+  border: 1px solid #e0e0e0;
   border-radius: 4px;
   background: #ffffff;
   color: var(--color-dark);
@@ -61,7 +61,7 @@
   /* move the arrow icon 1rem from the right edge instead of 0.75rem */
   background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%23666' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right .5rem center;
+  background-position: right 0.5rem center;
   background-size: 10px 6px;
 }
 
@@ -91,9 +91,8 @@
   outline: none;
   box-shadow: none;
   /* Force the same border as the unfocused state */
-  border: 1px solid #e0e0e0; 
+  border: 1px solid #e0e0e0;
 }
-
 
 /* ----------------------------------------------------------- */
 /*  4) Season Header (“2025 Season”)                           */
@@ -101,13 +100,13 @@
 
 .season-header {
   font-size: 2rem;
-  font-family: var(--font-heading);      /* Montserrat */
-  color: var(--color-primary-green);    
+  font-family: var(--font-heading); /* Montserrat */
+  color: var(--color-primary-green);
   margin-bottom: 1rem;
   text-align: center;
   text-align: left;
   border-bottom: 2px solid #e0e0e0;
-  padding-bottom: .75rem;
+  padding-bottom: 0.75rem;
   border-color: var(--color-primary-green);
 }
 
@@ -168,15 +167,15 @@
 }
 
 .event-name {
-  font-size: 1.125rem;                   /* 18px */
-  font-family: var(--font-heading);      /* Montserrat */
+  font-size: 1.125rem; /* 18px */
+  font-family: var(--font-heading); /* Montserrat */
   font-weight: 500;
   margin-bottom: 0.25rem;
   color: var(--color-dark);
 }
 
 .event-meta {
-  font-size: 0.875rem;                   /* 14px */
+  font-size: 0.875rem; /* 14px */
   color: #555555;
 }
 
@@ -190,7 +189,7 @@
 }
 
 .handicap {
-  font-size: 0.875rem;                   /* 14px */
+  font-size: 0.875rem; /* 14px */
   color: var(--color-dark);
 }
 
@@ -201,9 +200,9 @@
 .action-link a {
   display: inline-block;
   background-color: var(--color-accent-yellow); /* #F2C14E */
-  color: var(--color-dark);                     /* #333333 */
+  color: var(--color-dark); /* #333333 */
   text-decoration: none;
-  padding: 0.5rem 1rem;                         /* 8px 16px */
+  padding: 0.5rem 1rem; /* 8px 16px */
   border-radius: 4px;
   font-family: var(--font-body);
   font-weight: 500;
@@ -212,12 +211,12 @@
 
 .action-link a:hover {
   color: #111;
-  background-color: #d1a640;                    /* darker #F2C14E */
+  background-color: #d1a640; /* darker #F2C14E */
 }
 
 .action-link span {
   font-style: italic;
-  font-size: 0.875rem;                          /* 14px */
+  font-size: 0.875rem; /* 14px */
 }
 
 .results-link a {
@@ -225,7 +224,7 @@
   background-color: var(--color-primary-green);
   color: #fff;
   text-decoration: none;
-  padding: 0.5rem 1rem;                         /* 8px 16px */
+  padding: 0.5rem 1rem; /* 8px 16px */
   border-radius: 4px;
   font-family: var(--font-body);
   font-weight: 500;
@@ -234,12 +233,12 @@
 
 .results-link a:hover {
   color: #fff;
-  background-color: #264C3C;                  
+  background-color: #264c3c;
 }
 
 .results-link span {
   font-style: italic;
-  font-size: 0.875rem;                          /* 14px */
+  font-size: 0.875rem; /* 14px */
 }
 
 /* ----------------------------------------------------------- */
@@ -256,4 +255,3 @@
     align-self: flex-end;
   }
 }
-

@@ -67,8 +67,8 @@
     width: 48%;
   }
   select,
-  input[type='text'],
-  input[type='number'] {
+  input[type="text"],
+  input[type="number"] {
     width: 100%;
   }
   .cell-actions {
@@ -97,4 +97,3 @@
   background: #f0f0f0;
   border-color: #555;
 }
-

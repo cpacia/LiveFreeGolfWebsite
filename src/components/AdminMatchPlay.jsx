@@ -1,6 +1,6 @@
 // src/components/AdminMatchPlay.jsx
-import React, { useState, useEffect } from 'react';
-import './AdminStandings.css';
+import React, { useState, useEffect } from "react";
+import "./AdminStandings.css";
 
 export default function AdminMatchPlay() {
   // ─── 1) State Hooks ──────────────────────────────────────────────
@@ -14,16 +14,16 @@ export default function AdminMatchPlay() {
 
   // ─── 2) Utility: strip “http(s)://” + truncate ────────────────────
   function stripProtocol(url) {
-    if (!url) return '';
-    const noProto = url.replace(/^https?:\/\//, '');
+    if (!url) return "";
+    const noProto = url.replace(/^https?:\/\//, "");
     const MAX = 38;
-    return noProto.length <= MAX ? noProto : noProto.slice(0, MAX - 1) + '...';
+    return noProto.length <= MAX ? noProto : noProto.slice(0, MAX - 1) + "...";
   }
 
   // ─── 3) Fetch existing standings on mount ─────────────────────────
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:8080/match-play', { credentials: 'include' })
+    fetch("http://localhost:8080/match-play", { credentials: "include" })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -44,8 +44,8 @@ export default function AdminMatchPlay() {
         }
       })
       .catch((err) => {
-        console.error('Error fetching match play:', err);
-        setError(err.message || 'Unknown error');
+        console.error("Error fetching match play:", err);
+        setError(err.message || "Unknown error");
       })
       .finally(() => setLoading(false));
   }, []);
@@ -65,7 +65,7 @@ export default function AdminMatchPlay() {
       <div className="standings-header">
         <h1>Match Play</h1>
         <button className="btn-add-standing">Add Year</button>
-        <p style={{ color: 'red' }}>Error: {error}</p>
+        <p style={{ color: "red" }}>Error: {error}</p>
       </div>
     );
   }
@@ -79,9 +79,9 @@ export default function AdminMatchPlay() {
     const placeholder = {
       id: tempId,
       year: todayYear,
-      bracketUrl: '',
+      bracketUrl: "",
       registrationOpen: false,
-      shopifyUrl: '',
+      shopifyUrl: "",
       cacheKey: Date.now(),
     };
 
@@ -94,9 +94,9 @@ export default function AdminMatchPlay() {
   const handleSave = () => {
     if (!draft) return;
 
-    const isNew = String(draft.id).startsWith('__new__');
-    const url = 'http://localhost:8080/match-play';
-    const method = isNew ? 'POST' : 'PUT';
+    const isNew = String(draft.id).startsWith("__new__");
+    const url = "http://localhost:8080/match-play";
+    const method = isNew ? "POST" : "PUT";
 
     const payload = {
       ...(isNew ? {} : { ID: draft.id }),
@@ -108,8 +108,8 @@ export default function AdminMatchPlay() {
 
     fetch(url, {
       method,
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     })
       .then((res) => {
@@ -133,7 +133,7 @@ export default function AdminMatchPlay() {
         setMatchPlay((prev) => {
           if (isNew) {
             const filtered = prev.filter(
-              (r) => !String(r.id).startsWith('__new__')
+              (r) => !String(r.id).startsWith("__new__"),
             );
             return [saved, ...filtered];
           } else {
@@ -145,14 +145,14 @@ export default function AdminMatchPlay() {
         setDraft(null);
       })
       .catch((err) => {
-        console.error('Save failed:', err);
+        console.error("Save failed:", err);
         window.alert(`Save failed: ${err.message}`);
       });
   };
 
   // ─── 7) Cancel Editing ────────────────────────────────────────────
   const handleCancel = (row) => {
-    const isNew = String(row.id).startsWith('__new__');
+    const isNew = String(row.id).startsWith("__new__");
     if (isNew) {
       setMatchPlay((prev) => prev.filter((r) => r.id !== row.id));
     }
@@ -164,48 +164,46 @@ export default function AdminMatchPlay() {
   const handleDelete = (row) => {
     if (
       !window.confirm(
-        `Are you sure you want to delete match play for ${row.year}?`
+        `Are you sure you want to delete match play for ${row.year}?`,
       )
     ) {
       return;
     }
 
-    fetch('http://localhost:8080/match-play', {
-      method: 'DELETE',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
+    fetch("http://localhost:8080/match-play", {
+      method: "DELETE",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ year: row.year }),
     })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        setMatchPlay((prev) =>
-          prev.filter((r) => r.year !== row.year)
-        );
+        setMatchPlay((prev) => prev.filter((r) => r.year !== row.year));
       })
-      .catch((err) => console.error('Delete failed:', err));
+      .catch((err) => console.error("Delete failed:", err));
   };
 
   // ─── 9) Refresh (by calendarYear) ─────────────────────────────────
   const handleRefresh = (row) => {
     if (
       !window.confirm(
-        `Are you sure you want to refresh match play bracket for ${row.year}?`
+        `Are you sure you want to refresh match play bracket for ${row.year}?`,
       )
     ) {
       return;
     }
 
-    fetch('http://localhost:8080/refresh-match-play-bracket', {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
+    fetch("http://localhost:8080/refresh-match-play-bracket", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ year: row.year }),
     })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         console.log(`Refreshed standings for ${row.year}`);
       })
-      .catch((err) => console.error('Refresh failed:', err));
+      .catch((err) => console.error("Refresh failed:", err));
   };
 
   // ─── 10) Main Render ─────────────────────────────────────────────
@@ -226,8 +224,8 @@ export default function AdminMatchPlay() {
 
           return (
             <div
-              className={`card-table-container card-table-width ${isEditing ? 'editing' : ''}`}
-              key={row.id + '_' + row.cacheKey}
+              className={`card-table-container card-table-width ${isEditing ? "editing" : ""}`}
+              key={row.id + "_" + row.cacheKey}
             >
               {/* Header Bar: Static “Calendar Year” */}
               <div className="card-table-header">{row.year}</div>
@@ -318,11 +316,11 @@ export default function AdminMatchPlay() {
                           {stripProtocol(row.bracketUrl)}
                         </a>
                       ) : (
-                        '—'
+                        "—"
                       )}
                     </td>
                   </tr>
-                  
+
                   {/* Row 3: Shopify URL */}
                   <tr>
                     <td className="cell-label">Shopify URL</td>
@@ -349,35 +347,35 @@ export default function AdminMatchPlay() {
                           {stripProtocol(row.shopifyUrl)}
                         </a>
                       ) : (
-                        '—'
+                        "—"
                       )}
                     </td>
                   </tr>
 
                   {/* Row 4: Registration Open */}
-				    <tr>
-				      <td className="cell-label">Registration Open</td>
-				      <td className="cell-value2">
-				        {isEditing ? (
-				          <select
-				            value={draft.registrationOpen ? 'yes' : 'no'}
-				            onChange={(e) =>
-				              setDraft({
-				                ...draft,
-				                registrationOpen: e.target.value === 'yes',
-				              })
-				            }
-				          >
-				            <option value="yes">Yes</option>
-				            <option value="no">No</option>
-				          </select>
-				        ) : row.registrationOpen ? (
-				          <span className="status-open">Yes</span>
-				        ) : (
-				          <span className="status-closed">No</span>
-				        )}
-				      </td>
-				    </tr>
+                  <tr>
+                    <td className="cell-label">Registration Open</td>
+                    <td className="cell-value2">
+                      {isEditing ? (
+                        <select
+                          value={draft.registrationOpen ? "yes" : "no"}
+                          onChange={(e) =>
+                            setDraft({
+                              ...draft,
+                              registrationOpen: e.target.value === "yes",
+                            })
+                          }
+                        >
+                          <option value="yes">Yes</option>
+                          <option value="no">No</option>
+                        </select>
+                      ) : row.registrationOpen ? (
+                        <span className="status-open">Yes</span>
+                      ) : (
+                        <span className="status-closed">No</span>
+                      )}
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -387,4 +385,3 @@ export default function AdminMatchPlay() {
     </>
   );
 }
-

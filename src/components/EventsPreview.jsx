@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import './EventsPreview.css';
+import React, { useEffect, useState } from "react";
+import "./EventsPreview.css";
 
 export default function EventsPreview({ limit = 3, eventsEndpoint }) {
   const [events, setEvents] = useState([]);
@@ -27,4 +27,3 @@ export default function EventsPreview({ limit = 3, eventsEndpoint }) {
     </section>
   );
 }
-

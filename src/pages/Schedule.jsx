@@ -1,31 +1,30 @@
 // src/components/Schedule.jsx
 
-import React, { useEffect, useState } from 'react';
-import './Schedule.css';
+import React, { useEffect, useState } from "react";
+import "./Schedule.css";
 
 export default function Schedule() {
-  const [years, setYears] = useState([]);              // e.g. [2025, 2024, 2023, …]
-  const [season, setSeason] = useState(null);          // e.g. 2025
-  const [filter, setFilter] = useState('All');         // 'All' | 'Upcoming' | 'Completed'
-  const [events, setEvents] = useState([]);            // raw array of Event objects
+  const [years, setYears] = useState([]); // e.g. [2025, 2024, 2023, …]
+  const [season, setSeason] = useState(null); // e.g. 2025
+  const [filter, setFilter] = useState("All"); // 'All' | 'Upcoming' | 'Completed'
+  const [events, setEvents] = useState([]); // raw array of Event objects
   const [loading, setLoading] = useState(true);
-  
-    // ─────── New: helper to format "2025-05-26" as "May 26" ───────
- function formatDateWithoutYear(isoDateString) {
-   // Parse the ISO date string (e.g. "2025-05-26")
-   const dt = new Date(isoDateString);
-   // Use toLocaleDateString to get "May 26"
-   return dt.toLocaleDateString('en-US', {
-     month: 'short',
-     day: 'numeric'
-   });
- }
 
+  // ─────── New: helper to format "2025-05-26" as "May 26" ───────
+  function formatDateWithoutYear(isoDateString) {
+    // Parse the ISO date string (e.g. "2025-05-26")
+    const dt = new Date(isoDateString);
+    // Use toLocaleDateString to get "May 26"
+    return dt.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    });
+  }
 
   // Helper: build the URL for a given year (or none for the “current”)
   function buildFetchUrl(year) {
     if (!year) {
-      return 'http://localhost:8080/events';
+      return "http://localhost:8080/events";
     }
     return `http://localhost:8080/events?year=${year}`;
   }
@@ -34,16 +33,16 @@ export default function Schedule() {
   useEffect(() => {
     setLoading(true);
     fetch(buildFetchUrl(null))
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         // data = { calendarYear: number, additionalYears: number[], events: Event[] }
         const allYears = [data.calendarYear, ...data.additionalYears];
         setYears(allYears);
         setSeason(data.calendarYear);
         setEvents(data.events);
       })
-      .catch(err => {
-        console.error('Failed to load events:', err);
+      .catch((err) => {
+        console.error("Failed to load events:", err);
       })
       .finally(() => {
         setLoading(false);
@@ -55,12 +54,12 @@ export default function Schedule() {
     if (season == null) return;
     setLoading(true);
     fetch(buildFetchUrl(season))
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         setEvents(data.events);
       })
-      .catch(err => {
-        console.error('Failed to load events for year', season, err);
+      .catch((err) => {
+        console.error("Failed to load events for year", season, err);
       })
       .finally(() => {
         setLoading(false);
@@ -73,14 +72,14 @@ export default function Schedule() {
     const now = new Date();
 
     // Filter by “All” / “Upcoming” / “Completed”
-    let subset = events.filter(evt => {
-      if (filter === 'All') return true;
-      if (filter === 'Upcoming') {
+    let subset = events.filter((evt) => {
+      if (filter === "All") return true;
+      if (filter === "Upcoming") {
         // Upcoming = not complete AND event date is >= today
         const evtDate = new Date(evt.date);
         return !evt.isComplete && evtDate >= now;
       }
-      if (filter === 'Completed') {
+      if (filter === "Completed") {
         return evt.isComplete;
       }
       return true;
@@ -115,7 +114,7 @@ export default function Schedule() {
           <span className="visually-hidden">Season:</span>
           <select
             className="schedule-dropdown"
-            value={season || ''}
+            value={season || ""}
             onChange={onSeasonChange}
           >
             {years.map((y) => (
@@ -165,14 +164,20 @@ export default function Schedule() {
                     // Remove this handler so we don't loop if default-logo.png also fails
                     e.currentTarget.onerror = null;
                     // Fallback to our local default logo
-                    e.currentTarget.src = '/images/default-logo.png';
+                    e.currentTarget.src = "/images/default-logo.png";
                   }}
                 />
 
                 <div className="event-info">
-                  <div className="event-name"><a href={evt.blueGolfUrl} target="_blank" rel="noopener noreferrer">
-						{evt.name}
-					  </a></div>
+                  <div className="event-name">
+                    <a
+                      href={evt.blueGolfUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {evt.name}
+                    </a>
+                  </div>
                   <div className="event-meta">
                     {formatDateWithoutYear(evt.date)} &nbsp;|&nbsp; {evt.course}
                     <br />
@@ -200,7 +205,7 @@ export default function Schedule() {
                   // Not complete + registration is open → “Register”
                   <div className="action-link">
                     <a
-                      href={evt.shopifyUrl || evt.blueGolfUrl || '#'}
+                      href={evt.shopifyUrl || evt.blueGolfUrl || "#"}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -219,4 +224,3 @@ export default function Schedule() {
     </div>
   );
 }
-

@@ -71,13 +71,13 @@
   box-sizing: border-box;
 
   /* You no longer need any justify-content or margin-left hacks */
-  display: block; 
+  display: block;
 }
 
 .admin-inner {
   /* If you want a max-width inside the content, set it here.
      Otherwise, remove max-width or set it to none to let content fill all of .admin-content. */
-  
+
   /* OPTION A: Keep an 800px cap (centered within .admin-content) */
   /* max-width: 800px;
      margin: 0 auto;   <-- center the inner content if you want that narrower look */
@@ -89,4 +89,3 @@
   /* Text‐alignment is your choice (center for headlines, left for paragraphs, etc.) */
   text-align: left;
 }
-

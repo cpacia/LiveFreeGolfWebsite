@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './HeroCarousel.css';
+import React, { useState, useEffect, useRef } from "react";
+import "./HeroCarousel.css";
 
 const staticSlides = [
   {
-    id: 'blurb', // ← unique key
-    img: '/images/slide1.png',
+    id: "blurb", // ← unique key
+    img: "/images/slide1.png",
     isBlurb: true,
-    blurbTitle: 'About Live Free Golf',
-    blurbText: '…',
-    cta: { text: 'Learn More', href: '/tour-info' }
+    blurbTitle: "About Live Free Golf",
+    blurbText: "…",
+    cta: { text: "Learn More", href: "/tour-info" },
   },
 ];
 
@@ -33,10 +33,10 @@ export default function HeroCarousel() {
   };
 
   const fmt = (date) =>
-    new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
+    new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
     }).format(date);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function HeroCarousel() {
 
       try {
         // ← Changed to point at your Go endpoint:
-        const eventsRes = await fetch('http://localhost:8080/events');
+        const eventsRes = await fetch("http://localhost:8080/events");
         const data = await eventsRes.json();
         // Extract the `events` array from the response:
         const allEvents = Array.isArray(data.events) ? data.events : [];
@@ -55,7 +55,7 @@ export default function HeroCarousel() {
         const upcoming = allEvents
           .map((e) => ({
             ...e,
-            dateObj: new Date(e.date + 'T00:00:00'),
+            dateObj: new Date(e.date + "T00:00:00"),
           }))
           .filter((e) => e.dateObj >= today)
           .sort((a, b) => a.dateObj - b.dateObj);
@@ -66,28 +66,28 @@ export default function HeroCarousel() {
             id: nextEvent.EventID,
             img: `/images/slide2.png`,
             isEvent: true,
-            label: 'Next Event',
+            label: "Next Event",
             name: nextEvent.name,
             date: nextEvent.dateObj,
             course: nextEvent.course,
           });
         }
       } catch (err) {
-        console.error('Failed to load events:', err);
+        console.error("Failed to load events:", err);
       }
 
       try {
-        const postsRes = await fetch('/blog-posts.json');
+        const postsRes = await fetch("/blog-posts.json");
         const posts = await postsRes.json();
         const latest = posts
-          .map((p) => ({ ...p, dateObj: new Date(p.date + 'T00:00:00') }))
+          .map((p) => ({ ...p, dateObj: new Date(p.date + "T00:00:00") }))
           .sort((a, b) => b.dateObj - a.dateObj)[0];
 
         if (latest) {
           slides.push({
             id: latest.id || latest.slug,
             isPost: true,
-            img: '/images/slide3.png',
+            img: "/images/slide3.png",
             thumbnailUrl: latest.thumbnailUrl,
             padding: latest.thumbnailPadding,
             dateObj: latest.dateObj,
@@ -97,7 +97,7 @@ export default function HeroCarousel() {
           });
         }
       } catch (err) {
-        console.error('Failed to load posts:', err);
+        console.error("Failed to load posts:", err);
       }
 
       setSlides(slides);
@@ -138,7 +138,10 @@ export default function HeroCarousel() {
       {slides.map((s, i) => (
         <div
           key={s.id}
-          className={`slide${i === index ? ' active' : ''}` + (s.isPost ? ' post-wrapper' : '')}
+          className={
+            `slide${i === index ? " active" : ""}` +
+            (s.isPost ? " post-wrapper" : "")
+          }
           style={s.img ? { backgroundImage: `url(${s.img})` } : {}}
         >
           <div className="slide-content">
@@ -222,4 +225,3 @@ export default function HeroCarousel() {
     </div>
   );
 }
-

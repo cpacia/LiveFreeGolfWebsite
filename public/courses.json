@@ -127,7 +127,7 @@
     "thumbnail": "granite-fields.jpg",
     "link": "https://granitefields.com/"
   },
-   {
+  {
     "id": "northern-spy",
     "name": "Northern Spy Golf Club",
     "city": "Townsend",
@@ -167,7 +167,7 @@
     "thumbnail": "keene.jpg",
     "link": "https://keenecountryclub.com/"
   },
-   {
+  {
     "id": "haverhill",
     "name": "Haverhill Golf & Country Club",
     "city": "Haverhill",
@@ -183,7 +183,7 @@
     "thumbnail": "loudon.webp",
     "link": "https://www.loudoncc.com/"
   },
-   {
+  {
     "id": "beaver-meadow",
     "name": "Beaver Meadow Golf Club",
     "city": "Concord",

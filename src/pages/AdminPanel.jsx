@@ -1,41 +1,57 @@
 // src/pages/AdminPanel.jsx
-import React from 'react';
-import { Link, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import AdminSchedule from '../components/AdminSchedule';
-import AdminStandings from '../components/AdminStandings'; 
-import AdminChangePassword from '../components/AdminChangePassword'; 
-import AdminDisabledList from '../components/AdminDisabledList';
-import AdminMatchPlay from '../components/AdminMatchPlay';
-import AdminColonyCup from '../components/AdminColonyCup';
-import './AdminPanel.css';
+import React from "react";
+import { Link, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import AdminSchedule from "../components/AdminSchedule";
+import AdminStandings from "../components/AdminStandings";
+import AdminChangePassword from "../components/AdminChangePassword";
+import AdminDisabledList from "../components/AdminDisabledList";
+import AdminMatchPlay from "../components/AdminMatchPlay";
+import AdminColonyCup from "../components/AdminColonyCup";
+import "./AdminPanel.css";
 
 export default function AdminPanel() {
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	const handleLogout = async () => {
-	  try {
-		await fetch('http://localhost:8080/logout', {
-		  method: 'POST',
-		  credentials: 'include',
-		});
-		window.location.href = '/admin/login';
-	  } catch (err) {
-		console.error('Logout failed', err);
-	  }
-	};
+  const handleLogout = async () => {
+    try {
+      await fetch("http://localhost:8080/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      window.location.href = "/admin/login";
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
+  };
 
   return (
     <div className="admin-layout full-bleed">
       <nav className="admin-sidebar">
         <h2>Admin</h2>
         <ul>
-          <li><Link to="/admin/schedule">Schedule</Link></li>
-          <li><Link to="/admin/standings">Standings</Link></li>
-          <li><Link to="/admin/match-play">Match Play</Link></li>
-          <li><Link to="/admin/colony-cup">Colony Cup</Link></li>
-          <li><Link to="/admin/disabled-list">Disabled List</Link></li>
-          <li><Link to="/admin/change-password">Change Password</Link></li>
-          <li><Link onClick={handleLogout}><i className="fas fa-sign-out-alt"></i> Logout</Link></li>
+          <li>
+            <Link to="/admin/schedule">Schedule</Link>
+          </li>
+          <li>
+            <Link to="/admin/standings">Standings</Link>
+          </li>
+          <li>
+            <Link to="/admin/match-play">Match Play</Link>
+          </li>
+          <li>
+            <Link to="/admin/colony-cup">Colony Cup</Link>
+          </li>
+          <li>
+            <Link to="/admin/disabled-list">Disabled List</Link>
+          </li>
+          <li>
+            <Link to="/admin/change-password">Change Password</Link>
+          </li>
+          <li>
+            <Link onClick={handleLogout}>
+              <i className="fas fa-sign-out-alt"></i> Logout
+            </Link>
+          </li>
         </ul>
       </nav>
 
@@ -46,9 +62,18 @@ export default function AdminPanel() {
             <Route
               index
               element={
-                <div style={{ padding: '0rem', fontSize: '3.25rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+                <div
+                  style={{
+                    padding: "0rem",
+                    fontSize: "3.25rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "1rem",
+                  }}
+                >
                   Welcome to the Admin Panel
-                  <img style={{ height: '800px' }} src="images/scottie.jpg"/>
+                  <img style={{ height: "800px" }} src="images/scottie.jpg" />
                 </div>
               }
             />
@@ -69,10 +94,7 @@ export default function AdminPanel() {
             <Route path="disabled-list" element={<AdminDisabledList />} />
 
             {/* /admin/change-password */}
-            <Route
-              path="change-password"
-              element={<AdminChangePassword />}
-            />
+            <Route path="change-password" element={<AdminChangePassword />} />
 
             {/* Fallback: any other /admin/* → redirect back to /admin */}
             <Route path="*" element={<Navigate to="/admin" replace />} />
@@ -82,4 +104,3 @@ export default function AdminPanel() {
     </div>
   );
 }
-

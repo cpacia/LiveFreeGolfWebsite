@@ -1,6 +1,6 @@
 // src/components/AdminColonyCup.jsx
-import React, { useState, useEffect } from 'react';
-import './AdminStandings.css'; // Reuse card/table styling
+import React, { useState, useEffect } from "react";
+import "./AdminStandings.css"; // Reuse card/table styling
 
 export default function AdminColonyCup() {
   // ─── 1) State Hooks ──────────────────────────────────────────────
@@ -11,12 +11,12 @@ export default function AdminColonyCup() {
   const [isEditing, setIsEditing] = useState(false);
 
   // Temporary input for adding a new golfer to the list
-  const [newGolfer, setNewGolfer] = useState('');
+  const [newGolfer, setNewGolfer] = useState("");
 
   // ─── 2) Fetch single ColonyCupInfo on mount ──────────────────────
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:8080/colony-cup', { credentials: 'include' })
+    fetch("http://localhost:8080/colony-cup", { credentials: "include" })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -27,7 +27,7 @@ export default function AdminColonyCup() {
         let teamArray = [];
         if (Array.isArray(data.winningTeam)) {
           teamArray = data.winningTeam;
-        } else if (typeof data.winningTeam === 'string') {
+        } else if (typeof data.winningTeam === "string") {
           try {
             teamArray = JSON.parse(data.winningTeam);
           } catch {
@@ -36,15 +36,15 @@ export default function AdminColonyCup() {
         }
         const fresh = {
           id: data.ID || data.id,
-          year: data.year || '',
+          year: data.year || "",
           winningTeam: teamArray,
         };
         setInfo(fresh);
         setDraft({ ...fresh });
       })
       .catch((err) => {
-        console.error('Error fetching colony cup info:', err);
-        setError(err.message || 'Unknown error');
+        console.error("Error fetching colony cup info:", err);
+        setError(err.message || "Unknown error");
       })
       .finally(() => setLoading(false));
   }, []);
@@ -62,7 +62,7 @@ export default function AdminColonyCup() {
     return (
       <div className="standings-header">
         <h1>Colony Cup Settings</h1>
-        <p style={{ color: 'red' }}>Error: {error}</p>
+        <p style={{ color: "red" }}>Error: {error}</p>
       </div>
     );
   }
@@ -77,7 +77,7 @@ export default function AdminColonyCup() {
       winningTeam: [...info.winningTeam], // clone array
     });
     setIsEditing(true);
-    setNewGolfer('');
+    setNewGolfer("");
   };
 
   // ─── 5) Handle “Cancel” ───────────────────────────────────────────
@@ -85,7 +85,7 @@ export default function AdminColonyCup() {
     // Discard draft, revert to info
     setDraft({ year: info.year, winningTeam: [...info.winningTeam] });
     setIsEditing(false);
-    setNewGolfer('');
+    setNewGolfer("");
   };
 
   // ─── 6) Handle adding a new golfer to the list ────────────────────
@@ -93,14 +93,14 @@ export default function AdminColonyCup() {
     const name = newGolfer.trim();
     if (!name) return;
     if (draft.winningTeam.includes(name)) {
-      window.alert('This golfer is already in the winning team list.');
+      window.alert("This golfer is already in the winning team list.");
       return;
     }
     setDraft({
       ...draft,
       winningTeam: [...draft.winningTeam, name],
     });
-    setNewGolfer('');
+    setNewGolfer("");
   };
 
   // ─── 7) Handle removing a golfer by index ─────────────────────────
@@ -112,7 +112,7 @@ export default function AdminColonyCup() {
   // ─── 8) Handle “Save” (PUT) with error dialog ──────────────────────
   const handleSave = () => {
     if (!draft.year.trim()) {
-      window.alert('Year cannot be empty.');
+      window.alert("Year cannot be empty.");
       return;
     }
     // You could also enforce at least one golfer
@@ -126,12 +126,12 @@ export default function AdminColonyCup() {
       year: draft.year,
       winningTeam: draft.winningTeam,
     };
-    console.log('Saving ColonyCup payload:', payload);
+    console.log("Saving ColonyCup payload:", payload);
 
-    fetch('http://localhost:8080/colony-cup', {
-      method: 'PUT',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
+    fetch("http://localhost:8080/colony-cup", {
+      method: "PUT",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     })
       .then(async (res) => {
@@ -148,7 +148,7 @@ export default function AdminColonyCup() {
           let teamArr = [];
           if (Array.isArray(returned.winningTeam)) {
             teamArr = returned.winningTeam;
-          } else if (typeof returned.winningTeam === 'string') {
+          } else if (typeof returned.winningTeam === "string") {
             try {
               teamArr = JSON.parse(returned.winningTeam);
             } catch {
@@ -161,12 +161,16 @@ export default function AdminColonyCup() {
             winningTeam: teamArr,
           });
         } else {
-          setInfo({ id: info.id, year: draft.year, winningTeam: [...draft.winningTeam] });
+          setInfo({
+            id: info.id,
+            year: draft.year,
+            winningTeam: [...draft.winningTeam],
+          });
         }
         setIsEditing(false);
       })
       .catch((err) => {
-        console.error('Save failed:', err);
+        console.error("Save failed:", err);
         window.alert(`Error saving colony cup info: ${err.message}`);
       });
   };
@@ -175,11 +179,16 @@ export default function AdminColonyCup() {
   return (
     <div className="colony-cup-page">
       {/* Header */}
-      <div className="card-table-header card-table-header-width" style={{ marginBottom: '1rem' }}>
+      <div
+        className="card-table-header card-table-header-width"
+        style={{ marginBottom: "1rem" }}
+      >
         Colony Cup Settings
       </div>
 
-      <div className={`card-table-container card-table-width ${isEditing ? 'editing' : ''}`}>
+      <div
+        className={`card-table-container card-table-width ${isEditing ? "editing" : ""}`}
+      >
         <table className="admin-standings-table">
           <tbody>
             {/* Row 1: Year + Actions (rowSpan=3) */}
@@ -205,10 +214,7 @@ export default function AdminColonyCup() {
                     <button className="btn-save" onClick={handleSave}>
                       Save
                     </button>
-                    <button
-                      className="btn-cancel"
-                      onClick={handleCancel}
-                    >
+                    <button className="btn-cancel" onClick={handleCancel}>
                       Cancel
                     </button>
                   </>
@@ -241,8 +247,8 @@ export default function AdminColonyCup() {
                         <button
                           className="btn-delete"
                           style={{
-                            marginLeft: '0.5rem',
-                            padding: '0.3rem 0.6rem',
+                            marginLeft: "0.5rem",
+                            padding: "0.3rem 0.6rem",
                           }}
                           onClick={() => handleRemoveGolfer(idx)}
                         >
@@ -252,7 +258,10 @@ export default function AdminColonyCup() {
                     ))}
 
                     {/* Input to add a new golfer */}
-                    <div className="add-new-golfer" style={{ marginTop: '0.5rem' }}>
+                    <div
+                      className="add-new-golfer"
+                      style={{ marginTop: "0.5rem" }}
+                    >
                       <input
                         type="text"
                         className="cell-input"
@@ -262,7 +271,10 @@ export default function AdminColonyCup() {
                       />
                       <button
                         className="btn-save"
-                        style={{ marginLeft: '0.5rem', padding: '0.3rem 0.6rem' }}
+                        style={{
+                          marginLeft: "0.5rem",
+                          padding: "0.3rem 0.6rem",
+                        }}
                         onClick={handleAddGolfer}
                       >
                         Add
@@ -270,20 +282,15 @@ export default function AdminColonyCup() {
                     </div>
                   </div>
                 ) : info.winningTeam.length > 0 ? (
-                  <span>
-                    {info.winningTeam.join(', ')}
-                  </span>
+                  <span>{info.winningTeam.join(", ")}</span>
                 ) : (
                   <span>—</span>
                 )}
               </td>
             </tr>
-
-           
           </tbody>
         </table>
       </div>
     </div>
   );
 }
-

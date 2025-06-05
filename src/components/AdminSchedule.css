@@ -25,7 +25,7 @@
   cursor: pointer;
 }
 .btn-add-event:hover {
-  background-color: #d1a640; 
+  background-color: #d1a640;
 }
 
 /* ------------------------------------------
@@ -191,11 +191,11 @@ select {
 .btn-save,
 .btn-cancel,
 .btn-delete {
-  display: inline-block;       /* allow a fixed width to stick */
-  width: 80px;                 /* same width for all buttons */
-  text-align: center;          /* center the label inside */
+  display: inline-block; /* allow a fixed width to stick */
+  width: 80px; /* same width for all buttons */
+  text-align: center; /* center the label inside */
   font-size: 0.9rem;
-  padding: 0.4rem 0.8rem;      /* you can adjust top/bottom padding if needed */
+  padding: 0.4rem 0.8rem; /* you can adjust top/bottom padding if needed */
   border: 1px solid #666;
   background: #fff;
   border-radius: 4px;
@@ -259,8 +259,8 @@ select {
     width: 48%;
   }
   select,
-  input[type='text'],
-  input[type='date'] {
+  input[type="text"],
+  input[type="date"] {
     width: 100%;
   }
 }
@@ -280,32 +280,29 @@ select {
    Season Navigation Bar (“Seasons: 2025 | 2026”)
 ────────────────────────────────────────────────── */
 .season-links {
-  margin-top: 2rem;           /* space above the events list */
-  font-size: 1rem;            /* same size as body text */
-  color: #444;                /* dark gray text */
+  margin-top: 2rem; /* space above the events list */
+  font-size: 1rem; /* same size as body text */
+  color: #444; /* dark gray text */
   display: flex;
   justify-content: flex-start; /* align left (adjust if you want centered/right) */
   align-items: center;
-  flex-wrap: wrap;            /* wrap to next line if too long */
-  gap: 0.25rem;               /* small gap between elements */
+  flex-wrap: wrap; /* wrap to next line if too long */
+  gap: 0.25rem; /* small gap between elements */
 }
 
 .season-links span.current-year {
-  font-weight: 600;           /* bold for the active year */
-  color: #000;                /* pure black to highlight it */
+  font-weight: 600; /* bold for the active year */
+  color: #000; /* pure black to highlight it */
 }
 
 .season-links a {
-  color: #007bff;             /* link blue */
-  text-decoration: none;      /* remove underline */
-  padding: 0.125rem 0.25rem;  /* small padding around each link */
+  color: #007bff; /* link blue */
+  text-decoration: none; /* remove underline */
+  padding: 0.125rem 0.25rem; /* small padding around each link */
   border-radius: 4px;
   transition: background 0.15s ease;
 }
 
 .season-links a:hover {
-  background-color: #e9f5ff;  /* light blue hover */
+  background-color: #e9f5ff; /* light blue hover */
 }
-
-
-

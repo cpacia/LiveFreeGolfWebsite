@@ -1,6 +1,6 @@
 // src/components/AdminStandings.jsx
-import React, { useState, useEffect } from 'react';
-import './AdminStandings.css';
+import React, { useState, useEffect } from "react";
+import "./AdminStandings.css";
 
 export default function AdminStandings() {
   // ─── 1) State Hooks ──────────────────────────────────────────────
@@ -14,16 +14,16 @@ export default function AdminStandings() {
 
   // ─── 2) Utility: strip “http(s)://” + truncate ────────────────────
   function stripProtocol(url) {
-    if (!url) return '';
-    const noProto = url.replace(/^https?:\/\//, '');
+    if (!url) return "";
+    const noProto = url.replace(/^https?:\/\//, "");
     const MAX = 38;
-    return noProto.length <= MAX ? noProto : noProto.slice(0, MAX - 1) + '...';
+    return noProto.length <= MAX ? noProto : noProto.slice(0, MAX - 1) + "...";
   }
 
   // ─── 3) Fetch existing standings on mount ─────────────────────────
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:8080/standings-urls', { credentials: 'include' })
+    fetch("http://localhost:8080/standings-urls", { credentials: "include" })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -43,8 +43,8 @@ export default function AdminStandings() {
         }
       })
       .catch((err) => {
-        console.error('Error fetching standings:', err);
-        setError(err.message || 'Unknown error');
+        console.error("Error fetching standings:", err);
+        setError(err.message || "Unknown error");
       })
       .finally(() => setLoading(false));
   }, []);
@@ -64,7 +64,7 @@ export default function AdminStandings() {
       <div className="standings-header">
         <h1>Standings</h1>
         <button className="btn-add-standing">Add Year</button>
-        <p style={{ color: 'red' }}>Error: {error}</p>
+        <p style={{ color: "red" }}>Error: {error}</p>
       </div>
     );
   }
@@ -78,8 +78,8 @@ export default function AdminStandings() {
     const placeholder = {
       id: tempId,
       calendarYear: todayYear,
-      seasonStandingsUrl: '',
-      wgrStandingsUrl: '',
+      seasonStandingsUrl: "",
+      wgrStandingsUrl: "",
       cacheKey: Date.now(),
     };
 
@@ -92,9 +92,9 @@ export default function AdminStandings() {
   const handleSave = () => {
     if (!draft) return;
 
-    const isNew = String(draft.id).startsWith('__new__');
-    const url = 'http://localhost:8080/standings-urls';
-    const method = isNew ? 'POST' : 'PUT';
+    const isNew = String(draft.id).startsWith("__new__");
+    const url = "http://localhost:8080/standings-urls";
+    const method = isNew ? "POST" : "PUT";
 
     const payload = {
       ...(isNew ? {} : { ID: draft.id }),
@@ -105,8 +105,8 @@ export default function AdminStandings() {
 
     fetch(url, {
       method,
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     })
       .then((res) => {
@@ -129,7 +129,7 @@ export default function AdminStandings() {
         setStandings((prev) => {
           if (isNew) {
             const filtered = prev.filter(
-              (r) => !String(r.id).startsWith('__new__')
+              (r) => !String(r.id).startsWith("__new__"),
             );
             return [saved, ...filtered];
           } else {
@@ -141,14 +141,14 @@ export default function AdminStandings() {
         setDraft(null);
       })
       .catch((err) => {
-        console.error('Save failed:', err);
+        console.error("Save failed:", err);
         window.alert(`Save failed: ${err.message}`);
       });
   };
 
   // ─── 7) Cancel Editing ────────────────────────────────────────────
   const handleCancel = (row) => {
-    const isNew = String(row.id).startsWith('__new__');
+    const isNew = String(row.id).startsWith("__new__");
     if (isNew) {
       setStandings((prev) => prev.filter((r) => r.id !== row.id));
     }
@@ -160,48 +160,48 @@ export default function AdminStandings() {
   const handleDelete = (row) => {
     if (
       !window.confirm(
-        `Are you sure you want to delete standings for ${row.calendarYear}?`
+        `Are you sure you want to delete standings for ${row.calendarYear}?`,
       )
     ) {
       return;
     }
 
-    fetch('http://localhost:8080/standings-urls', {
-      method: 'DELETE',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
+    fetch("http://localhost:8080/standings-urls", {
+      method: "DELETE",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ calendarYear: row.calendarYear }),
     })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         setStandings((prev) =>
-          prev.filter((r) => r.calendarYear !== row.calendarYear)
+          prev.filter((r) => r.calendarYear !== row.calendarYear),
         );
       })
-      .catch((err) => console.error('Delete failed:', err));
+      .catch((err) => console.error("Delete failed:", err));
   };
 
   // ─── 9) Refresh (by calendarYear) ─────────────────────────────────
   const handleRefresh = (row) => {
     if (
       !window.confirm(
-        `Are you sure you want to refresh standings for ${row.calendarYear}?`
+        `Are you sure you want to refresh standings for ${row.calendarYear}?`,
       )
     ) {
       return;
     }
 
-    fetch('http://localhost:8080/refresh-standings', {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
+    fetch("http://localhost:8080/refresh-standings", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ calendarYear: row.calendarYear }),
     })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         console.log(`Refreshed standings for ${row.calendarYear}`);
       })
-      .catch((err) => console.error('Refresh failed:', err));
+      .catch((err) => console.error("Refresh failed:", err));
   };
 
   // ─── 10) Main Render ─────────────────────────────────────────────
@@ -222,8 +222,8 @@ export default function AdminStandings() {
 
           return (
             <div
-              className={`card-table-container card-table-width ${isEditing ? 'editing' : ''}`}
-              key={row.id + '_' + row.cacheKey}
+              className={`card-table-container card-table-width ${isEditing ? "editing" : ""}`}
+              key={row.id + "_" + row.cacheKey}
             >
               {/* Header Bar: Static “Calendar Year” */}
               <div className="card-table-header">{row.calendarYear}</div>
@@ -314,7 +314,7 @@ export default function AdminStandings() {
                           {stripProtocol(row.seasonStandingsUrl)}
                         </a>
                       ) : (
-                        '—'
+                        "—"
                       )}
                     </td>
                   </tr>
@@ -345,7 +345,7 @@ export default function AdminStandings() {
                           {stripProtocol(row.wgrStandingsUrl)}
                         </a>
                       ) : (
-                        '—'
+                        "—"
                       )}
                     </td>
                   </tr>
@@ -358,4 +358,3 @@ export default function AdminStandings() {
     </>
   );
 }
-

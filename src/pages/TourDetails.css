@@ -1,8 +1,11 @@
-html, body {
+html,
+body {
   scroll-behavior: smooth;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: auto;
   min-height: 100vh;
 }
@@ -23,7 +26,7 @@ html, body, #root {
   width: 240px;
   flex-shrink: 0;
   position: sticky;
-  top: 0; 
+  top: 0;
   background: white;
   border-right: 1px solid #eee;
   align-self: flex-start;
@@ -60,7 +63,7 @@ html, body, #root {
 }
 
 .scrolling-content section::before {
-  content: '';
+  content: "";
   display: block;
   height: 120px; /* match your header height */
   margin-top: -120px;
@@ -78,7 +81,7 @@ html, body, #root {
 }
 
 .scrolling-content h2::after {
-  content: '';
+  content: "";
   display: block;
   width: 50%;
   height: 4px;
@@ -112,15 +115,14 @@ html, body, #root {
   color: var(--color-accent-yellow);
 }
 
-
 .scrolling-content p span {
-	display: block; 
-	padding-bottom: 1rem;
+  display: block;
+  padding-bottom: 1rem;
 }
 
 .scrolling-content li span {
-	display: block; 
-	padding-bottom: 1rem;
+  display: block;
+  padding-bottom: 1rem;
 }
 
 .scrolling-content table {
@@ -161,13 +163,10 @@ html, body, #root {
   .sidebar nav a {
     margin: 0;
   }
-} 
+}
 
 .sidebar nav a.active {
   color: var(--color-accent-yellow);
   font-weight: 700;
   position: relative;
 }
-
-
-

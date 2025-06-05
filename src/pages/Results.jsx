@@ -1,12 +1,12 @@
 // File: Results.jsx
-import React, { useState, useEffect } from 'react';
-import './Results.css';
-import './Schedule.css'; // <-- pull in the same Schedule‐page styles for the header
+import React, { useState, useEffect } from "react";
+import "./Results.css";
+import "./Schedule.css"; // <-- pull in the same Schedule‐page styles for the header
 
 export default function Results() {
   // 1) Get eventID from the query string
   const params = new URLSearchParams(window.location.search);
-  const eventID = params.get('eventID') || '';
+  const eventID = params.get("eventID") || "";
 
   // 2) State for event metadata
   const [eventData, setEventData] = useState(null);
@@ -14,7 +14,7 @@ export default function Results() {
   const [errorEvent, setErrorEvent] = useState(null);
 
   // 3) State for which table is selected
-  const [selectedTable, setSelectedTable] = useState('net');
+  const [selectedTable, setSelectedTable] = useState("net");
 
   // 4) State for table data + loading / error
   //    tableData will be either:
@@ -27,18 +27,18 @@ export default function Results() {
 
   // ─── New: helper to format "2025-05-26" as "May 26"
   function formatDateWithoutYear(isoDateString) {
-    if (!isoDateString) return '';
+    if (!isoDateString) return "";
     const dt = new Date(isoDateString);
-    return dt.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
+    return dt.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
     });
   }
 
   // 5) Fetch event metadata upon mount (or if eventID changes)
   useEffect(() => {
     if (!eventID) {
-      setErrorEvent('No eventID provided.');
+      setErrorEvent("No eventID provided.");
       setLoadingEvent(false);
       return;
     }
@@ -53,7 +53,7 @@ export default function Results() {
         setEventData(data);
       } catch (err) {
         console.error(err);
-        setErrorEvent('Failed to load event information.');
+        setErrorEvent("Failed to load event information.");
       } finally {
         setLoadingEvent(false);
       }
@@ -77,25 +77,25 @@ export default function Results() {
     if (!eventID) return;
 
     const fetchTable = async () => {
-      let url = '';
+      let url = "";
       switch (selectedTable) {
-        case 'net':
+        case "net":
           url = `http://localhost:8080/results/net/${eventID}`;
           break;
-        case 'gross':
+        case "gross":
           url = `http://localhost:8080/results/gross/${eventID}`;
           break;
-        case 'skins':
+        case "skins":
           url = `http://localhost:8080/results/skins/${eventID}`;
           break;
-        case 'teams':
+        case "teams":
           url = `http://localhost:8080/results/teams/${eventID}`;
           break;
-        case 'wgr':
+        case "wgr":
           url = `http://localhost:8080/results/wgr/${eventID}`;
           break;
         default:
-          setErrorTable('Unknown table selection.');
+          setErrorTable("Unknown table selection.");
           setLoadingTable(false);
           return;
       }
@@ -104,9 +104,9 @@ export default function Results() {
         const resp = await fetch(url);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
-        console.log('raw data for', selectedTable, data);
+        console.log("raw data for", selectedTable, data);
 
-        if (selectedTable === 'skins') {
+        if (selectedTable === "skins") {
           // Expect { players: [...], holes: [...] }
           setTableData({
             players: Array.isArray(data.players) ? data.players : [],
@@ -119,13 +119,15 @@ export default function Results() {
             arr = data;
           } else {
             // find the first array‐valued property:
-            const candidates = Object.keys(data).filter((k) => Array.isArray(data[k]));
+            const candidates = Object.keys(data).filter((k) =>
+              Array.isArray(data[k]),
+            );
             if (candidates.length > 0) {
               arr = data[candidates[0]];
             } else {
               console.warn(
                 `Unexpected JSON shape for "${selectedTable}". Falling back to empty array.`,
-                data
+                data,
               );
               arr = [];
             }
@@ -134,7 +136,7 @@ export default function Results() {
         }
       } catch (err) {
         console.error(err);
-        setErrorTable('Failed to load results.');
+        setErrorTable("Failed to load results.");
       } finally {
         setLoadingTable(false);
       }
@@ -158,7 +160,7 @@ export default function Results() {
     //    • If tableData is not yet in the correct shape, show “Loading” (or null)
     //    • Otherwise, .map over the array(s).
 
-    if (selectedTable === 'net') {
+    if (selectedTable === "net") {
       // We expect tableData to be an Array of NetResult
       if (!Array.isArray(tableData)) {
         return <p className="loading-text">Loading results…</p>;
@@ -177,7 +179,7 @@ export default function Results() {
           <tbody>
             {tableData.length === 0 ? (
               <tr>
-                <td colSpan="5" style={{ textAlign: 'center' }}>
+                <td colSpan="5" style={{ textAlign: "center" }}>
                   No data available.
                 </td>
               </tr>
@@ -199,9 +201,9 @@ export default function Results() {
                       row.player
                     )}
                   </td>
-                  <td style={{ textAlign: 'center' }}>{row.total}</td>
-                  <td style={{ textAlign: 'center' }}>{row.strokes}</td>
-                  <td style={{ textAlign: 'center' }}>{row.points}</td>
+                  <td style={{ textAlign: "center" }}>{row.total}</td>
+                  <td style={{ textAlign: "center" }}>{row.strokes}</td>
+                  <td style={{ textAlign: "center" }}>{row.points}</td>
                 </tr>
               ))
             )}
@@ -210,7 +212,7 @@ export default function Results() {
       );
     }
 
-    if (selectedTable === 'gross') {
+    if (selectedTable === "gross") {
       // We expect tableData to be an Array of GrossResult
       if (!Array.isArray(tableData)) {
         return <p className="loading-text">Loading results…</p>;
@@ -228,7 +230,7 @@ export default function Results() {
           <tbody>
             {tableData.length === 0 ? (
               <tr>
-                <td colSpan="4" style={{ textAlign: 'center' }}>
+                <td colSpan="4" style={{ textAlign: "center" }}>
                   No data available.
                 </td>
               </tr>
@@ -250,8 +252,8 @@ export default function Results() {
                       row.player
                     )}
                   </td>
-                  <td style={{ textAlign: 'center' }}>{row.total}</td>
-                  <td style={{ textAlign: 'center' }}>{row.strokes}</td>
+                  <td style={{ textAlign: "center" }}>{row.total}</td>
+                  <td style={{ textAlign: "center" }}>{row.strokes}</td>
                 </tr>
               ))
             )}
@@ -260,7 +262,7 @@ export default function Results() {
       );
     }
 
-    if (selectedTable === 'teams') {
+    if (selectedTable === "teams") {
       // We expect tableData to be an Array of TeamResult
       if (!Array.isArray(tableData)) {
         return <p className="loading-text">Loading results…</p>;
@@ -268,7 +270,8 @@ export default function Results() {
 
       // Determine whether ALL rows have a defined, non‐empty 'total'
       const hasTotalColumn = tableData.every(
-        (row) => row.total !== null && row.total !== undefined && row.total !== ''
+        (row) =>
+          row.total !== null && row.total !== undefined && row.total !== "",
       );
 
       return (
@@ -285,7 +288,10 @@ export default function Results() {
             {tableData.length === 0 ? (
               <tr>
                 {/* If no rows, colspan should match the number of rendered columns */}
-                <td colSpan={hasTotalColumn ? 4 : 3} style={{ textAlign: 'center' }}>
+                <td
+                  colSpan={hasTotalColumn ? 4 : 3}
+                  style={{ textAlign: "center" }}
+                >
                   No data available.
                 </td>
               </tr>
@@ -294,8 +300,10 @@ export default function Results() {
                 <tr key={idx}>
                   <td>{row.rank}</td>
                   <td>{row.team}</td>
-                  {hasTotalColumn && <td style={{ textAlign: 'center' }}>{row.total}</td>}
-                  <td style={{ textAlign: 'center' }}>{row.strokes}</td>
+                  {hasTotalColumn && (
+                    <td style={{ textAlign: "center" }}>{row.total}</td>
+                  )}
+                  <td style={{ textAlign: "center" }}>{row.strokes}</td>
                 </tr>
               ))
             )}
@@ -304,7 +312,7 @@ export default function Results() {
       );
     }
 
-    if (selectedTable === 'wgr') {
+    if (selectedTable === "wgr") {
       // We expect tableData to be an Array of WGRResult
       if (!Array.isArray(tableData)) {
         return <p className="loading-text">Loading results…</p>;
@@ -323,7 +331,7 @@ export default function Results() {
           <tbody>
             {tableData.length === 0 ? (
               <tr>
-                <td colSpan="5" style={{ textAlign: 'center' }}>
+                <td colSpan="5" style={{ textAlign: "center" }}>
                   No data available.
                 </td>
               </tr>
@@ -345,9 +353,9 @@ export default function Results() {
                       row.player
                     )}
                   </td>
-                  <td style={{ textAlign: 'center' }}>{row.total}</td>
-                  <td style={{ textAlign: 'center' }}>{row.strokes}</td>
-                  <td style={{ textAlign: 'center' }}>{row.points}</td>
+                  <td style={{ textAlign: "center" }}>{row.total}</td>
+                  <td style={{ textAlign: "center" }}>{row.strokes}</td>
+                  <td style={{ textAlign: "center" }}>{row.points}</td>
                 </tr>
               ))
             )}
@@ -356,9 +364,13 @@ export default function Results() {
       );
     }
 
-    if (selectedTable === 'skins') {
+    if (selectedTable === "skins") {
       // We expect tableData to be an object { players: Array, holes: Array }
-      if (!tableData || !Array.isArray(tableData.players) || !Array.isArray(tableData.holes)) {
+      if (
+        !tableData ||
+        !Array.isArray(tableData.players) ||
+        !Array.isArray(tableData.holes)
+      ) {
         return <p className="loading-text">Loading results…</p>;
       }
 
@@ -379,7 +391,7 @@ export default function Results() {
             <tbody>
               {players.length === 0 ? (
                 <tr>
-                  <td colSpan="3" style={{ textAlign: 'center' }}>
+                  <td colSpan="3" style={{ textAlign: "center" }}>
                     No player data.
                   </td>
                 </tr>
@@ -401,7 +413,7 @@ export default function Results() {
                         row.player
                       )}
                     </td>
-                    <td style={{ textAlign: 'center' }}>{row.skins}</td>
+                    <td style={{ textAlign: "center" }}>{row.skins}</td>
                   </tr>
                 ))
               )}
@@ -422,18 +434,18 @@ export default function Results() {
             <tbody>
               {holes.length === 0 ? (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center' }}>
+                  <td colSpan="5" style={{ textAlign: "center" }}>
                     No hole data.
                   </td>
                 </tr>
               ) : (
                 holes.map((row, idx) => (
                   <tr key={idx}>
-                    <td style={{ textAlign: 'center' }}>{row.hole}</td>
-                    <td style={{ textAlign: 'center' }}>{row.par}</td>
-                    <td style={{ textAlign: 'center' }}>{row.score}</td>
-                    <td style={{ textAlign: 'left' }}>{row.won}</td>
-                    <td style={{ textAlign: 'left' }}>{row.tie}</td>
+                    <td style={{ textAlign: "center" }}>{row.hole}</td>
+                    <td style={{ textAlign: "center" }}>{row.par}</td>
+                    <td style={{ textAlign: "center" }}>{row.score}</td>
+                    <td style={{ textAlign: "left" }}>{row.won}</td>
+                    <td style={{ textAlign: "left" }}>{row.tie}</td>
                   </tr>
                 ))
               )}
@@ -449,7 +461,9 @@ export default function Results() {
   return (
     <div className="full-bleed results-content">
       <div className="content-container">
-        {loadingEvent && <p className="loading-text">Loading event information…</p>}
+        {loadingEvent && (
+          <p className="loading-text">Loading event information…</p>
+        )}
         {errorEvent && <p className="error-text">{errorEvent}</p>}
 
         {!loadingEvent && !errorEvent && eventData && (
@@ -463,13 +477,14 @@ export default function Results() {
                   alt={`${eventData.name} thumbnail`}
                   onError={(e) => {
                     e.currentTarget.onerror = null;
-                    e.currentTarget.src = '/images/default-logo.png';
+                    e.currentTarget.src = "/images/default-logo.png";
                   }}
                 />
                 <div className="event-info">
                   <div className="event-name">{eventData.name}</div>
                   <div className="event-meta">
-                    {formatDateWithoutYear(eventData.date)} &nbsp;|&nbsp; {eventData.course}
+                    {formatDateWithoutYear(eventData.date)} &nbsp;|&nbsp;{" "}
+                    {eventData.course}
                     <br />
                     {eventData.town}, {eventData.state}
                   </div>
@@ -504,4 +519,3 @@ export default function Results() {
     </div>
   );
 }
-

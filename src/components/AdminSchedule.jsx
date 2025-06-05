@@ -1,6 +1,6 @@
 // src/components/AdminSchedule.jsx
-import React, { useState, useEffect, useRef } from 'react';
-import './AdminSchedule.css';
+import React, { useState, useEffect, useRef } from "react";
+import "./AdminSchedule.css";
 
 export default function AdminSchedule() {
   // 1) State for list of events, loading/error, inline editing, and new-event counter
@@ -32,13 +32,13 @@ export default function AdminSchedule() {
 
   // Extract "year" from query parameters
   const params = new URLSearchParams(window.location.search);
-  const yearParam = params.get('year') || '';
+  const yearParam = params.get("year") || "";
 
   // 2) Fetch existing events on mount or when yearParam changes
   useEffect(() => {
     setLoading(true);
     fetch(`http://localhost:8080/events?year=${yearParam}`, {
-      credentials: 'include',
+      credentials: "include",
     })
       .then((res) => {
         if (!res.ok) {
@@ -50,22 +50,22 @@ export default function AdminSchedule() {
         if (Array.isArray(data.events)) {
           // Attach a cacheKey based on current timestamp so we can bust the cache when updating
           const withCacheKeys = data.events
-			  .map((ev) => ({
-				...ev,
-				cacheKey: Date.now(),
-			  }))
-			  .sort((a, b) => new Date(a.date) - new Date(b.date)); // earliest to latest
+            .map((ev) => ({
+              ...ev,
+              cacheKey: Date.now(),
+            }))
+            .sort((a, b) => new Date(a.date) - new Date(b.date)); // earliest to latest
           setEvents(withCacheKeys);
         } else {
-          console.warn('Unexpected payload:', data);
+          console.warn("Unexpected payload:", data);
           setEvents([]);
         }
         setCalendarYear(data.calendarYear);
         setAdditionalYears(data.additionalYears || []);
       })
       .catch((err) => {
-        console.error('Failed to fetch events:', err);
-        setError(err.message || 'Unknown error');
+        console.error("Failed to fetch events:", err);
+        setError(err.message || "Unknown error");
       })
       .finally(() => {
         setLoading(false);
@@ -76,7 +76,7 @@ export default function AdminSchedule() {
   if (loading) {
     return (
       <div className="schedule-header">
-        <h1>Schedule – {yearParam || calendarYear || ''}</h1>
+        <h1>Schedule – {yearParam || calendarYear || ""}</h1>
         <button className="btn-add-event">Add Event</button>
         <p>Loading events…</p>
       </div>
@@ -85,20 +85,20 @@ export default function AdminSchedule() {
   if (error) {
     return (
       <div className="schedule-header">
-        <h1>Schedule – {yearParam || calendarYear || ''}</h1>
+        <h1>Schedule – {yearParam || calendarYear || ""}</h1>
         <button className="btn-add-event">Add Event</button>
-        <p style={{ color: 'red' }}>Error loading events: {error}</p>
+        <p style={{ color: "red" }}>Error loading events: {error}</p>
       </div>
     );
   }
 
   // 4) Helper to strip protocol for display
   function stripProtocol(url) {
-    const withoutProto = url.replace(/^https?:\/\//, '');
+    const withoutProto = url.replace(/^https?:\/\//, "");
     const MAX = 25;
     return withoutProto.length <= MAX
       ? withoutProto
-      : withoutProto.slice(0, MAX - 1) + '...';
+      : withoutProto.slice(0, MAX - 1) + "...";
   }
 
   // 5) Handler for Add Event button
@@ -109,21 +109,21 @@ export default function AdminSchedule() {
     // Create a blank placeholder with default/empty fields
     const blank = {
       eventID: tempId,
-      name: '',
+      name: "",
       date: new Date().toISOString().slice(0, 10), // default today
-      course: '',
-      town: '',
-      state: '',
-      handicapAllowance: '',
-      blueGolfUrl: '',
-      thumbnail: '',
+      course: "",
+      town: "",
+      state: "",
+      handicapAllowance: "",
+      blueGolfUrl: "",
+      thumbnail: "",
       registrationOpen: false,
       isComplete: false,
-      netLeaderboardUrl: '',
-      grossLeaderboardUrl: '',
-      skinsLeaderboardUrl: '',
-      teamsLeaderboardUrl: '',
-      wgrLeaderboardUrl: '',
+      netLeaderboardUrl: "",
+      grossLeaderboardUrl: "",
+      skinsLeaderboardUrl: "",
+      teamsLeaderboardUrl: "",
+      wgrLeaderboardUrl: "",
       cacheKey: Date.now(),
     };
 
@@ -147,21 +147,21 @@ export default function AdminSchedule() {
 
   // 7) Handler for Delete button (with confirmation dialog)
   const handleDelete = (evt) => {
-    const isNew = evt.eventID.startsWith('__new__');
+    const isNew = evt.eventID.startsWith("__new__");
     if (isNew) {
       // Simply remove the placeholder
       setEvents((prev) => prev.filter((e) => e.eventID !== evt.eventID));
     } else {
       // Ask for confirmation
       const confirmed = window.confirm(
-        `Are you sure you want to delete event "${evt.name}"?`
+        `Are you sure you want to delete event "${evt.name}"?`,
       );
       if (!confirmed) return;
 
       // Send DELETE to API
       fetch(`http://localhost:8080/events/${evt.eventID}`, {
-        method: 'DELETE',
-        credentials: 'include',
+        method: "DELETE",
+        credentials: "include",
       })
         .then((res) => {
           if (!res.ok) {
@@ -173,7 +173,7 @@ export default function AdminSchedule() {
           setEvents((prev) => prev.filter((e) => e.eventID !== evt.eventID));
         })
         .catch((err) => {
-          console.error('Delete failed:', err);
+          console.error("Delete failed:", err);
           window.alert(`Delete failed: ${err.message}`);
         });
     }
@@ -202,11 +202,11 @@ export default function AdminSchedule() {
       ) : (
         events.map((evt) => {
           const isEditing = editingId === evt.eventID;
-          const isNew = evt.eventID.startsWith('__new__');
+          const isNew = evt.eventID.startsWith("__new__");
 
           return (
             <div
-              className={`card-table-container ${isEditing ? 'editing' : ''}`}
+              className={`card-table-container ${isEditing ? "editing" : ""}`}
               key={evt.eventID}
             >
               {/* ───────────────────────────────────────────────────────
@@ -248,21 +248,22 @@ export default function AdminSchedule() {
                               previewURL
                                 ? previewURL
                                 : evt.thumbnail
-                                ? `http://localhost:8080/events/${evt.eventID}/thumbnail?ck=${evt.cacheKey}`
-                                : '/images/default-image.webp'
+                                  ? `http://localhost:8080/events/${evt.eventID}/thumbnail?ck=${evt.cacheKey}`
+                                  : "/images/default-image.webp"
                             }
                             alt={`${draftEvent.name} thumbnail`}
                             className="event-thumbnail clickable-image"
                             onClick={() => fileInputRef.current.click()}
                             onError={(e) => {
                               e.currentTarget.onerror = null;
-                              e.currentTarget.src = '/images/default-image.webp';
+                              e.currentTarget.src =
+                                "/images/default-image.webp";
                             }}
                           />
                           <input
                             type="file"
                             accept="image/*"
-                            style={{ display: 'none' }}
+                            style={{ display: "none" }}
                             ref={fileInputRef}
                             onChange={handleThumbnailChange}
                           />
@@ -275,7 +276,7 @@ export default function AdminSchedule() {
                           className="event-thumbnail"
                           onError={(e) => {
                             e.currentTarget.onerror = null;
-                            e.currentTarget.src = '/images/default-image.webp';
+                            e.currentTarget.src = "/images/default-image.webp";
                           }}
                         />
                       )}
@@ -305,11 +306,13 @@ export default function AdminSchedule() {
                     <td className="cell-value">
                       {isEditing ? (
                         <select
-                          value={draftEvent.registrationOpen ? 'open' : 'closed'}
+                          value={
+                            draftEvent.registrationOpen ? "open" : "closed"
+                          }
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
-                              registrationOpen: e.target.value === 'open',
+                              registrationOpen: e.target.value === "open",
                             })
                           }
                         >
@@ -330,7 +333,7 @@ export default function AdminSchedule() {
                         <input
                           type="text"
                           className="url-input"
-                          value={draftEvent.grossLeaderboardUrl || ''}
+                          value={draftEvent.grossLeaderboardUrl || ""}
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
@@ -348,7 +351,7 @@ export default function AdminSchedule() {
                           {stripProtocol(evt.grossLeaderboardUrl)}
                         </a>
                       ) : (
-                        '—'
+                        "—"
                       )}
                     </td>
 
@@ -362,26 +365,28 @@ export default function AdminSchedule() {
                               // Build FormData: "event" + optional "thumbnail"
                               const form = new FormData();
                               const eventCopy = { ...draftEvent };
-                              form.append('event', JSON.stringify(eventCopy));
+                              form.append("event", JSON.stringify(eventCopy));
                               if (thumbnailFile) {
-                                form.append('thumbnail', thumbnailFile);
+                                form.append("thumbnail", thumbnailFile);
                               }
 
                               // Determine POST vs PUT
                               const url = isNew
-                                ? 'http://localhost:8080/events'
+                                ? "http://localhost:8080/events"
                                 : `http://localhost:8080/events/${draftEvent.eventID}`;
-                              const method = isNew ? 'POST' : 'PUT';
+                              const method = isNew ? "POST" : "PUT";
 
                               fetch(url, {
                                 method,
-                                credentials: 'include',
+                                credentials: "include",
                                 body: form,
                               })
                                 .then((res) => {
                                   if (!res.ok) {
                                     return res.text().then((text) => {
-                                      throw new Error(text || `HTTP ${res.status}`);
+                                      throw new Error(
+                                        text || `HTTP ${res.status}`,
+                                      );
                                     });
                                   }
                                   return res.json();
@@ -391,10 +396,13 @@ export default function AdminSchedule() {
                                     if (isNew) {
                                       // Remove placeholders and prepend the real event
                                       const filtered = prev.filter(
-                                        (e) => !e.eventID.startsWith('__new__')
+                                        (e) => !e.eventID.startsWith("__new__"),
                                       );
                                       return [
-                                        { ...returnedEvt, cacheKey: Date.now() },
+                                        {
+                                          ...returnedEvt,
+                                          cacheKey: Date.now(),
+                                        },
                                         ...filtered,
                                       ];
                                     } else {
@@ -403,10 +411,10 @@ export default function AdminSchedule() {
                                         e.eventID === returnedEvt.eventID
                                           ? {
                                               ...returnedEvt,
-                                              date: returnedEvt.date || '',
+                                              date: returnedEvt.date || "",
                                               cacheKey: Date.now(),
                                             }
-                                          : e
+                                          : e,
                                       );
                                     }
                                   });
@@ -416,7 +424,7 @@ export default function AdminSchedule() {
                                   setPreviewURL(null);
                                 })
                                 .catch((err) => {
-                                  console.error('Save failed:', err);
+                                  console.error("Save failed:", err);
                                   window.alert(`Save failed: ${err.message}`);
                                 });
                             }}
@@ -429,7 +437,7 @@ export default function AdminSchedule() {
                               // If it was a new placeholder, remove it entirely
                               if (isNew) {
                                 setEvents((prev) =>
-                                  prev.filter((e) => e.eventID !== evt.eventID)
+                                  prev.filter((e) => e.eventID !== evt.eventID),
                                 );
                               }
                               setEditingId(null);
@@ -471,7 +479,7 @@ export default function AdminSchedule() {
                       {isEditing ? (
                         <input
                           type="text"
-                          value={draftEvent.course || ''}
+                          value={draftEvent.course || ""}
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
@@ -482,7 +490,7 @@ export default function AdminSchedule() {
                           placeholder="Course name"
                         />
                       ) : (
-                        evt.course || '—'
+                        evt.course || "—"
                       )}
                     </td>
 
@@ -490,11 +498,11 @@ export default function AdminSchedule() {
                     <td className="cell-value">
                       {isEditing ? (
                         <select
-                          value={draftEvent.isComplete ? 'yes' : 'no'}
+                          value={draftEvent.isComplete ? "yes" : "no"}
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
-                              isComplete: e.target.value === 'yes',
+                              isComplete: e.target.value === "yes",
                             })
                           }
                         >
@@ -514,7 +522,7 @@ export default function AdminSchedule() {
                         <input
                           type="text"
                           className="url-input"
-                          value={draftEvent.skinsLeaderboardUrl || ''}
+                          value={draftEvent.skinsLeaderboardUrl || ""}
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
@@ -532,7 +540,7 @@ export default function AdminSchedule() {
                           {stripProtocol(evt.skinsLeaderboardUrl)}
                         </a>
                       ) : (
-                        '—'
+                        "—"
                       )}
                     </td>
                   </tr>
@@ -544,7 +552,7 @@ export default function AdminSchedule() {
                       {isEditing ? (
                         <input
                           type="text"
-                          value={draftEvent.town || ''}
+                          value={draftEvent.town || ""}
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
@@ -555,7 +563,7 @@ export default function AdminSchedule() {
                           placeholder="Town"
                         />
                       ) : (
-                        evt.town || '—'
+                        evt.town || "—"
                       )}
                     </td>
 
@@ -565,7 +573,7 @@ export default function AdminSchedule() {
                         <input
                           type="text"
                           className="url-input"
-                          value={draftEvent.blueGolfUrl || ''}
+                          value={draftEvent.blueGolfUrl || ""}
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
@@ -583,7 +591,7 @@ export default function AdminSchedule() {
                           {stripProtocol(evt.blueGolfUrl)}
                         </a>
                       ) : (
-                        '—'
+                        "—"
                       )}
                     </td>
 
@@ -593,7 +601,7 @@ export default function AdminSchedule() {
                         <input
                           type="text"
                           className="url-input"
-                          value={draftEvent.teamsLeaderboardUrl || ''}
+                          value={draftEvent.teamsLeaderboardUrl || ""}
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
@@ -611,7 +619,7 @@ export default function AdminSchedule() {
                           {stripProtocol(evt.teamsLeaderboardUrl)}
                         </a>
                       ) : (
-                        '—'
+                        "—"
                       )}
                     </td>
                   </tr>
@@ -623,7 +631,7 @@ export default function AdminSchedule() {
                       {isEditing ? (
                         <input
                           type="text"
-                          value={draftEvent.state || ''}
+                          value={draftEvent.state || ""}
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
@@ -634,7 +642,7 @@ export default function AdminSchedule() {
                           placeholder="State"
                         />
                       ) : (
-                        evt.state || '—'
+                        evt.state || "—"
                       )}
                     </td>
 
@@ -644,7 +652,7 @@ export default function AdminSchedule() {
                         <input
                           type="text"
                           className="url-input"
-                          value={draftEvent.shopifyUrl || ''}
+                          value={draftEvent.shopifyUrl || ""}
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
@@ -662,17 +670,17 @@ export default function AdminSchedule() {
                           {stripProtocol(evt.shopifyUrl)}
                         </a>
                       ) : (
-                        '—'
+                        "—"
                       )}
                     </td>
-                    
+
                     <td className="cell-label">WGR URL</td>
                     <td className="cell-value">
                       {isEditing ? (
                         <input
                           type="text"
                           className="url-input"
-                          value={draftEvent.wgrLeaderboardUrl || ''}
+                          value={draftEvent.wgrLeaderboardUrl || ""}
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
@@ -690,12 +698,11 @@ export default function AdminSchedule() {
                           {stripProtocol(evt.wgrLeaderboardUrl)}
                         </a>
                       ) : (
-                        '—'
+                        "—"
                       )}
                     </td>
 
                     {/* Empty cells for alignment */}
-                    
                   </tr>
 
                   {/* Row 5: Handicap | Net URL */}
@@ -705,7 +712,7 @@ export default function AdminSchedule() {
                       {isEditing ? (
                         <input
                           type="text"
-                          value={draftEvent.handicapAllowance || ''}
+                          value={draftEvent.handicapAllowance || ""}
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
@@ -716,7 +723,7 @@ export default function AdminSchedule() {
                           placeholder="e.g. 80%"
                         />
                       ) : (
-                        evt.handicapAllowance || '—'
+                        evt.handicapAllowance || "—"
                       )}
                     </td>
 
@@ -726,7 +733,7 @@ export default function AdminSchedule() {
                         <input
                           type="text"
                           className="url-input"
-                          value={draftEvent.netLeaderboardUrl || ''}
+                          value={draftEvent.netLeaderboardUrl || ""}
                           onChange={(e) =>
                             setDraftEvent({
                               ...draftEvent,
@@ -744,7 +751,7 @@ export default function AdminSchedule() {
                           {stripProtocol(evt.netLeaderboardUrl)}
                         </a>
                       ) : (
-                        '—'
+                        "—"
                       )}
                     </td>
 
@@ -776,4 +783,3 @@ export default function AdminSchedule() {
     </>
   );
 }
-

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './EventsAndRankingsSection.css';
+import React, { useState, useEffect } from "react";
+import "./EventsAndRankingsSection.css";
 
 export default function EventsAndRankingsSection() {
   const [events, setEvents] = useState([]);
@@ -7,7 +7,7 @@ export default function EventsAndRankingsSection() {
 
   useEffect(() => {
     // ─── “UPCOMING EVENTS” FETCH ────────────────────────────────────────────────
-    fetch('http://localhost:8080/events')
+    fetch("http://localhost:8080/events")
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -18,7 +18,7 @@ export default function EventsAndRankingsSection() {
         // Convert date string → Date object at midnight
         const withDateObj = rawEvents.map((e) => ({
           ...e,
-          dateObj: new Date(e.date + 'T00:00:00'),
+          dateObj: new Date(e.date + "T00:00:00"),
         }));
 
         // Filter out past events, sort ascending, take first 3
@@ -31,12 +31,12 @@ export default function EventsAndRankingsSection() {
         setEvents(upcoming);
       })
       .catch((err) => {
-        console.error('Failed to fetch events:', err);
+        console.error("Failed to fetch events:", err);
         setEvents([]);
       });
 
     // ─── “WORLD GOLF RANKINGS” FETCH ────────────────────────────────────────────
-    fetch('http://localhost:8080/standings')
+    fetch("http://localhost:8080/standings")
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -45,18 +45,18 @@ export default function EventsAndRankingsSection() {
         const rawWGR = Array.isArray(data.wgr) ? data.wgr : [];
 
         const parsed = rawWGR.map((p) => {
-          const stripped = p.points.replace(/,/g, '');          // "1,100" → "1100"
+          const stripped = p.points.replace(/,/g, ""); // "1,100" → "1100"
           const numPoints = parseFloat(stripped) || 0;
           return {
-            ID:             p.ID,
-            eventID:        p.eventID,
-            rank:           p.rank,
-            player:         p.player,
-            total:          p.total,
-            strokes:        p.strokes,
-            originalPoints: p.points,    // keep "1,100" for display
-            numericPoints:  numPoints,   // 1100
-            scorecardUrl:   p.scorecardUrl,
+            ID: p.ID,
+            eventID: p.eventID,
+            rank: p.rank,
+            player: p.player,
+            total: p.total,
+            strokes: p.strokes,
+            originalPoints: p.points, // keep "1,100" for display
+            numericPoints: numPoints, // 1100
+            scorecardUrl: p.scorecardUrl,
           };
         });
 
@@ -67,16 +67,29 @@ export default function EventsAndRankingsSection() {
         setRankings(top7);
       })
       .catch((err) => {
-        console.error('Failed to fetch WGR:', err);
+        console.error("Failed to fetch WGR:", err);
         setRankings([]);
       });
   }, []);
 
   // Helper: format month/day
-  const monthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  const monthNames = [
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC",
+  ];
   const fmtBadge = (dateObj) => ({
     month: monthNames[dateObj.getMonth()],
-    day:   dateObj.getDate(),
+    day: dateObj.getDate(),
   });
 
   return (
@@ -88,7 +101,7 @@ export default function EventsAndRankingsSection() {
           {events.length > 0 ? (
             events.map((e) => {
               const { month, day } = fmtBadge(e.dateObj);
-              const detailsUrl = e.blueGolfUrl || e.shopifyUrl || '#';
+              const detailsUrl = e.blueGolfUrl || e.shopifyUrl || "#";
 
               return (
                 <li key={e.eventID} className="event-item">
@@ -137,4 +150,3 @@ export default function EventsAndRankingsSection() {
     </section>
   );
 }
-

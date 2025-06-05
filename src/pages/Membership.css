@@ -13,7 +13,7 @@
 }
 
 .content-card {
-  transform: translateX(-40px); 
+  transform: translateX(-40px);
   background-color: rgba(253, 253, 247, 0.75);
   backdrop-filter: blur(10px);
   border-radius: 16px;

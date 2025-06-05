@@ -3,7 +3,7 @@
   top: 0;
   width: 100%;
   background: var(--color-primary-green);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 100;
 }
 
@@ -26,19 +26,19 @@
 .main-nav {
   flex: 1 1 auto;
   display: flex;
-  justify-content: center;   /* center links in leftover space */
+  justify-content: center; /* center links in leftover space */
   gap: 1.5rem;
   font-family: var(--font-heading);
   font-size: 0.95rem;
 }
 
 .main-nav a {
-  color: #ffffff;                         /* white text */
+  color: #ffffff; /* white text */
   padding: 0.5rem;
   transition: color 0.2s;
 }
 .main-nav a:hover {
-  color: var(--color-accent-yellow);      /* yellow on hover */
+  color: var(--color-accent-yellow); /* yellow on hover */
 }
 
 /* Actions stick right */
@@ -60,7 +60,7 @@
 }
 
 .btn-register:hover {
-  background: #d1a640;  /* a touch darker than #F2C14E */
+  background: #d1a640; /* a touch darker than #F2C14E */
   color: var(--color-dark);
 }
 
@@ -68,13 +68,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-left: 1rem;         /* give it some breathing room */
-  color: #ffffff;            /* white in header */
+  margin-left: 1rem; /* give it some breathing room */
+  color: #ffffff; /* white in header */
   transition: color 0.2s;
 }
 
 .cart-icon svg {
-  width: 1.5rem;             /* ensure it scales nicely */
+  width: 1.5rem; /* ensure it scales nicely */
   height: 1.5rem;
 }
 
@@ -92,7 +92,7 @@
   font-size: 0.7rem;
   padding: 2px 4px;
   border-radius: 6px;
-  display: none;                /* only show when count >0 */
+  display: none; /* only show when count >0 */
 }
 
 .cart-icon[data-count]:not([data-count="0"])::after {
@@ -124,7 +124,7 @@
   position: absolute;
   background-color: #1d3a2f; /* darker shade of green for dropdown */
   min-width: 200px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1;
   border-radius: 4px;
   overflow: hidden;
@@ -152,8 +152,14 @@
 
 /* Fade in animation */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10%); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .dropbtn:focus:not(:focus-visible) {

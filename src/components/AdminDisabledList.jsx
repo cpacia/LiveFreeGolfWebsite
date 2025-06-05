@@ -1,6 +1,6 @@
 // src/components/AdminDisabledList.jsx
-import React, { useState, useEffect } from 'react';
-import './AdminDisabledList.css'; 
+import React, { useState, useEffect } from "react";
+import "./AdminDisabledList.css";
 
 export default function AdminDisabledList() {
   // ─── 1) State Hooks ──────────────────────────────────────────────
@@ -9,13 +9,13 @@ export default function AdminDisabledList() {
   const [error, setError] = useState(null);
 
   const [editingId, setEditingId] = useState(null); // which card is in edit mode
-  const [draft, setDraft] = useState(null);         // draft copy of the golfer being edited
-  const [newCount, setNewCount] = useState(0);      // for generating temporary IDs
+  const [draft, setDraft] = useState(null); // draft copy of the golfer being edited
+  const [newCount, setNewCount] = useState(0); // for generating temporary IDs
 
   // ─── 2) Fetch existing disabled golfers on mount ─────────────────
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:8080/disabled-golfers', { credentials: 'include' })
+    fetch("http://localhost:8080/disabled-golfers", { credentials: "include" })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -36,8 +36,8 @@ export default function AdminDisabledList() {
         }
       })
       .catch((err) => {
-        console.error('Error fetching disabled golfers:', err);
-        setError(err.message || 'Unknown error');
+        console.error("Error fetching disabled golfers:", err);
+        setError(err.message || "Unknown error");
       })
       .finally(() => setLoading(false));
   }, []);
@@ -57,7 +57,7 @@ export default function AdminDisabledList() {
       <div className="standings-header">
         <h1>Disabled List</h1>
         <button className="btn-add-standing">Add Golfer</button>
-        <p style={{ color: 'red' }}>Error: {error}</p>
+        <p style={{ color: "red" }}>Error: {error}</p>
       </div>
     );
   }
@@ -70,9 +70,9 @@ export default function AdminDisabledList() {
     // Blank placeholder
     const blank = {
       id: tempId,
-      name: '',
-      reason: '',
-      duration: '',
+      name: "",
+      reason: "",
+      duration: "",
       cacheKey: Date.now(),
     };
 
@@ -87,13 +87,13 @@ export default function AdminDisabledList() {
 
     // Basic client‐side check: name must not be empty
     if (!draft.name.trim()) {
-      window.alert('Name cannot be empty.');
+      window.alert("Name cannot be empty.");
       return;
     }
 
-    const isNew = String(draft.id).startsWith('__new__');
-    const url = 'http://localhost:8080/disabled-golfers/' + draft.name;
-    const method = isNew ? 'POST' : 'PUT';
+    const isNew = String(draft.id).startsWith("__new__");
+    const url = "http://localhost:8080/disabled-golfers/" + draft.name;
+    const method = isNew ? "POST" : "PUT";
 
     // Build payload: for PUT include { ID: draft.id }
     const payload = {
@@ -105,8 +105,8 @@ export default function AdminDisabledList() {
 
     fetch(url, {
       method,
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     })
       .then(async (res) => {
@@ -134,7 +134,7 @@ export default function AdminDisabledList() {
           if (isNew) {
             // Remove all placeholders and prepend the real saved row
             const filtered = prev.filter(
-              (r) => !String(r.id).startsWith('__new__')
+              (r) => !String(r.id).startsWith("__new__"),
             );
             return saved ? [saved, ...filtered] : filtered;
           } else if (saved) {
@@ -148,14 +148,14 @@ export default function AdminDisabledList() {
         setDraft(null);
       })
       .catch((err) => {
-        console.error('Save failed:', err);
+        console.error("Save failed:", err);
         window.alert(`Error saving golfer: ${err.message}`);
       });
   };
 
   // ─── 6) Cancel Editing ────────────────────────────────────────────
   const handleCancel = (row) => {
-    const isNew = String(row.id).startsWith('__new__');
+    const isNew = String(row.id).startsWith("__new__");
     if (isNew) {
       // Remove the placeholder completely
       setGolfers((prev) => prev.filter((r) => r.id !== row.id));
@@ -168,17 +168,17 @@ export default function AdminDisabledList() {
   const handleDelete = (row) => {
     if (
       !window.confirm(
-        `Are you sure you want to remove "${row.name}" from the disabled list?`
+        `Are you sure you want to remove "${row.name}" from the disabled list?`,
       )
     ) {
       return;
     }
 
     // Send DELETE with JSON { name: row.name }
-    fetch('http://localhost:8080/disabled-golfers/'+row.name, {
-      method: 'DELETE',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
+    fetch("http://localhost:8080/disabled-golfers/" + row.name, {
+      method: "DELETE",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: row.name }),
     })
       .then(async (res) => {
@@ -190,7 +190,7 @@ export default function AdminDisabledList() {
         setGolfers((prev) => prev.filter((r) => r.name !== row.name));
       })
       .catch((err) => {
-        console.error('Delete failed:', err);
+        console.error("Delete failed:", err);
         window.alert(`Error deleting golfer: ${err.message}`);
       });
   };
@@ -215,13 +215,13 @@ export default function AdminDisabledList() {
           return (
             <div
               className={`card-table-container card-table-width2 ${
-                isEditing ? 'editing' : ''
+                isEditing ? "editing" : ""
               }`}
-              key={row.id + '_' + row.cacheKey}
+              key={row.id + "_" + row.cacheKey}
             >
               {/* ─── Card Header: always display the golfer’s name (or blank) ───────── */}
               <div className="card-table-header card-table-header-width2">
-                {row.name || 'New Golfer'}
+                {row.name || "New Golfer"}
               </div>
 
               {/* ─── Table Body: Name, Reason, Duration + Actions ─────────────────── */}
@@ -248,10 +248,7 @@ export default function AdminDisabledList() {
                     <td className="cell-actions3" rowSpan="3">
                       {isEditing ? (
                         <>
-                          <button
-                            className="btn-save"
-                            onClick={handleSave}
-                          >
+                          <button className="btn-save" onClick={handleSave}>
                             Save
                           </button>
                           <button
@@ -331,4 +328,3 @@ export default function AdminDisabledList() {
     </div>
   );
 }
-

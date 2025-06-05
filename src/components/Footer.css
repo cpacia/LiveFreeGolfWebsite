@@ -46,12 +46,13 @@
 .social-icon {
   width: 2em;
   height: 2em;
-  filter: brightness(0) invert(1);  /* Makes it white */
-  transition: transform 0.3s ease, filter 0.3s ease;
+  filter: brightness(0) invert(1); /* Makes it white */
+  transition:
+    transform 0.3s ease,
+    filter 0.3s ease;
 }
 
 .social-icon:hover {
   transform: scale(1.2);
   filter: brightness(0) invert(0.6); /* Optional hover color shift */
 }
-

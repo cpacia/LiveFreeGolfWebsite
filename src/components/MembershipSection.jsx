@@ -1,24 +1,24 @@
-import React from 'react';
-import './MembershipSection.css';
+import React from "react";
+import "./MembershipSection.css";
 
 const tiers = [
   {
-    id: 'lfg-ghin',
-    title: 'LFG + GHIN',
-    price: '$140',
-    highlights: ['Full league membership', 'GHIN handicap included']
+    id: "lfg-ghin",
+    title: "LFG + GHIN",
+    price: "$140",
+    highlights: ["Full league membership", "GHIN handicap included"],
   },
   {
-    id: 'lfg-only',
-    title: 'LFG Only',
-    price: '$85',
-    highlights: ['League membership only']
+    id: "lfg-only",
+    title: "LFG Only",
+    price: "$85",
+    highlights: ["League membership only"],
   },
   {
-    id: 'ghin-only',
-    title: 'GHIN Only',
-    price: '$65',
-    highlights: ['GHIN handicap only']
+    id: "ghin-only",
+    title: "GHIN Only",
+    price: "$65",
+    highlights: ["GHIN handicap only"],
   },
 ];
 
@@ -45,4 +45,3 @@ export default function MembershipSection() {
     </section>
   );
 }
-

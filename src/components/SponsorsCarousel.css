@@ -28,7 +28,7 @@
 }
 
 .sponsor-item img:hover {
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .sponsors-carousel h2 {
@@ -41,12 +41,10 @@
 }
 
 .sponsors-carousel h2::after {
-  content: '';
+  content: "";
   display: block;
   width: 50%;
   height: 4px;
   background: var(--color-accent-yellow);
   margin: 0.5rem auto 0;
 }
-
-
