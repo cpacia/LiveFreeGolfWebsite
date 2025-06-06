@@ -3,7 +3,7 @@ import "./HeroCarousel.css";
 
 const staticSlides = [
   {
-    id: "blurb", // ← unique key
+    id: "blurb", // ← unique key for the static slide
     img: "/images/slide1.png",
     isBlurb: true,
     blurbTitle: "About Live Free Golf",
@@ -18,7 +18,6 @@ export default function HeroCarousel() {
   const [slides, setSlides] = useState(staticSlides);
   const [index, setIndex] = useState(0);
 
-  const slide = slides[index] ?? staticSlides[0];
   const timeoutRef = useRef(null);
   const intervalRef = useRef(null);
 
@@ -42,16 +41,13 @@ export default function HeroCarousel() {
   useEffect(() => {
     const fetchSlides = async () => {
       const today = new Date();
-      const slides = [staticSlides[0]];
+      const newSlides = [staticSlides[0]]; // start with the “About” blurb
 
       try {
-        // ← Changed to point at your Go endpoint:
         const eventsRes = await fetch("http://localhost:8080/events");
         const data = await eventsRes.json();
-        // Extract the `events` array from the response:
         const allEvents = Array.isArray(data.events) ? data.events : [];
 
-        // Convert each event's `date` (string) into a Date object:
         const upcoming = allEvents
           .map((e) => ({
             ...e,
@@ -62,8 +58,8 @@ export default function HeroCarousel() {
 
         const nextEvent = upcoming[0];
         if (nextEvent) {
-          slides.push({
-            id: nextEvent.EventID,
+          newSlides.push({
+            id: nextEvent.EventID || `event-${nextEvent.date}`, // ensure it’s never undefined
             img: `/images/slide2.png`,
             isEvent: true,
             label: "Next Event",
@@ -84,8 +80,8 @@ export default function HeroCarousel() {
           .sort((a, b) => b.dateObj - a.dateObj)[0];
 
         if (latest) {
-          slides.push({
-            id: latest.id || latest.slug,
+          newSlides.push({
+            id: latest.id || latest.slug || `post-${latest.date}`, // fallback if neither exists
             isPost: true,
             img: "/images/slide3.png",
             thumbnailUrl: latest.thumbnailUrl,
@@ -100,7 +96,7 @@ export default function HeroCarousel() {
         console.error("Failed to load posts:", err);
       }
 
-      setSlides(slides);
+      setSlides(newSlides);
     };
 
     fetchSlides();
@@ -116,6 +112,7 @@ export default function HeroCarousel() {
     return () => clearInterval(intervalRef.current);
   }, [slides]);
 
+  // If slides array changes and `index` is out of range, reset to 0
   useEffect(() => {
     if (index >= slides.length) {
       setIndex(0);
@@ -136,8 +133,9 @@ export default function HeroCarousel() {
       onMouseLeave={() => resetTimer()}
     >
       {slides.map((s, i) => (
+        // Combine the slide’s id with the index to guarantee uniqueness
         <div
-          key={s.id}
+          key={`${s.id}-${i}`}
           className={
             `slide${i === index ? " active" : ""}` +
             (s.isPost ? " post-wrapper" : "")
@@ -180,7 +178,7 @@ export default function HeroCarousel() {
                   />
                   <div className="post-text">
                     <h2 className="post-title">{s.title}</h2>
-                    <p className="post-date">{fmt(s.date)}</p>
+                    <p className="post-date">{fmt(s.dateObj)}</p>
                     <p className="post-excerpt">{s.excerpt}</p>
                     <a href={`/blog/${s.slug}`} className="btn-primary">
                       Read More ▶
@@ -188,11 +186,17 @@ export default function HeroCarousel() {
                   </div>
                 </div>
               ) : (
+                // If you ever need a generic “headline + multiple CTAs” slide,
+                // make sure s.ctas is an array and give each <a> a unique key here:
                 <>
-                  <h1>{slide.headline}</h1>
+                  <h1>{s.headline}</h1>
                   <div className="cta-group">
-                    {s.ctas.map((cta) => (
-                      <a key={cta.text} href={cta.href} className="btn-primary">
+                    {(s.ctas || []).map((cta, idx) => (
+                      <a
+                        key={`${cta.text}-${idx}`}
+                        href={cta.href}
+                        className="btn-primary"
+                      >
                         {cta.text}
                       </a>
                     ))}
@@ -225,3 +229,4 @@ export default function HeroCarousel() {
     </div>
   );
 }
+
