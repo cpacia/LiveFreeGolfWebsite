@@ -73,3 +73,17 @@ body {
   color: var(--color-primary-green);
   margin-bottom: 0.5rem;
 }
+
+@media (max-width: 768px) {
+	
+	.courses-wrapper {
+	  position: relative;
+	  width: 92vw;
+	  left: 50%;
+	  right: 50%;
+	  margin-left: -50vw;
+	  margin-right: -50vw;
+	  background-color: #fdfdf7;
+	}
+
+}
