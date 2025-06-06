@@ -27,6 +27,7 @@ export default function MembershipSection() {
     <section className="membership-section full-bleed">
       <h2 className="section-title">Join the Tour</h2>
       <div className="membership-grid">
+        <div className="swiper">
         {tiers.map((tier) => (
           <div key={tier.id} className="tier-card">
             <h3 className="tier-title">{tier.title}</h3>
@@ -41,6 +42,7 @@ export default function MembershipSection() {
             </a>
           </div>
         ))}
+        </div>
       </div>
     </section>
   );
