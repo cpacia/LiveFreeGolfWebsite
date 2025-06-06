@@ -40,6 +40,7 @@ export default function AdminSchedule() {
     setLoading(true);
     fetch(`/api/events?year=${yearParam}`, {
       credentials: "include",
+      cache: 'no-store',
     })
       .then((res) => {
         if (!res.ok) {

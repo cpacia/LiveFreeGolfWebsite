@@ -15,7 +15,7 @@ export default function AdminColonyCup() {
   // ─── 2) Fetch existing colony-cup entries on mount ────────────────
   useEffect(() => {
     setLoading(true);
-    fetch("/api/colony-cup/all", { credentials: "include" })
+    fetch("/api/colony-cup/all", { credentials: "include", cache: 'no-store' })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();

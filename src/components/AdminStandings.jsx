@@ -23,7 +23,7 @@ export default function AdminStandings() {
   // ─── 3) Fetch existing standings on mount ─────────────────────────
   useEffect(() => {
     setLoading(true);
-    fetch("/api/standings-urls", { credentials: "include" })
+    fetch("/api/standings-urls", { credentials: "include", cache: 'no-store'})
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();

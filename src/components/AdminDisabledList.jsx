@@ -15,7 +15,7 @@ export default function AdminDisabledList() {
   // ─── 2) Fetch existing disabled golfers on mount ─────────────────
   useEffect(() => {
     setLoading(true);
-    fetch("/api/disabled-golfers", { credentials: "include" })
+    fetch("/api/disabled-golfers", { credentials: "include", cache: 'no-store'})
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
