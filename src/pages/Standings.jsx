@@ -103,7 +103,7 @@ export default function Standings() {
                   results will count toward their total, so consistent high
                   finishes are crucial. For a full breakdown of how points are
                   awarded, see the{" "}
-                  <a href="http://localhost:5173/tour-details#points">
+                  <a href="/tour-details#points">
                     Point System
                   </a>
                   .
