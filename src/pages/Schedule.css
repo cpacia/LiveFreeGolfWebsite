@@ -7,7 +7,7 @@
 /* ----------------------------------------------------------- */
 
 .schedule-container {
-  max-width: 1200px; /* match your .container width */
+  max-width: 900px; /* match your .container width */
   margin: 0 auto;
   padding: 1rem; /* a little breathing room */
   font-family: var(--font-body); /* Lora, serif */

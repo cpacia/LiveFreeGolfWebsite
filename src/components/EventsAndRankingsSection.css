@@ -2,9 +2,11 @@
 .events-wgr-section {
   display: flex;
   gap: 2rem;
-  margin: 4rem 0;
+  margin: 4rem auto;
   justify-content: center;
   background: #fdfdf7; /* cream background */
+  max-width: 890px;
+  width: 100%;
 }
 
 @media (max-width: 768px) {
@@ -21,7 +23,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   flex: 1 1 45%; /* each panel tries to be at least 45% of the container */
-  min-width: 380px; /* prevents them from getting squished too much */
+  min-width: 280px; /* prevents them from getting squished too much */
 }
 
 /* Panel headings */
