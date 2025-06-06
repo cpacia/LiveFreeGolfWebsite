@@ -27,7 +27,18 @@ export default function AdminColonyCup() {
             id: row.ID ?? row.id,
             year: row.year,
             // "team" is a JSON list (array of player names)
-            team: Array.isArray(row.team) ? row.team : [],
+            team: (() => {
+              if (Array.isArray(row.team)) return row.team;
+              if (typeof row.team === "string") {
+                try {
+                  const parsed = JSON.parse(row.team);
+                  return Array.isArray(parsed) ? parsed : [];
+                } catch {
+                  return [];
+                }
+              }
+              return [];
+            })(),
             winningTeam: !!row.winningTeam,
             cacheKey: Date.now(),
           }));
