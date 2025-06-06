@@ -101,23 +101,23 @@
 }
 
 @media (max-width: 768px) {
-.disabled-table th:nth-child(1),
-.disabled-table td:nth-child(1) {
-  width: 30%;
-  text-align: left;
-}
+  .disabled-table th:nth-child(1),
+  .disabled-table td:nth-child(1) {
+    width: 30%;
+    text-align: left;
+  }
 
-/* Column 2 = Reason */
-.disabled-table th:nth-child(2),
-.disabled-table td:nth-child(2) {
-  width: 30%;
-  text-align: left;
-}
+  /* Column 2 = Reason */
+  .disabled-table th:nth-child(2),
+  .disabled-table td:nth-child(2) {
+    width: 30%;
+    text-align: left;
+  }
 
-/* Column 3 = Duration */
-.disabled-table th:nth-child(3),
-.disabled-table td:nth-child(3) {
-  width: 30%;
-  text-align: center;
-}
+  /* Column 3 = Duration */
+  .disabled-table th:nth-child(3),
+  .disabled-table td:nth-child(3) {
+    width: 30%;
+    text-align: center;
+  }
 }

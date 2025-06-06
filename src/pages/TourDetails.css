@@ -156,12 +156,12 @@ body,
      2) Make the flex container drop to a single column
   ─────────────────────────────────────────────────────────── */
   .tour-details-layout {
-    display: flex;              /* ensure flex is still active */
-    flex-direction: column;     /* stack children vertically */
-    padding: 0;                 /* remove extra padding around container */
-    margin: 0;                  /* remove any default margin */
-    width: 100vw;               /* span the full viewport width */
-    box-sizing: border-box;     
+    display: flex; /* ensure flex is still active */
+    flex-direction: column; /* stack children vertically */
+    padding: 0; /* remove extra padding around container */
+    margin: 0; /* remove any default margin */
+    width: 100vw; /* span the full viewport width */
+    box-sizing: border-box;
   }
 
   /* ───────────────────────────────────────────────────────────
@@ -169,10 +169,10 @@ body,
   ─────────────────────────────────────────────────────────── */
   .scrolling-content {
     width: 100%;
-    padding: 1rem;              /* feel free to adjust this padding */
-    margin: 0 auto;             /* center if you have a max‐width set */
+    padding: 1rem; /* feel free to adjust this padding */
+    margin: 0 auto; /* center if you have a max‐width set */
     box-sizing: border-box;
-    overflow-wrap: break-word;  /* ensure long lines wrap */
+    overflow-wrap: break-word; /* ensure long lines wrap */
   }
 
   /* ───────────────────────────────────────────────────────────
@@ -190,15 +190,15 @@ body,
   #points .details-table-wrapper {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
-    margin-bottom: 1.5rem;            /* optional bottom gap */
-    width: 100%;                      /* fill parent width */
+    margin-bottom: 1.5rem; /* optional bottom gap */
+    width: 100%; /* fill parent width */
   }
 
   /* 2) Prevent the table from wrapping—give it a minimum width so
         there is something to scroll */
   #points .details-table-wrapper table {
     width: 100%;
-    min-width: 700px;        /* tweak this if your table needs more room */
+    min-width: 700px; /* tweak this if your table needs more room */
     border-collapse: collapse;
   }
 

@@ -257,7 +257,7 @@
 }
 
 @media (max-width: 768px) {
-	.btn-register {
-		max-width: 120px;
-	}
+  .btn-register {
+    max-width: 120px;
+  }
 }

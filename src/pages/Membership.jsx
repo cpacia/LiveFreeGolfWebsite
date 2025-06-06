@@ -35,20 +35,20 @@ export default function Membership() {
         </p>
         <div className="membership-grid2">
           <div className="swiper">
-          {tiers.map((tier) => (
-            <div key={tier.id} className="tier-card">
-              <h3 className="tier-title">{tier.title}</h3>
-              <p className="tier-price">{tier.price}</p>
-              <ul className="tier-highlights">
-                {tier.highlights.map((h, i) => (
-                  <li key={i}>{h}</li>
-                ))}
-              </ul>
-              <a href="/membership" className="btn-primary tier-cta">
-                Sign Up ▶
-              </a>
-            </div>
-          ))}
+            {tiers.map((tier) => (
+              <div key={tier.id} className="tier-card">
+                <h3 className="tier-title">{tier.title}</h3>
+                <p className="tier-price">{tier.price}</p>
+                <ul className="tier-highlights">
+                  {tier.highlights.map((h, i) => (
+                    <li key={i}>{h}</li>
+                  ))}
+                </ul>
+                <a href="/membership" className="btn-primary tier-cta">
+                  Sign Up ▶
+                </a>
+              </div>
+            ))}
           </div>
         </div>
       </div>
