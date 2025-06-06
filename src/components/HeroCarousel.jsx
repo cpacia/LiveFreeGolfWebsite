@@ -79,7 +79,7 @@ export default function HeroCarousel() {
           .map((p) => ({ ...p, dateObj: new Date(p.date + "T00:00:00") }))
           .sort((a, b) => b.dateObj - a.dateObj)[0];
 
-        if (latest) {
+        if (latest && window.innerWidth > 768) {
           newSlides.push({
             id: latest.id || latest.slug || `post-${latest.date}`, // fallback if neither exists
             isPost: true,

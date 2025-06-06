@@ -340,3 +340,39 @@
   margin-top: 1rem;            /* pushes button to bottom if you want consistent placement */
   margin-left: 1rem;
 }
+
+@media (max-width: 768px) {
+  .hero-carousel .blurb-card,
+  .hero-carousel .event-card {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    max-width: none;
+    width: calc(100% - 2rem);
+    margin-top: 1rem;
+  }
+
+  .hero-carousel .overlay {
+    padding: 1rem !important;
+  }
+
+  .hero-carousel .post-image {
+    max-height: 200px;
+    object-fit: cover;
+  }
+
+  .hero-carousel .slide {
+    height: 40vh;
+  }
+}
+
+
+@media (max-width: 768px) {
+  
+  /* optionally hide Prev/Next arrows, if you don’t want them on mobile */
+  .hero-carousel .nav.prev,
+  .hero-carousel .nav.next {
+    display: none !important;
+  }
+}
+
+
