@@ -135,7 +135,7 @@ export default function ColonyCup() {
                   {/* Modified heading logic: show "<year> Colony Cup Team" if winningTeam is false */}
                   <h3 className="winning-team-heading">
                     {entry.winningTeam
-                      ? `Winning Team (${year})`
+                      ? `${year} Winning Team`
                       : `${year} Colony Cup Team`}
                   </h3>
 
