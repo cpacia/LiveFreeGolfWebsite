@@ -166,3 +166,61 @@
   color: #555;
   text-align: right;
 }
+/* ─────────────────────────────────────────────────────────────────
+   MOBILE OVERRIDES (≤768px): 
+   – Keep badge on left and fill full card height 
+   – Details box on right, vertically centered
+───────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* 1) Force each event-item to be a flex-row and allow stretching */
+  .events-list .event-item {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;   /* ← allow children to stretch */
+    height: auto !important;           /* no forced 85px height */
+    padding: 0.5rem 0 !important;      /* some vertical padding */
+    margin-bottom: 1rem !important;
+  }
+
+  /* 2) Make the date-badge stretch to fill the parent’s height */
+  .events-list .date-badge {
+    align-self: stretch !important;    /* ← fill the full height of .event-item */
+    position: relative;
+    height: 80px !important;           /* badge height matches parent */
+    width: 50px !important;            /* shrink to fit month/day text */
+    min-width: 0 !important;           /* remove any hard min-width */
+    padding: 0.25rem 0.5rem !important; /* smaller horizontal padding */
+    margin-right: 1rem !important;     /* space between badge and details */
+    margin-top: -0.5rem;
+    margin-bottom: -0.6rem;
+  }
+
+  /* 3) Un‐rotate month/day so it stacks vertically in badge */
+  .events-list .badge-text {
+    display: block !important;
+    flex-direction: column !important; /* month above day */
+    align-items: center !important;
+    justify-content: center !important;
+    transform: none !important;        /* remove rotate(90deg) */
+    padding: 0 !important;
+  }
+  .events-list .badge-text .month {
+    font-size: 0.75rem !important;
+    text-transform: uppercase;
+    margin-bottom: 0.1rem !important;
+  }
+  .events-list .badge-text .day {
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+  }
+
+  /* 4) Center the text (title/course/Details) vertically inside the right side */
+  .events-list .event-details {
+    flex: 1 !important;                /* take remaining horizontal space */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;/* vertically center text in this box */
+    text-align: left !important;       /* left-align text */
+  }
+}
+
