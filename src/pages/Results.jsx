@@ -1,5 +1,6 @@
 // File: Results.jsx
 import React, { useState, useEffect } from "react";
+import { getImageUrl } from '../lib/api';
 import "./Results.css";
 import "./Schedule.css"; // <-- pull in the same Schedule‐page styles for the header
 
@@ -473,7 +474,7 @@ export default function Results() {
               <div className="event-left">
                 <img
                   className="thumbnail"
-                  src={`/api/events/${eventID}/thumbnail`}
+                  src={getImageUrl(`/api/events/${eventID}/thumbnail`)}
                   alt={`${eventData.name} thumbnail`}
                   onError={(e) => {
                     e.currentTarget.onerror = null;

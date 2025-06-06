@@ -1,6 +1,7 @@
 // src/components/Schedule.jsx
 
 import React, { useEffect, useState } from "react";
+import { getImageUrl } from '../lib/api';
 import "./Schedule.css";
 
 export default function Schedule() {
@@ -158,7 +159,7 @@ export default function Schedule() {
               <div className="event-left">
                 <img
                   className="thumbnail"
-                  src={`/api/events/${evt.eventID}/thumbnail`}
+                  src={getImageUrl(`/api/events/${evt.eventID}/thumbnail`)}
                   alt={`${evt.name} thumbnail`}
                   onError={(e) => {
                     // Remove this handler so we don't loop if default-logo.png also fails
