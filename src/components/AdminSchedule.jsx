@@ -274,7 +274,9 @@ export default function AdminSchedule() {
                       ) : (
                         // Read‑only mode: always load the server URL, with cacheBust
                         <img
-                          src={getImageUrl(`/api/events/${evt.eventID}/thumbnail`)}
+                          src={getImageUrl(
+                            `/api/events/${evt.eventID}/thumbnail`,
+                          )}
                           alt={`${evt.name} thumbnail`}
                           className="event-thumbnail"
                           onError={(e) => {

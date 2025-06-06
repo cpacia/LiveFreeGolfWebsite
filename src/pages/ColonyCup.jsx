@@ -127,16 +127,16 @@ export default function ColonyCup() {
               const year = entry.year;
               // “team” should be an array of names; if missing or empty, show TBD grid
               let players = [];
-				if (Array.isArray(entry.team)) {
-				  players = entry.team;
-				} else if (typeof entry.team === "string") {
-				  try {
-					const parsed = JSON.parse(entry.team);
-					players = Array.isArray(parsed) ? parsed : [];
-				  } catch {
-					players = [];
-				  }
-				}
+              if (Array.isArray(entry.team)) {
+                players = entry.team;
+              } else if (typeof entry.team === "string") {
+                try {
+                  const parsed = JSON.parse(entry.team);
+                  players = Array.isArray(parsed) ? parsed : [];
+                } catch {
+                  players = [];
+                }
+              }
               const grid =
                 players.length > 0 ? make4x3Grid(players) : makeTBDGrid();
 

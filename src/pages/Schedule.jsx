@@ -13,13 +13,13 @@ export default function Schedule() {
 
   // ─────── New: helper to format "2025-05-26" as "May 26" ───────
   function formatDateWithoutYear(isoDateString) {
-	  const [year, month, day] = isoDateString.split("-").map(Number);
-	  const dt = new Date(year, month - 1, day); // local time
-	  return dt.toLocaleDateString("en-US", {
-		month: "short",
-		day: "numeric",
-	  });
-	}
+    const [year, month, day] = isoDateString.split("-").map(Number);
+    const dt = new Date(year, month - 1, day); // local time
+    return dt.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    });
+  }
 
   // Helper: build the URL for a given year (or none for the “current”)
   function buildFetchUrl(year) {
