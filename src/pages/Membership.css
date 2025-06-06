@@ -12,7 +12,7 @@
   margin-right: 2.5rem;
 }
 
-.content-card {
+.content-card2 {
   transform: translateX(-40px);
   background-color: rgba(253, 253, 247, 0.75);
   backdrop-filter: blur(10px);
@@ -31,6 +31,21 @@
   text-align: center;
 }
 
+.membership-grid2 {
+  display: grid;
+  /* Instead of minmax(240px,1fr), allow more breathing room: */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  max-width: 960px; /* up from 1200px if you’d like, or keep as is */
+  margin: 0 auto;
+}
+
+@media (min-width: 900px) {
+  .membership-grid2 {
+    grid-template-columns: repeat(3, 1fr); /* always 3 columns */
+  }
+}
+
 .blurb2 {
   margin: 0 auto;
   max-width: 880px;
@@ -40,3 +55,102 @@
 .membership-section2 p {
   text-align: left;
 }
+
+/* ─────────────────────────────────────────────────────────────
+   Make the .tier-card panels swipe horizontally on mobile
+───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+   /* 1) Turn .swiper into the horizontal scroll container */
+  .swiper {
+    display: flex;                  /* place cards in a row */
+    overflow-x: auto;               /* allow horizontal scrolling */
+    scroll-snap-type: x mandatory;   /* enable scroll‐snap on the x-axis */
+    -webkit-overflow-scrolling: touch; /* smooth momentum on iOS */
+    gap: 1rem;                      /* space between cards */
+    padding-bottom: 1rem;           /* so card shadows aren’t cut off */
+    padding-left: 1rem;             /* small left inset (tweak as needed) */
+  }
+
+  /* 1a) Hide the native scrollbar if you like */
+  .swiper::-webkit-scrollbar {
+    display: none;
+  }
+  .swiper {
+    -ms-overflow-style: none;   /* IE/Edge */
+    scrollbar-width: none;      /* Firefox */
+  }
+
+  /* 2) Each .tier-card is now a “snap point” *inside* .swiper */
+  .swiper .tier-card {
+    flex: 0 0 80%;               /* 80% of viewport width */
+    scroll-snap-align: center;   /* center the card when it snaps */
+    margin: 0;                   /* remove any desktop margins */
+    border-radius: 0.75rem;      /* keep rounded corners */
+    background: rgba(253, 253, 247, 0.75);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+    padding: 1rem;               /* breathing room inside the card */
+  }
+
+  /* 3) Undo the desktop‐only horizontal shift (translateX) */
+  .content-card2 {
+    transform: none !important;
+    padding-left: 1rem;   /* you can adjust these if you want a small inset */
+    padding-right: 1rem;
+    margin-left: -1rem;
+    margin-right: 3rem;
+  }
+
+  .content-card2 h2.section-title {
+    font-size: 1.5rem;    /* slightly smaller heading on mobile */
+    margin-bottom: 1rem;
+  }
+
+  .content-card2 .blurb2 {
+    font-size: 1rem;      /* shrink paragraph text if desired */
+    padding-bottom: 1rem;
+  }
+
+  /* 4) Hide the horizontal scrollbar for a cleaner look */
+  .membership-grid2::-webkit-scrollbar {
+    display: none;
+  }
+  .membership-grid {
+    -ms-overflow-style: none; /* IE/Edge */
+    scrollbar-width: none;    /* Firefox */
+  }
+  
+  /* Card base */
+.tier-card {
+  background: #fcfcf9;
+  border: 2px solid var(--color-primary-green);
+  border-radius: 8px;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.tier-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Highlight the “best value” tier—LFG + GHIN */
+.tier-card:nth-child(1) {
+  background: var(--color-primary-green);
+  color: #ffffff;
+}
+
+.tier-card:nth-child(1) .tier-cta {
+  background: var(--color-accent-yellow);
+  color: var(--color-primary-green);
+}
+/* …and so on for the nth-child(3) rules, titles, pricing, etc. */
+
+}
+

@@ -25,7 +25,7 @@ const tiers = [
 export default function Membership() {
   return (
     <section className="membership-section2 full-bleed">
-      <div className="content-card">
+      <div className="content-card2">
         <h2 className="section-title">Become a Tour Member</h2>
         <p className="blurb2">
           Purchase one of the membership options below to join the 2025 LFG
@@ -33,7 +33,8 @@ export default function Membership() {
           have one, feel free to purchase the LFG membership only. Otherwise,
           you can purchase a membership and a GHIN and we'll get you a handicap.
         </p>
-        <div className="membership-grid">
+        <div className="membership-grid2">
+          <div className="swiper">
           {tiers.map((tier) => (
             <div key={tier.id} className="tier-card">
               <h3 className="tier-title">{tier.title}</h3>
@@ -48,6 +49,7 @@ export default function Membership() {
               </a>
             </div>
           ))}
+          </div>
         </div>
       </div>
     </section>
