@@ -185,3 +185,29 @@ body,
   }
 }
 
+@media (max-width: 768px) {
+  /* 1) Ensure the wrapper can scroll horizontally */
+  #points .details-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+    margin-bottom: 1.5rem;            /* optional bottom gap */
+    width: 100%;                      /* fill parent width */
+  }
+
+  /* 2) Prevent the table from wrapping—give it a minimum width so
+        there is something to scroll */
+  #points .details-table-wrapper table {
+    width: 100%;
+    min-width: 700px;        /* tweak this if your table needs more room */
+    border-collapse: collapse;
+  }
+
+  /* 3) (Optional) If you have cells with a lot of text, force cells to wrap
+        within themselves—so only the table’s overall width scrolls, not each cell’s contents. */
+  #points .details-table-wrapper table th,
+  #points .details-table-wrapper table td {
+    white-space: nowrap;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+  }
+}

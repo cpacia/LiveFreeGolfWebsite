@@ -276,6 +276,7 @@ export default function TourDetailsPage() {
 
         <section id="points">
           <h2>Season Point System</h2>
+          <div className="details-table-wrapper">
           <table>
             <thead>
               <tr>
@@ -543,6 +544,7 @@ export default function TourDetailsPage() {
               </tr>
             </tbody>
           </table>
+          </div>
         </section>
       </main>
     </div>
