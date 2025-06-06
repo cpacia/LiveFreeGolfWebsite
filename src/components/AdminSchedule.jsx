@@ -37,7 +37,7 @@ export default function AdminSchedule() {
   // 2) Fetch existing events on mount or when yearParam changes
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:8080/events?year=${yearParam}`, {
+    fetch(`/api/events?year=${yearParam}`, {
       credentials: "include",
     })
       .then((res) => {
@@ -159,7 +159,7 @@ export default function AdminSchedule() {
       if (!confirmed) return;
 
       // Send DELETE to API
-      fetch(`http://localhost:8080/events/${evt.eventID}`, {
+      fetch(`/api/events/${evt.eventID}`, {
         method: "DELETE",
         credentials: "include",
       })
@@ -248,7 +248,7 @@ export default function AdminSchedule() {
                               previewURL
                                 ? previewURL
                                 : evt.thumbnail
-                                  ? `http://localhost:8080/events/${evt.eventID}/thumbnail?ck=${evt.cacheKey}`
+                                  ? `/api/events/${evt.eventID}/thumbnail?ck=${evt.cacheKey}`
                                   : "/images/default-image.webp"
                             }
                             alt={`${draftEvent.name} thumbnail`}
@@ -271,7 +271,7 @@ export default function AdminSchedule() {
                       ) : (
                         // Read‑only mode: always load the server URL, with cacheBust
                         <img
-                          src={`http://localhost:8080/events/${evt.eventID}/thumbnail?ck=${evt.cacheKey}`}
+                          src={`/api/events/${evt.eventID}/thumbnail?ck=${evt.cacheKey}`}
                           alt={`${evt.name} thumbnail`}
                           className="event-thumbnail"
                           onError={(e) => {
@@ -372,8 +372,8 @@ export default function AdminSchedule() {
 
                               // Determine POST vs PUT
                               const url = isNew
-                                ? "http://localhost:8080/events"
-                                : `http://localhost:8080/events/${draftEvent.eventID}`;
+                                ? "/api/events"
+                                : `/api/events/${draftEvent.eventID}`;
                               const method = isNew ? "POST" : "PUT";
 
                               fetch(url, {

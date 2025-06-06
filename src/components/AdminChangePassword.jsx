@@ -27,7 +27,7 @@ export default function AdminChangePassword() {
     }
 
     setSaving(true);
-    fetch("http://localhost:8080/change-password", {
+    fetch("/api/change-password", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

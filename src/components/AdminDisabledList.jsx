@@ -15,7 +15,7 @@ export default function AdminDisabledList() {
   // ─── 2) Fetch existing disabled golfers on mount ─────────────────
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:8080/disabled-golfers", { credentials: "include" })
+    fetch("/api/disabled-golfers", { credentials: "include" })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -92,7 +92,7 @@ export default function AdminDisabledList() {
     }
 
     const isNew = String(draft.id).startsWith("__new__");
-    const url = "http://localhost:8080/disabled-golfers/" + draft.name;
+    const url = "/api/disabled-golfers/" + draft.name;
     const method = isNew ? "POST" : "PUT";
 
     // Build payload: for PUT include { ID: draft.id }
@@ -175,7 +175,7 @@ export default function AdminDisabledList() {
     }
 
     // Send DELETE with JSON { name: row.name }
-    fetch("http://localhost:8080/disabled-golfers/" + row.name, {
+    fetch("/api/disabled-golfers/" + row.name, {
       method: "DELETE",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

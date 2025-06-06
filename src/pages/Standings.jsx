@@ -23,8 +23,8 @@ export default function Standings() {
     setError(null);
     try {
       const url = yearParam
-        ? `http://localhost:8080/standings?year=${yearParam}`
-        : `http://localhost:8080/standings`;
+        ? `/api/standings?year=${yearParam}`
+        : `/api/standings`;
       const resp = await fetch(url);
       if (!resp.ok) {
         throw new Error(`HTTP ${resp.status}`);

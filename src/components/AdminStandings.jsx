@@ -23,7 +23,7 @@ export default function AdminStandings() {
   // ─── 3) Fetch existing standings on mount ─────────────────────────
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:8080/standings-urls", { credentials: "include" })
+    fetch("/api/standings-urls", { credentials: "include" })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -93,7 +93,7 @@ export default function AdminStandings() {
     if (!draft) return;
 
     const isNew = String(draft.id).startsWith("__new__");
-    const url = "http://localhost:8080/standings-urls";
+    const url = "/api/standings-urls";
     const method = isNew ? "POST" : "PUT";
 
     const payload = {
@@ -166,7 +166,7 @@ export default function AdminStandings() {
       return;
     }
 
-    fetch("http://localhost:8080/standings-urls", {
+    fetch("/api/standings-urls", {
       method: "DELETE",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -191,7 +191,7 @@ export default function AdminStandings() {
       return;
     }
 
-    fetch("http://localhost:8080/refresh-standings", {
+    fetch("/api/refresh-standings", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

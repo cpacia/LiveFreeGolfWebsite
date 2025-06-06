@@ -23,7 +23,7 @@ export default function AdminMatchPlay() {
   // ─── 3) Fetch existing standings on mount ─────────────────────────
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:8080/match-play", { credentials: "include" })
+    fetch("/api/match-play", { credentials: "include" })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -95,7 +95,7 @@ export default function AdminMatchPlay() {
     if (!draft) return;
 
     const isNew = String(draft.id).startsWith("__new__");
-    const url = "http://localhost:8080/match-play";
+    const url = "/api/match-play";
     const method = isNew ? "POST" : "PUT";
 
     const payload = {
@@ -170,7 +170,7 @@ export default function AdminMatchPlay() {
       return;
     }
 
-    fetch("http://localhost:8080/match-play", {
+    fetch("/api/match-play", {
       method: "DELETE",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -193,7 +193,7 @@ export default function AdminMatchPlay() {
       return;
     }
 
-    fetch("http://localhost:8080/refresh-match-play-bracket", {
+    fetch("/api/refresh-match-play-bracket", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

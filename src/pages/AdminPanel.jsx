@@ -14,7 +14,7 @@ export default function AdminPanel() {
 
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:8080/logout", {
+      await fetch("/api/logout", {
         method: "POST",
         credentials: "include",
       });

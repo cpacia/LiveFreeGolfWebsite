@@ -13,7 +13,7 @@ export default function DisabledGolfers() {
       setError(null);
 
       try {
-        const resp = await fetch("http://localhost:8080/disabled-golfers");
+        const resp = await fetch("/api/disabled-golfers");
         if (!resp.ok) {
           throw new Error(`HTTP ${resp.status}`);
         }

@@ -15,7 +15,7 @@ export default function AdminColonyCup() {
   // ─── 2) Fetch existing colony-cup entries on mount ────────────────
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:8080/colony-cup/all", { credentials: "include" })
+    fetch("/api/colony-cup/all", { credentials: "include" })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -91,7 +91,7 @@ export default function AdminColonyCup() {
     if (!draft) return;
 
     const isNew = String(draft.id).startsWith("__new__");
-    const url = "http://localhost:8080/colony-cup";
+    const url = "/api/colony-cup";
     const method = isNew ? "POST" : "PUT";
 
     // Prepare payload: if updating, include ID; otherwise omit
@@ -169,7 +169,7 @@ export default function AdminColonyCup() {
       return;
     }
 
-    fetch("http://localhost:8080/colony-cup", {
+    fetch("/api/colony-cup", {
       method: "DELETE",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

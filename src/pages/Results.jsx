@@ -47,7 +47,7 @@ export default function Results() {
       setLoadingEvent(true);
       setErrorEvent(null);
       try {
-        const resp = await fetch(`http://localhost:8080/events/${eventID}`);
+        const resp = await fetch(`/api/events/${eventID}`);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
         setEventData(data);
@@ -80,19 +80,19 @@ export default function Results() {
       let url = "";
       switch (selectedTable) {
         case "net":
-          url = `http://localhost:8080/results/net/${eventID}`;
+          url = `/api/results/net/${eventID}`;
           break;
         case "gross":
-          url = `http://localhost:8080/results/gross/${eventID}`;
+          url = `/api/results/gross/${eventID}`;
           break;
         case "skins":
-          url = `http://localhost:8080/results/skins/${eventID}`;
+          url = `/api/results/skins/${eventID}`;
           break;
         case "teams":
-          url = `http://localhost:8080/results/teams/${eventID}`;
+          url = `/api/results/teams/${eventID}`;
           break;
         case "wgr":
-          url = `http://localhost:8080/results/wgr/${eventID}`;
+          url = `/api/results/wgr/${eventID}`;
           break;
         default:
           setErrorTable("Unknown table selection.");
@@ -473,7 +473,7 @@ export default function Results() {
               <div className="event-left">
                 <img
                   className="thumbnail"
-                  src={`http://localhost:8080/events/${eventID}/thumbnail`}
+                  src={`/api/events/${eventID}/thumbnail`}
                   alt={`${eventData.name} thumbnail`}
                   onError={(e) => {
                     e.currentTarget.onerror = null;

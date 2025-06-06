@@ -44,7 +44,7 @@ export default function HeroCarousel() {
       const newSlides = [staticSlides[0]]; // start with the “About” blurb
 
       try {
-        const eventsRes = await fetch("http://localhost:8080/events");
+        const eventsRes = await fetch("/api/events");
         const data = await eventsRes.json();
         const allEvents = Array.isArray(data.events) ? data.events : [];
 

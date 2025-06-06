@@ -7,7 +7,7 @@ export default function EventsAndRankingsSection() {
 
   useEffect(() => {
     // ─── “UPCOMING EVENTS” FETCH ────────────────────────────────────────────────
-    fetch("http://localhost:8080/events")
+    fetch("/api/events")
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -36,7 +36,7 @@ export default function EventsAndRankingsSection() {
       });
 
     // ─── “WORLD GOLF RANKINGS” FETCH ────────────────────────────────────────────
-    fetch("http://localhost:8080/standings")
+    fetch("/api/standings")
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();

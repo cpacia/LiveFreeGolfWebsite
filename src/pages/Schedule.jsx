@@ -24,9 +24,9 @@ export default function Schedule() {
   // Helper: build the URL for a given year (or none for the “current”)
   function buildFetchUrl(year) {
     if (!year) {
-      return "http://localhost:8080/events";
+      return "/api/events";
     }
-    return `http://localhost:8080/events?year=${year}`;
+    return `/api/events?year=${year}`;
   }
 
   // Fetch “current year” on mount
@@ -158,7 +158,7 @@ export default function Schedule() {
               <div className="event-left">
                 <img
                   className="thumbnail"
-                  src={`http://localhost:8080/events/${evt.eventID}/thumbnail`}
+                  src={`/api/events/${evt.eventID}/thumbnail`}
                   alt={`${evt.name} thumbnail`}
                   onError={(e) => {
                     // Remove this handler so we don't loop if default-logo.png also fails

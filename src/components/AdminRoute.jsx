@@ -7,7 +7,7 @@ export default function AdminRoute() {
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:8080/auth/me", {
+    fetch("/api/auth/me", {
       credentials: "include",
     })
       .then((res) => {

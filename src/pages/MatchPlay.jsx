@@ -14,7 +14,7 @@ export default function MatchPlay() {
   useEffect(() => {
     const fetchMatchPlayInfo = async () => {
       try {
-        const resp = await fetch("http://localhost:8080/match-play");
+        const resp = await fetch("/api/match-play");
         if (!resp.ok) {
           throw new Error(`HTTP ${resp.status}`);
         }
@@ -45,8 +45,8 @@ export default function MatchPlay() {
       try {
         const url =
           selectedYear === latestYear
-            ? "http://localhost:8080/match-play/results"
-            : `http://localhost:8080/match-play/results?year=${selectedYear}`;
+            ? "/api/match-play/results"
+            : `/api/match-play/results?year=${selectedYear}`;
         const resp = await fetch(url);
         if (!resp.ok) {
           throw new Error(`HTTP ${resp.status}`);

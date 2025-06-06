@@ -13,7 +13,7 @@ export default function ColonyCup() {
       setError(null);
 
       try {
-        const resp = await fetch("http://localhost:8080/colony-cup");
+        const resp = await fetch("/api/colony-cup");
         if (!resp.ok) {
           throw new Error(`HTTP ${resp.status}`);
         }
