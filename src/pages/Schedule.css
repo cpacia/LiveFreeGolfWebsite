@@ -253,6 +253,7 @@
   }
   .event-right {
     align-self: flex-end;
+    margin-bottom: 2rem;
   }
 
   .action-link a {
