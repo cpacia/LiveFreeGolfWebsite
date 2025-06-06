@@ -76,7 +76,7 @@ export default function AdminColonyCup() {
     const placeholder = {
       id: tempId,
       year: todayYear,
-      team: [], // start with no players by default
+      team: [""], // start with one empty player
       winningTeam: false,
       cacheKey: Date.now(),
     };

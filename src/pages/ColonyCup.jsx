@@ -1,8 +1,9 @@
+// src/components/ColonyCup.jsx
 import React, { useState, useEffect } from "react";
 import "./ColonyCup.css";
 
 export default function ColonyCup() {
-  const [info, setInfo] = useState(null);
+  const [infos, setInfos] = useState([]);       // Holds up to two items
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -17,8 +18,16 @@ export default function ColonyCup() {
           throw new Error(`HTTP ${resp.status}`);
         }
         const data = await resp.json();
-        // Expecting { year: "2024", winningTeam: ["Name1", "Name2", …] }
-        setInfo(data);
+
+        // data is an array of up to two ColonyCupInfo objects
+        if (Array.isArray(data)) {
+          // Sort by numeric year ascending (lowest first)
+          data.sort((a, b) => Number(a.year) - Number(b.year));
+          setInfos(data);
+        } else {
+          // If API ever returns a single object, wrap it in an array
+          setInfos([data]);
+        }
       } catch (e) {
         console.error(e);
         setError("Failed to load Colony Cup info.");
@@ -49,6 +58,20 @@ export default function ColonyCup() {
     return grid;
   };
 
+  /**
+   * If there are no players in “team”, produce a 4×3 grid where
+   * the center cell is "TBD" and every other cell is a zero-width space (U+200B).
+   */
+  const makeTBDGrid = () => {
+    const rows = 4;
+    const cols = 3;
+    return Array.from({ length: rows }).map((_, r) =>
+      Array.from({ length: cols }).map((_, c) =>
+        r === 1 && c === 1 ? "TBD" : "\u200B"
+      )
+    );
+  };
+
   return (
     <div className="full-bleed colonycup-content">
       <div className="content-container">
@@ -59,7 +82,7 @@ export default function ColonyCup() {
         {!loading && !error && (
           <>
             {/* Main heading */}
-            <h2 className="colonycup-heading">Colony Cup</h2>
+            <h2 className="colonycup-heading">Colony Cup 🏆</h2>
 
             {/* Static blurb: adjust text as needed */}
             <section className="colonycup-blurb">
@@ -87,36 +110,51 @@ export default function ColonyCup() {
               </p>
 
               <p>
-				  The captian of this year's team fills out the the squad by selecting the nine highest-ranked players who are available (i.e. not currently on another Colony Cup team), plus two additional “captain’s picks” drawn from anyone inside the top-50 season rankings.
-				</p>
+                The captain of this year's team fills out the squad by selecting
+                the nine highest-ranked players who are available (i.e. not
+                currently on another Colony Cup team), plus two additional
+                “captain’s picks” drawn from anyone inside the top-50 season
+                rankings.
+              </p>
             </section>
 
-            {/* If info exists, show year + table */}
-            {info && (
-              <>
-                <h3 className="winning-team-heading">
-                  Winning Team ({info.year})
-                </h3>
+            {/* If infos exist, map over up to two items to render two tables */}
+            {infos.length === 0 && (
+              <p className="no-team-text">No Colony Cup data available.</p>
+            )}
 
-                {Array.isArray(info.winningTeam) ? (
+            {infos.map((entry) => {
+              const year = entry.year;
+              // “team” should be an array of names; if missing or empty, show TBD grid
+              const players = Array.isArray(entry.team) ? entry.team : [];
+              const grid =
+                players.length > 0
+                  ? make4x3Grid(players)
+                  : makeTBDGrid();
+
+              return (
+                <div key={year} className="colonycup-table-block">
+                  {/* Modified heading logic: show "<year> Colony Cup Team" if winningTeam is false */}
+                  <h3 className="winning-team-heading">
+                    {entry.winningTeam
+                      ? `Winning Team (${year})`
+                      : `${year} Colony Cup Team`}
+                  </h3>
+
                   <table className="winning-team-table">
                     <tbody>
-                      {make4x3Grid(info.winningTeam).map((row, rowIndex) => (
+                      {grid.map((row, rowIndex) => (
                         <tr key={rowIndex}>
                           {row.map((name, colIndex) => (
-                            <td key={colIndex}>{name || ""}</td>
+                            <td key={colIndex}>{name}</td>
                           ))}
                         </tr>
                       ))}
                     </tbody>
                   </table>
-                ) : (
-                  <p className="no-team-text">
-                    No winning‐team data found for {info.year}.
-                  </p>
-                )}
-              </>
-            )}
+                </div>
+              );
+            })}
           </>
         )}
       </div>
