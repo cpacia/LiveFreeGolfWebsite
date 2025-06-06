@@ -73,7 +73,6 @@
   display: none;
 }
 
-
 /* 2) Year heading */
 .standings-year-heading {
   text-align: left;
@@ -196,7 +195,6 @@
     font-size: 0.875rem; /* shrink text slightly if needed */
     padding: 0.5rem 0.75rem; /* match your existing mobile padding */
   }
-  
 }
 
 @media (max-width: 768px) {

@@ -170,11 +170,23 @@ export default function Results() {
         <table className="results-table net-table">
           <thead>
             <tr>
-              <th>Rank</th>
+              <th>
+                <span className="full-header">Rank</span>
+                <span className="abbr-header">Rk</span>
+              </th>
               <th>Player</th>
-              <th>Total</th>
-              <th>Strokes</th>
-              <th>Points</th>
+              <th>
+                <span className="full-header">Total</span>
+                <span className="abbr-header">Tot</span>
+              </th>
+              <th>
+                <span className="full-header">Strokes</span>
+                <span className="abbr-header">Str</span>
+              </th>
+              <th>
+                <span className="full-header">Points</span>
+                <span className="abbr-header">Pts</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -222,10 +234,19 @@ export default function Results() {
         <table className="results-table gross-table">
           <thead>
             <tr>
-              <th>Rank</th>
+              <th>
+                <span className="full-header">Rank</span>
+                <span className="abbr-header">Rk</span>
+              </th>
               <th>Player</th>
-              <th>Total</th>
-              <th>Strokes</th>
+              <th>
+                <span className="full-header">Total</span>
+                <span className="abbr-header">Tot</span>
+              </th>
+              <th>
+                <span className="full-header">Strokes</span>
+                <span className="abbr-header">Str</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -279,10 +300,21 @@ export default function Results() {
         <table className="results-table teams-table">
           <thead>
             <tr>
-              <th>Rank</th>
+              <th>
+                <span className="full-header">Rank</span>
+                <span className="abbr-header">Rk</span>
+              </th>
               <th>Team</th>
-              {hasTotalColumn && <th>Total</th>}
-              <th>Strokes</th>
+              {hasTotalColumn && (
+                <th>
+                  <span className="full-header">Total</span>
+                  <span className="abbr-header">Tot</span>
+                </th>
+              )}
+              <th>
+                <span className="full-header">Strokes</span>
+                <span className="abbr-header">Str</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -322,11 +354,23 @@ export default function Results() {
         <table className="results-table net-table">
           <thead>
             <tr>
-              <th>Rank</th>
+              <th>
+                <span className="full-header">Rank</span>
+                <span className="abbr-header">Rk</span>
+              </th>
               <th>Player</th>
-              <th>Total</th>
-              <th>Strokes</th>
-              <th>Points</th>
+              <th>
+                <span className="full-header">Total</span>
+                <span className="abbr-header">Tot</span>
+              </th>
+              <th>
+                <span className="full-header">Strokes</span>
+                <span className="abbr-header">Str</span>
+              </th>
+              <th>
+                <span className="full-header">Points</span>
+                <span className="abbr-header">Pts</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -384,7 +428,10 @@ export default function Results() {
           <table className="results-table skins-player-table">
             <thead>
               <tr>
-                <th>Rank</th>
+                <th>
+                  <span className="full-header">Rank</span>
+                  <span className="abbr-header">Rk</span>
+                </th>
                 <th>Player</th>
                 <th>Skins</th>
               </tr>
@@ -425,9 +472,15 @@ export default function Results() {
           <table className="results-table skins-hole-table skins-margin">
             <thead>
               <tr>
-                <th>Hole</th>
+                <th>
+                  <span className="full-header">Hole</span>
+                  <span className="abbr-header">Hl</span>
+                </th>
                 <th>Par</th>
-                <th>Score</th>
+                <th>
+                  <span className="full-header">Score</span>
+                  <span className="abbr-header">Scr</span>
+                </th>
                 <th>Won</th>
                 <th>Tie</th>
               </tr>

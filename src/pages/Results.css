@@ -1,5 +1,12 @@
 /* File: Results.css */
 
+.full-header {
+  display: inline;
+}
+.abbr-header {
+  display: none;
+}
+
 /* ===== 1) Outer “full-bleed” / content wrapper ===== */
 .results-content {
   padding-top: 2rem; /* a bit of breathing room under the nav/header */
@@ -257,4 +264,128 @@
 .teams-table th:nth-child(4),
 .teams-table td:nth-child(4) {
   width: 3%; /* Rank (narrow) */
+}
+
+@media (max-width: 768px) {
+  /* Hide the long text */
+  .full-header {
+    display: none !important;
+  }
+  /* Show the short text */
+  .abbr-header {
+    display: inline !important;
+    font-size: 0.9rem; /* adjust if needed */
+    font-weight: 500;
+  }
+  /* (Optional) Center the abbreviations in each TH */
+  .results-table th {
+    text-align: center;
+    padding: 0.5rem 0.6rem; /* you can tweak padding on mobile */
+  }
+
+  .net-table th:nth-child(1),
+  .net-table td:nth-child(1) {
+    width: 3%; /* Rank (narrow) */
+  }
+
+  .net-table th:nth-child(2),
+  .net-table td:nth-child(2) {
+    width: 35%; /* Rank (narrow) */
+  }
+
+  .net-table th:nth-child(3),
+  .net-table td:nth-child(3) {
+    width: 3%; /* Rank (narrow) */
+  }
+
+  .net-table th:nth-child(4),
+  .net-table td:nth-child(4) {
+    width: 4%; /* Rank (narrow) */
+  }
+
+  .gross-table th:nth-child(1),
+  .gross-table td:nth-child(1) {
+    width: 2%; /* Rank (narrow) */
+  }
+
+  .gross-table th:nth-child(2),
+  .gross-table td:nth-child(2) {
+    width: 40%; /* Rank (narrow) */
+  }
+
+  .gross-table th:nth-child(3),
+  .gross-table td:nth-child(3) {
+    width: 3%; /* Rank (narrow) */
+  }
+
+  .gross-table th:nth-child(4),
+  .gross-table td:nth-child(4) {
+    width: 4%; /* Rank (narrow) */
+  }
+
+  .skins-player-table th:nth-child(1),
+  .skins-player-table td:nth-child(1) {
+    width: 7%; /* Rank (narrow) */
+  }
+
+  .skins-player-table th:nth-child(2),
+  .skins-player-table td:nth-child(2) {
+    width: 60%; /* Rank (narrow) */
+  }
+
+  .skins-hole-table th:nth-child(3),
+  .skins-hole-table td:nth-child(3) {
+    width: 3%; /* Rank (narrow) */
+  }
+
+  .skins-hole-table th:nth-child(1),
+  .skins-hole-table td:nth-child(1) {
+    width: 3%; /* Rank (narrow) */
+  }
+
+  .skins-hole-table th:nth-child(2),
+  .skins-hole-table td:nth-child(2) {
+    width: 3%; /* Rank (narrow) */
+    text-align: center;
+  }
+
+  .skins-hole-table th:nth-child(3),
+  .skins-hole-table td:nth-child(3) {
+    width: 3%; /* Rank (narrow) */
+  }
+
+  .skins-hole-table th:nth-child(4),
+  .skins-hole-table td:nth-child(4) {
+    width: 10%; /* Rank (narrow) */
+    text-align: left;
+  }
+
+  .skins-hole-table th:nth-child(5),
+  .skins-hole-table td:nth-child(5) {
+    text-align: left;
+    width: 30%; /* Rank (narrow) */
+    white-space: normal; /* allow wrapping */
+    word-wrap: break-word; /* break long words if necessary */
+    overflow-wrap: break-word; /* newer name for word-wrap */
+  }
+
+  .teams-table th:nth-child(1),
+  .teams-table td:nth-child(1) {
+    width: 2%; /* Rank (narrow) */
+  }
+
+  .teams-table th:nth-child(2),
+  .teams-table td:nth-child(2) {
+    width: 40%; /* Rank (narrow) */
+  }
+
+  .teams-table th:nth-child(3),
+  .teams-table td:nth-child(3) {
+    width: 5%; /* Rank (narrow) */
+  }
+
+  .teams-table th:nth-child(4),
+  .teams-table td:nth-child(4) {
+    width: 5%; /* Rank (narrow) */
+  }
 }
