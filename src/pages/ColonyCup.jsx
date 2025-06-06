@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import "./ColonyCup.css";
 
 export default function ColonyCup() {
-  const [infos, setInfos] = useState([]);       // Holds up to two items
+  const [infos, setInfos] = useState([]); // Holds up to two items
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -67,8 +67,8 @@ export default function ColonyCup() {
     const cols = 3;
     return Array.from({ length: rows }).map((_, r) =>
       Array.from({ length: cols }).map((_, c) =>
-        r === 1 && c === 1 ? "TBD" : "\u200B"
-      )
+        r === 1 && c === 1 ? "TBD" : "\u200B",
+      ),
     );
   };
 
@@ -89,9 +89,9 @@ export default function ColonyCup() {
               <p>
                 Each fall, two 12-player teams from around the State battle it
                 out for bragging rights—and the chance to return as defending
-                champions next year. Over one action-packed weekend, golfers face
-                off in various 9-hole, head-to-head matches, accumulating points
-                to push their squad to victory.
+                champions next year. Over one action-packed weekend, golfers
+                face off in various 9-hole, head-to-head matches, accumulating
+                points to push their squad to victory.
               </p>
 
               <p>
@@ -128,9 +128,7 @@ export default function ColonyCup() {
               // “team” should be an array of names; if missing or empty, show TBD grid
               const players = Array.isArray(entry.team) ? entry.team : [];
               const grid =
-                players.length > 0
-                  ? make4x3Grid(players)
-                  : makeTBDGrid();
+                players.length > 0 ? make4x3Grid(players) : makeTBDGrid();
 
               return (
                 <div key={year} className="colonycup-table-block">
@@ -161,4 +159,3 @@ export default function ColonyCup() {
     </div>
   );
 }
-

@@ -148,21 +148,21 @@
 
 @media (max-width: 768px) {
   .swiper {
-    display: flex;                      /* place cards in a row */
-    overflow-x: auto;                   /* allow horizontal scrolling/swiping */
-    scroll-snap-type: x mandatory;      /* enable scroll-snap on the x-axis */
-    -webkit-overflow-scrolling: touch;  /* smooth momentum on iOS */
-    gap: 1rem;                          /* space between cards */
-    padding-bottom: 1rem;               /* extra bottom padding so shadows aren’t cut off */
+    display: flex; /* place cards in a row */
+    overflow-x: auto; /* allow horizontal scrolling/swiping */
+    scroll-snap-type: x mandatory; /* enable scroll-snap on the x-axis */
+    -webkit-overflow-scrolling: touch; /* smooth momentum on iOS */
+    gap: 1rem; /* space between cards */
+    padding-bottom: 1rem; /* extra bottom padding so shadows aren’t cut off */
     padding-left: 90px;
   }
 
   /* Each card becomes a “snap point” */
   .swiper .membership-card {
-    flex: 0 0 80%;                     /* each card is 80% of the viewport width */
-    scroll-snap-align: center;         /* center the card when you swipe */
-    margin: 0;                         /* reset any desktop margin */
-    border-radius: 0.5rem;             /* keep your existing radius */
+    flex: 0 0 80%; /* each card is 80% of the viewport width */
+    scroll-snap-align: center; /* center the card when you swipe */
+    margin: 0; /* reset any desktop margin */
+    border-radius: 0.5rem; /* keep your existing radius */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     background: #fff;
   }
@@ -173,6 +173,6 @@
   }
   .swiper {
     -ms-overflow-style: none; /* IE/Edge */
-    scrollbar-width: none;    /* Firefox */
+    scrollbar-width: none; /* Firefox */
   }
 }

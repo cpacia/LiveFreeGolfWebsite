@@ -1,6 +1,6 @@
 // File: Results.jsx
 import React, { useState, useEffect } from "react";
-import { getImageUrl } from '../lib/api';
+import { getImageUrl } from "../lib/api";
 import "./Results.css";
 import "./Schedule.css"; // <-- pull in the same Schedule‐page styles for the header
 

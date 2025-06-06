@@ -28,20 +28,20 @@ export default function MembershipSection() {
       <h2 className="section-title">Join the Tour</h2>
       <div className="membership-grid">
         <div className="swiper">
-        {tiers.map((tier) => (
-          <div key={tier.id} className="tier-card">
-            <h3 className="tier-title">{tier.title}</h3>
-            <p className="tier-price">{tier.price}</p>
-            <ul className="tier-highlights">
-              {tier.highlights.map((h, i) => (
-                <li key={i}>{h}</li>
-              ))}
-            </ul>
-            <a href="/membership" className="btn-primary tier-cta">
-              Sign Up ▶
-            </a>
-          </div>
-        ))}
+          {tiers.map((tier) => (
+            <div key={tier.id} className="tier-card">
+              <h3 className="tier-title">{tier.title}</h3>
+              <p className="tier-price">{tier.price}</p>
+              <ul className="tier-highlights">
+                {tier.highlights.map((h, i) => (
+                  <li key={i}>{h}</li>
+                ))}
+              </ul>
+              <a href="/membership" className="btn-primary tier-cta">
+                Sign Up ▶
+              </a>
+            </div>
+          ))}
         </div>
       </div>
     </section>

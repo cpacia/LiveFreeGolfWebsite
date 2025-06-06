@@ -51,16 +51,16 @@
 
 @media (max-width: 768px) {
   .sponsors-track {
-    display: flex;            /* keep flex for centering, etc. */
-    flex-wrap: wrap;          /* allow items to wrap onto next line */
-    justify-content: center;  /* center rows horizontally */
-    gap: 2rem;                /* reduce gap for a tighter grid */
-    padding: 0 1rem;          /* optional: add horizontal padding if you want */
+    display: flex; /* keep flex for centering, etc. */
+    flex-wrap: wrap; /* allow items to wrap onto next line */
+    justify-content: center; /* center rows horizontally */
+    gap: 2rem; /* reduce gap for a tighter grid */
+    padding: 0 1rem; /* optional: add horizontal padding if you want */
   }
 
   .sponsor-item {
-    flex: 0 0 45%;            /* each item takes ~45% of the container */
-    margin: 0.5rem 0;         /* vertical spacing between rows */
-    max-width: 150px;         /* keep your original max width, if desired */
+    flex: 0 0 45%; /* each item takes ~45% of the container */
+    margin: 0.5rem 0; /* vertical spacing between rows */
+    max-width: 150px; /* keep your original max width, if desired */
   }
 }

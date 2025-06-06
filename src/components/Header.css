@@ -228,29 +228,31 @@
     padding-left: 2rem;
   }
 
-.hamburger {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 0.5rem;
-  margin-left: auto;
-}
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-left: auto;
+  }
 
-.hamburger span {
-  display: block;
-  width: 24px;
-  height: 3px;
-  background: #ffffff;
-  margin: 2px 1.5rem;            /* 2px top + 2px bottom → 4px total spacing */
-  transition: transform 0.2s, opacity 0.2s;
-}
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 3px;
+    background: #ffffff;
+    margin: 2px 1.5rem; /* 2px top + 2px bottom → 4px total spacing */
+    transition:
+      transform 0.2s,
+      opacity 0.2s;
+  }
 
-/* When the menu is “open,” rotate/vanish them as before… */
-.hamburger.open span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
+  /* When the menu is “open,” rotate/vanish them as before… */
+  .hamburger.open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
 
   /* 1.5 When the menu is “open,” rotate the hamburger into an X */
   .hamburger.open span:nth-child(1) {
@@ -284,18 +286,18 @@
 @media (max-width: 768px) {
   /* 1) Force the mobile‐menu to cover the entire viewport (below the header) */
   .mobile-menu {
-    position: fixed;          /* stay on top of everything */
-    top: 0;                   /* sit directly under the header */
+    position: fixed; /* stay on top of everything */
+    top: 0; /* sit directly under the header */
     left: 0;
-    right: 0;  
-    bottom: 17.4rem;           
+    right: 0;
+    bottom: 17.4rem;
     background: var(--color-primary-green);
-    display: flex;            /* we'll stack items vertically */
+    display: flex; /* we'll stack items vertically */
     flex-direction: column;
     align-items: center;
-    padding-top: 4rem;        /* push content down below the logo/close icon */
-    z-index: 999;             /* above all page content */
-    overflow-y: auto;         /* if menu items overflow, let it scroll */
+    padding-top: 4rem; /* push content down below the logo/close icon */
+    z-index: 999; /* above all page content */
+    overflow-y: auto; /* if menu items overflow, let it scroll */
     margin-bottom: -10px;
   }
 
@@ -306,36 +308,35 @@
     padding-right: 0;
   }
 
- 
   /* 4) Center the “X” (close) icon in the very top-right corner. */
   .hamburger.open {
     position: fixed;
-    top: 1rem;           /* adjust as needed */
-    right: 1rem;         /* align flush with the right edge */
-    z-index: 1001;       /* above everything else */
+    top: 1rem; /* adjust as needed */
+    right: 1rem; /* align flush with the right edge */
+    z-index: 1001; /* above everything else */
   }
 
   /* 5) Style all top‐level links so they’re large, centered, and easy to tap */
   .mobile-menu a,
-	.mobile-menu .dropbtn {
-	  font-family: var(--font-heading);
-	  font-size: 1.2rem;      /* match the size you gave to .mobile-menu a */
-	  font-weight: 500;       /* match the weight of your other menu items */
-	  padding: 1rem 0;        /* override the desktop .dropbtn padding */
-	  margin-top: 0;          /* remove the 0.16rem offset from desktop */
-	  border: none;           /* keep it as a “clean” text button */
-	  background: none;
-	  color: #ffffff;
-	}
-	
-	.mobile-menu .dropdown-content a {
-		padding-left: 0 !important;
-		text-align: center;
-	  }
-  
+  .mobile-menu .dropbtn {
+    font-family: var(--font-heading);
+    font-size: 1.2rem; /* match the size you gave to .mobile-menu a */
+    font-weight: 500; /* match the weight of your other menu items */
+    padding: 1rem 0; /* override the desktop .dropbtn padding */
+    margin-top: 0; /* remove the 0.16rem offset from desktop */
+    border: none; /* keep it as a “clean” text button */
+    background: none;
+    color: #ffffff;
+  }
+
+  .mobile-menu .dropdown-content a {
+    padding-left: 0 !important;
+    text-align: center;
+  }
+
   .mobile-menu a:hover,
   .mobile-menu .dropbtn:hover {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
   }
 
   /* 6) If you have a “Tour Info ▼” dropdown, center its caret and hide the desktop‐style dropdown
@@ -347,21 +348,20 @@
     position: relative;
   }
   .mobile-menu .dropdown .dropbtn::after {
-
     position: absolute;
     right: 1rem;
     top: 50%;
     transform: translateY(-50%);
   }
   .mobile-menu .dropdown-content {
-    display: none;   /* hide the desktop‐hover dropdown entirely on mobile */
+    display: none; /* hide the desktop‐hover dropdown entirely on mobile */
   }
 
   /* 7) Show the “Register ▶” button as a full‐width bar near the bottom */
   .mobile-menu .btn-register {
     display: block;
     margin: auto;
-    width: 90%;                   /* leave a bit of side margin */
+    width: 90%; /* leave a bit of side margin */
     max-width: 400px;
     background: var(--color-accent-yellow);
     color: var(--color-dark);
@@ -370,7 +370,7 @@
     font-size: 1.1rem;
     font-weight: 700;
     border-radius: 6px;
-    margin-top: 1rem;    /* or 0, if you want no extra gap at all */
+    margin-top: 1rem; /* or 0, if you want no extra gap at all */
     margin-bottom: 2rem; /* you can keep or reduce this as you like */
   }
   .mobile-menu .btn-register:hover {
@@ -385,8 +385,7 @@
     color: #ffffff;
     font-size: 1rem;
     padding: 0.75rem 0;
-    border-top: 1px solid rgba(255,255,255,0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
     margin-bottom: 2rem;
   }
 }
-

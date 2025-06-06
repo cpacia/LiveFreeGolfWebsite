@@ -1,7 +1,7 @@
 // src/components/Schedule.jsx
 
 import React, { useEffect, useState } from "react";
-import { getImageUrl } from '../lib/api';
+import { getImageUrl } from "../lib/api";
 import "./Schedule.css";
 
 export default function Schedule() {

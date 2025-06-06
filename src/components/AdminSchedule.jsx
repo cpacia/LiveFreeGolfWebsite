@@ -1,6 +1,6 @@
 // src/components/AdminSchedule.jsx
 import React, { useState, useEffect, useRef } from "react";
-import { getImageUrl } from '../lib/api';
+import { getImageUrl } from "../lib/api";
 import "./AdminSchedule.css";
 
 export default function AdminSchedule() {
@@ -249,7 +249,9 @@ export default function AdminSchedule() {
                               previewURL
                                 ? previewURL
                                 : evt.thumbnail
-                                  ? getImageUrl(`/api/events/${evt.eventID}/thumbnail?ck=${evt.cacheKey}`)
+                                  ? getImageUrl(
+                                      `/api/events/${evt.eventID}/thumbnail?ck=${evt.cacheKey}`,
+                                    )
                                   : "/images/default-image.webp"
                             }
                             alt={`${draftEvent.name} thumbnail`}

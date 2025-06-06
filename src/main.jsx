@@ -11,13 +11,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
 const originalFetch = window.fetch;
 
-const API_BASE =
-  import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 
-window.fetch = function(input, init = {}) {
-  if (typeof input === 'string' && input.startsWith('/api')) {
+window.fetch = function (input, init = {}) {
+  if (typeof input === "string" && input.startsWith("/api")) {
     input = API_BASE + input;
-  } else if (input instanceof Request && input.url.startsWith('/api')) {
+  } else if (input instanceof Request && input.url.startsWith("/api")) {
     input = new Request(API_BASE + input.url, input);
   }
   return originalFetch(input, init);

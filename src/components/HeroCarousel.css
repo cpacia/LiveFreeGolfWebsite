@@ -12,7 +12,7 @@
   width: 100%;
   height: 60vh;
   background-size: cover;
-  background-position: center 25%;  /* <-- align the top of the image with the top of the container */
+  background-position: center 25%; /* <-- align the top of the image with the top of the container */
   /* …other properties (height, display, etc.)… */
   display: flex;
   align-items: center;
@@ -24,8 +24,8 @@
 .hero-carousel .slide.active {
   opacity: 1;
   position: relative; /* bring it into flow */
-  z-index: 2;         /* above the hidden slides */
-+}
+  z-index: 2; /* above the hidden slides */
+}
 
 /* Animate the content in lock‑step */
 .hero-carousel .slide-content {
@@ -48,7 +48,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: flex-start; /* align items to left */
-  padding: 2rem;               /* space from edges */
+  padding: 2rem; /* space from edges */
 }
 
 .hero-carousel .overlay h1 {
@@ -70,12 +70,14 @@
   font-weight: 600;
   border-radius: 4px;
   text-decoration: none;
-  transition: background 0.2s, transform 0.1s;
+  transition:
+    background 0.2s,
+    transform 0.1s;
 }
 
 .hero-carousel .btn-primary:hover {
-  background: #d1a640;          /* slightly darker yellow hover */
-  transform: translateY(-1px);  /* subtle lift */
+  background: #d1a640; /* slightly darker yellow hover */
+  transform: translateY(-1px); /* subtle lift */
 }
 
 .hero-carousel .btn-secondary {
@@ -90,18 +92,18 @@
 }
 
 .hero-carousel .btn-secondary:hover {
-  background: #10281C;          /* slightly darker yellow hover */
-  transform: translateY(-1px);  /* subtle lift */
+  background: #10281c; /* slightly darker yellow hover */
+  transform: translateY(-1px); /* subtle lift */
 }
 
 .hero-carousel .cta-group {
   display: flex;
-  gap: 1rem;                /* space between buttons */
+  gap: 1rem; /* space between buttons */
 }
 
 .hero-carousel .cta-group a {
-  flex: 1;                  /* both share the space equally */
-  max-width: 150px;         /* optional cap if you don’t want them too wide */
+  flex: 1; /* both share the space equally */
+  max-width: 150px; /* optional cap if you don’t want them too wide */
   text-align: center;
 }
 
@@ -109,33 +111,35 @@
   pointer-events: auto;
   z-index: 10;
   position: absolute;
-  top: 50%;                    
+  top: 50%;
   transform: translateY(-50%);
-  
+
   /* explicit circle size */
-  width: 32px;      /* or 28px for a tighter look */
-  height: 32px;     /* match width for a perfect circle */
-  
+  width: 32px; /* or 28px for a tighter look */
+  height: 32px; /* match width for a perfect circle */
+
   background: var(--color-accent-yellow);
   color: var(--color-primary-green);
   border: none;
   border-radius: 50%;
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   opacity: 0.85;
-  
+
   /* remove padding */
   padding: 0;
-  
+
   /* font-size now only affects the icon inside */
-  font-size: 2rem;  /* larger arrow glyph */
-  
-  transition: opacity 0.2s, transform 0.2s;
-  
-   outline: none;                    /* remove default focus outline */
+  font-size: 2rem; /* larger arrow glyph */
+
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+
+  outline: none; /* remove default focus outline */
   -webkit-tap-highlight-color: transparent; /* remove tap highlight on mobile */
 }
 .hero-carousel .nav:hover {
@@ -152,13 +156,13 @@
 
 /* Pull the buttons in from the edges by the same amount */
 .hero-carousel .nav.prev {
-  left: 26px;    /* inset from left */
-  padding-right: .15rem;
+  left: 26px; /* inset from left */
+  padding-right: 0.15rem;
 }
 
 .hero-carousel .nav.next {
-  right: 16px;   /* inset from right */
-  padding-left: .15rem;
+  right: 16px; /* inset from right */
+  padding-left: 0.15rem;
 }
 
 .hero-carousel .nav .chevron {
@@ -169,19 +173,17 @@
 
 /* Container & positioning */
 .blurb-card {
-  background: rgba(247, 245, 233, 0.0);   
-  padding: 2rem;                          /* generous breathing room */
-  border-radius: 8px;                     /* soft corners */
-  max-width: 700px;                       /* narrow enough for readability */
-  color: var(--color-dark);               /* dark text for contrast */
+  background: rgba(247, 245, 233, 0);
+  padding: 2rem; /* generous breathing room */
+  border-radius: 8px; /* soft corners */
+  max-width: 700px; /* narrow enough for readability */
+  color: var(--color-dark); /* dark text for contrast */
   text-align: left;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.0); /* subtle depth over the image */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0); /* subtle depth over the image */
   margin-left: 10rem;
   margin-top: 1rem;
   position: relative;
 }
-
-
 
 /* Heading */
 .blurb-card h2 {
@@ -211,28 +213,28 @@
   font-weight: 600;
   border-radius: 4px;
   text-decoration: none;
-  transition: background 0.2s, transform 0.1s;
+  transition:
+    background 0.2s,
+    transform 0.1s;
 }
 
 .blurb-card .btn-primary:hover {
-  background: #d1a640;          /* slightly darker yellow hover */
-  transform: translateY(-1px);  /* subtle lift */
+  background: #d1a640; /* slightly darker yellow hover */
+  transform: translateY(-1px); /* subtle lift */
 }
-
 
 .event-card {
   background: transparent !important;
-  padding: 2rem;                          /* generous breathing room */
-  border-radius: 8px;                     /* soft corners */
-  max-width: 700px;                       /* narrow enough for readability */
-  color: var(--color-dark);               /* dark text for contrast */
+  padding: 2rem; /* generous breathing room */
+  border-radius: 8px; /* soft corners */
+  max-width: 700px; /* narrow enough for readability */
+  color: var(--color-dark); /* dark text for contrast */
   text-align: left;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.0); /* subtle depth over the image */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0); /* subtle depth over the image */
   margin-left: 10rem;
   margin-top: 2.5rem;
   position: relative;
 }
-
 
 .event-card .label {
   font-family: var(--font-heading);
@@ -263,25 +265,25 @@
 
 .hero-carousel .post-slide {
   display: flex;
-  align-items: center;         /* vertical center */
-  max-width: 1100px;            /* limits overall card width */
-  background: rgba(255,255,255,0.95);
+  align-items: center; /* vertical center */
+  max-width: 1100px; /* limits overall card width */
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-  overflow: hidden;            /* clip any overflow */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  overflow: hidden; /* clip any overflow */
 }
 
 .hero-carousel .slide.post-wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;      /* center this one only */
-  padding: 0;                   /* drop left padding so true center */
+  justify-content: center; /* center this one only */
+  padding: 0; /* drop left padding so true center */
 }
 
 /* 1. Target the overlay when it’s inside a post slide */
 .hero-carousel .slide.post-wrapper .overlay {
-  justify-content: center;  /* center content horizontally */
-  align-items: center;      /* center content vertically */
+  justify-content: center; /* center content horizontally */
+  align-items: center; /* center content vertically */
 }
 
 /* 2. (Optional) Remove the overlay’s padding so true centering */
@@ -290,7 +292,7 @@
 }
 
 .hero-carousel .post-image {
-  flex: 0 0 50%;               /* 40% of the card width */
+  flex: 0 0 50%; /* 40% of the card width */
   max-height: 400px;
   object-fit: cover;
   border-radius: 0;
@@ -326,18 +328,18 @@
   line-height: 1.7;
   margin: 0;
   color: var(--color-dark);
-  
+
   /* ======= MULTI‑LINE TRUNCATION ======= */
-  display: -webkit-box;            /* necessary for line‑clamp */
-  -webkit-box-orient: vertical;    
-  overflow: hidden;                
-  text-overflow: ellipsis;         
-  -webkit-line-clamp: 3;           /* show up to 3 lines, then “...” */
+  display: -webkit-box; /* necessary for line‑clamp */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3; /* show up to 3 lines, then “...” */
 }
 
 .post-text .btn-primary {
-  align-self: flex-start;      /* button hugs left of text block */
-  margin-top: 1rem;            /* pushes button to bottom if you want consistent placement */
+  align-self: flex-start; /* button hugs left of text block */
+  margin-top: 1rem; /* pushes button to bottom if you want consistent placement */
   margin-left: 1rem;
 }
 
@@ -365,14 +367,10 @@
   }
 }
 
-
 @media (max-width: 768px) {
-  
   /* optionally hide Prev/Next arrows, if you don’t want them on mobile */
   .hero-carousel .nav.prev,
   .hero-carousel .nav.next {
     display: none !important;
   }
 }
-
-

@@ -131,7 +131,7 @@ export default function AdminColonyCup() {
           if (isNew) {
             // Remove any "__new__" placeholder, then prepend saved
             const filtered = prev.filter(
-              (r) => !String(r.id).startsWith("__new__")
+              (r) => !String(r.id).startsWith("__new__"),
             );
             return [saved, ...filtered];
           } else {
@@ -163,7 +163,7 @@ export default function AdminColonyCup() {
   const handleDelete = (entry) => {
     if (
       !window.confirm(
-        `Are you sure you want to delete the Colony Cup entry for ${entry.year}?`
+        `Are you sure you want to delete the Colony Cup entry for ${entry.year}?`,
       )
     ) {
       return;
@@ -362,4 +362,3 @@ export default function AdminColonyCup() {
     </>
   );
 }
-
