@@ -76,7 +76,7 @@ export default function AdminColonyCup() {
     const placeholder = {
       id: tempId,
       year: todayYear,
-      team: [""], // start with one empty player
+      team: [], // start with no players (no initial blank)
       winningTeam: false,
       cacheKey: Date.now(),
     };
@@ -362,3 +362,4 @@ export default function AdminColonyCup() {
     </>
   );
 }
+
