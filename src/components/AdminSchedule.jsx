@@ -250,7 +250,7 @@ export default function AdminSchedule() {
                                 ? previewURL
                                 : evt.thumbnail
                                   ? getImageUrl(
-                                      `/api/events/${evt.eventID}/thumbnail?ck=${evt.cacheKey}`,
+                                      `/api/events/${evt.eventID}/thumbnail`,
                                     )
                                   : "/images/default-image.webp"
                             }
@@ -274,7 +274,7 @@ export default function AdminSchedule() {
                       ) : (
                         // Read‑only mode: always load the server URL, with cacheBust
                         <img
-                          src={`/api/events/${evt.eventID}/thumbnail?ck=${evt.cacheKey}`}
+                          src={getImageUrl(`/api/events/${evt.eventID}/thumbnail`)}
                           alt={`${evt.name} thumbnail`}
                           className="event-thumbnail"
                           onError={(e) => {
