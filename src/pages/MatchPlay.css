@@ -101,7 +101,6 @@
 /* Wraps all the columns side by side and allows horizontal scrolling */
 .bracket-container {
   display: flex;
-  justify-content: center;
   overflow-x: auto;
   padding-top: 1rem;
 }
@@ -255,4 +254,10 @@
   z-index: 1;
   left: auto;
   right: 0;
+}
+
+@media (max-width: 768px) {
+	.btn-register {
+		max-width: 120px;
+	}
 }
