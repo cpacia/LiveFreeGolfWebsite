@@ -127,3 +127,13 @@ button {
   left: 50%;
   margin-left: -50vw;
 }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light;
+  }
+  body {
+    background-color: white;
+    color: black;
+  }
+}
