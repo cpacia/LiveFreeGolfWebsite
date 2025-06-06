@@ -346,7 +346,7 @@
 @media (max-width: 768px) {
   .hero-carousel .blurb-card,
   .hero-carousel .event-card {
-    margin-left: 1rem;
+    margin-left: 0rem;
     margin-right: 1rem;
     max-width: none;
     width: calc(100% - 2rem);
