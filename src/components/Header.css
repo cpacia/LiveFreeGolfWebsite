@@ -179,6 +179,7 @@
 @media (max-width: 768px) {
   /* 1.1 Shrink the logo a bit on mobile */
   .logo img {
+    margin-top: 1rem;
     height: 50px;
   }
 
@@ -227,27 +228,29 @@
     padding-left: 2rem;
   }
 
-  /* 1.4 Hamburger icon styling */
-  .hamburger {
-    display: flex;
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    padding: 0.5rem;
-    margin-left: auto; /* push it to the far right */
-  }
-  .hamburger span {
-    display: block;
-    width: 24px;
-    height: 3px;
-    background: #ffffff;
-    margin-bottom: 4px;
-    transition: transform 0.2s, opacity 0.2s;
-  }
-  .hamburger span:last-child {
-    margin-bottom: 0;
-  }
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-left: auto;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 3px;
+  background: #ffffff;
+  margin: 2px 1.5rem;            /* 2px top + 2px bottom → 4px total spacing */
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+/* When the menu is “open,” rotate/vanish them as before… */
+.hamburger.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
 
   /* 1.5 When the menu is “open,” rotate the hamburger into an X */
   .hamburger.open span:nth-child(1) {
