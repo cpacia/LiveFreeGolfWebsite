@@ -254,11 +254,10 @@
   .event-right {
     align-self: flex-end;
   }
-  
+
   .action-link a {
-    padding: 0.5rem .5rem;
+    padding: 0.5rem 0.5rem;
     white-space: nowrap;
     overflow: hidden;
   }
-  
 }

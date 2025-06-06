@@ -66,6 +66,14 @@
   border: 0;
 }
 
+.full-header {
+  display: inline;
+}
+.abbr-header {
+  display: none;
+}
+
+
 /* 2) Year heading */
 .standings-year-heading {
   text-align: left;
@@ -157,4 +165,52 @@
 
 .standings-blurb a:hover {
   color: #0056b3; /* darker blue on hover */
+}
+
+@media (max-width: 768px) {
+  /* 1) Make sure the table itself stays as a table */
+  .standings-table {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed; /* (you already have this, but repeat if needed) */
+  }
+
+  /* 2) Force the THEAD and TBODY to act like table groups */
+  .standings-table thead {
+    display: table-header-group !important;
+  }
+  .standings-table tbody {
+    display: table-row-group !important;
+  }
+
+  /* 3) Force each TR to stay a row */
+  .standings-table tr {
+    display: table-row !important;
+  }
+
+  /* 4) Force each TH/TD to stay as a cell */
+  .standings-table th,
+  .standings-table td {
+    display: table-cell !important;
+    white-space: nowrap; /* prevents wrapping inside each cell */
+    font-size: 0.875rem; /* shrink text slightly if needed */
+    padding: 0.5rem 0.75rem; /* match your existing mobile padding */
+  }
+  
+}
+
+@media (max-width: 768px) {
+  .full-header {
+    display: none !important;
+  }
+  .abbr-header {
+    display: inline !important;
+    /* (you can adjust font-size or padding here if you want) */
+  }
+
+  /* Optional: center the mobile abbreviations */
+  .standings-table th .abbr-header {
+    display: block;
+    text-align: center;
+  }
 }

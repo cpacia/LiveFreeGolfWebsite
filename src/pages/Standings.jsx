@@ -122,10 +122,19 @@ export default function Standings() {
             <table className="standings-table">
               <thead>
                 <tr>
-                  <th>Rank</th>
+                  <th>
+                    <span className="full-header">Rank</span>
+                    <span className="abbr-header">Rk</span>
+                  </th>
                   <th>Player</th>
-                  <th>Events</th>
-                  <th>Points</th>
+                  <th>
+                    <span className="full-header">Events</span>
+                    <span className="abbr-header">Evts</span>
+                  </th>
+                  <th>
+                    <span className="full-header">Points</span>
+                    <span className="abbr-header">Pts</span>
+                  </th>
                 </tr>
               </thead>
               <tbody>
