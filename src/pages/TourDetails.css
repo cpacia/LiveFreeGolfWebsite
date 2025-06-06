@@ -145,28 +145,43 @@ body,
 }
 
 @media (max-width: 768px) {
-  .tour-details {
-    flex-direction: column;
-  }
-
+  /* ───────────────────────────────────────────────────────────
+     1) Hide the left nav panel entirely
+  ─────────────────────────────────────────────────────────── */
   .sidebar {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #ccc;
-    border-top: 2px solid var(--color-primary-green);
-    padding-top: 1rem;
+    display: none !important;
   }
 
-  .sidebar nav a {
-    margin: 0;
+  /* ───────────────────────────────────────────────────────────
+     2) Make the flex container drop to a single column
+  ─────────────────────────────────────────────────────────── */
+  .tour-details-layout {
+    display: flex;              /* ensure flex is still active */
+    flex-direction: column;     /* stack children vertically */
+    padding: 0;                 /* remove extra padding around container */
+    margin: 0;                  /* remove any default margin */
+    width: 100vw;               /* span the full viewport width */
+    box-sizing: border-box;     
+  }
+
+  /* ───────────────────────────────────────────────────────────
+     3) Expand the “right” (scrolling‐content) area to full width
+  ─────────────────────────────────────────────────────────── */
+  .scrolling-content {
+    width: 100%;
+    padding: 1rem;              /* feel free to adjust this padding */
+    margin: 0 auto;             /* center if you have a max‐width set */
+    box-sizing: border-box;
+    overflow-wrap: break-word;  /* ensure long lines wrap */
+  }
+
+  /* ───────────────────────────────────────────────────────────
+     4) (Optional) Remove any leftover border/rules from the hidden sidebar
+  ─────────────────────────────────────────────────────────── */
+  .sidebar hr,
+  .sidebar::before,
+  .sidebar::after {
+    display: none;
   }
 }
 
-.sidebar nav a.active {
-  color: var(--color-accent-yellow);
-  font-weight: 700;
-  position: relative;
-}
