@@ -25,11 +25,11 @@
 
 .blog-post-image {
   width: 100%;
-  height: 400px;           /* fixed height for consistent cropping */
+  height: 400px; /* fixed height for consistent cropping */
   margin-bottom: 1.5rem;
   border-radius: 6px;
   object-fit: cover;
-  object-position: center center;  /* default, overridden inline if header-pos exists */
+  object-position: center center; /* default, overridden inline if header-pos exists */
 }
 
 .blog-post-content {
@@ -66,4 +66,3 @@
   border-left: 4px solid #ddd;
   color: #555;
 }
-

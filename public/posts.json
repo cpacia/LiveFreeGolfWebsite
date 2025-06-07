@@ -1,80 +1,80 @@
 [
-	{
-	    "slug": "lfg-stonebridge-recap",
-		"header-pos": "10%"
-	},
-	{
-	    "slug": "chuck-currier-montcalms-owner-passed-away-in-february",
-		"header-pos": "20%"
-	},
-	{
-	    "slug": "rocky-lefort-fires-career-best-79",
-		"header-pos": "40%"
-	},
-	{
-	    "slug": "fireside-chat-during-the-off-week-🔥",
-		"header-pos": "60%"
-	},
-	{
-	    "slug": "lfg-match-play-selection-show",
-		"header-pos": "10%",
-		"replacement-image": "/logo-black.png"
-	},
-	{
-	    "slug": "shaw-goes-from-greenless-to-victory",
-		"header-pos": "10%"
-	},
-	{
-	    "slug": "bomberg-bombs-his-way-to-first-career-victory",
-		"header-pos": "30%"
-	},
-	{
-	    "slug": "dave-christian-wins-season-finale",
-		"header-pos": "20%"
-	},
-	{
-	    "slug": "joe-collins-win-at-passaconaway",
-		"header-pos": "20%"
-	},
-	{
-	    "slug": "gagne-and-friend-secure-canterbury-title",
-		"header-pos": "10%"
-	},
-	{
-	    "slug": "levenson-wins-again-in-back-to-back-events",
-		"header-pos": "30%",
-		"replacement-image": "/logo-black.png"
-	},
-	{
-	    "slug": "big-country-prevails-at-montcalm",
-		"header-pos": "30%"
-	},
-	{
-	    "slug": "lawrence-wins-stonebridge-in-dominating-fashion",
-		"header-pos": "10%"
-	},
-	{
-	    "slug": "scheffler-arrested-at-pga-championship",
-		"header-pos": "0%"
-	},
-	{
-	    "slug": "patty-blair-wins-fastenal-far-corners-event",
-		"header-pos": "30%"
-	},
-	{
-	    "slug": "darelius-finds-his-truth-on-way-to-victory",
-		"header-pos": "0%"
-	},
-	{
-	    "slug": "wenrich-wins-2023-lfg-season-championship",
-		"header-pos": "0%"
-	},
-	{
-		"slug": "memorial-day-odds",
-		"replacement-image": "/vegas-odds.png"
-	},
-	{ 
-	    "slug": "the-impact-fire-open-odds",
-		"replacement-image": "/vegas-odds.png"
-	}
+  {
+    "slug": "lfg-stonebridge-recap",
+    "header-pos": "10%"
+  },
+  {
+    "slug": "chuck-currier-montcalms-owner-passed-away-in-february",
+    "header-pos": "20%"
+  },
+  {
+    "slug": "rocky-lefort-fires-career-best-79",
+    "header-pos": "40%"
+  },
+  {
+    "slug": "fireside-chat-during-the-off-week-🔥",
+    "header-pos": "60%"
+  },
+  {
+    "slug": "lfg-match-play-selection-show",
+    "header-pos": "10%",
+    "replacement-image": "/logo-black.png"
+  },
+  {
+    "slug": "shaw-goes-from-greenless-to-victory",
+    "header-pos": "10%"
+  },
+  {
+    "slug": "bomberg-bombs-his-way-to-first-career-victory",
+    "header-pos": "30%"
+  },
+  {
+    "slug": "dave-christian-wins-season-finale",
+    "header-pos": "20%"
+  },
+  {
+    "slug": "joe-collins-win-at-passaconaway",
+    "header-pos": "20%"
+  },
+  {
+    "slug": "gagne-and-friend-secure-canterbury-title",
+    "header-pos": "10%"
+  },
+  {
+    "slug": "levenson-wins-again-in-back-to-back-events",
+    "header-pos": "30%",
+    "replacement-image": "/logo-black.png"
+  },
+  {
+    "slug": "big-country-prevails-at-montcalm",
+    "header-pos": "30%"
+  },
+  {
+    "slug": "lawrence-wins-stonebridge-in-dominating-fashion",
+    "header-pos": "10%"
+  },
+  {
+    "slug": "scheffler-arrested-at-pga-championship",
+    "header-pos": "0%"
+  },
+  {
+    "slug": "patty-blair-wins-fastenal-far-corners-event",
+    "header-pos": "30%"
+  },
+  {
+    "slug": "darelius-finds-his-truth-on-way-to-victory",
+    "header-pos": "0%"
+  },
+  {
+    "slug": "wenrich-wins-2023-lfg-season-championship",
+    "header-pos": "0%"
+  },
+  {
+    "slug": "memorial-day-odds",
+    "replacement-image": "/vegas-odds.png"
+  },
+  {
+    "slug": "the-impact-fire-open-odds",
+    "replacement-image": "/vegas-odds.png"
+  }
 ]

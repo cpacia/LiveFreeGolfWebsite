@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./HeroCarousel.css";
 
-const SHOP_DOMAIN       = 'chad-622.myshopify.com';
-const STOREFRONT_TOKEN = 'cfed2819f4fda26e6be3560f1f4c9198';
-const BLOG_HANDLE      = 'walker-and-blais-blaze-through-the-field-on-way-to-victory';
-const POSTS_CONFIG_URL = '/posts.json';
+const SHOP_DOMAIN = "chad-622.myshopify.com";
+const STOREFRONT_TOKEN = "cfed2819f4fda26e6be3560f1f4c9198";
+const BLOG_HANDLE =
+  "walker-and-blais-blaze-through-the-field-on-way-to-victory";
+const POSTS_CONFIG_URL = "/posts.json";
 
 const staticSlides = [
   {
@@ -18,16 +19,18 @@ const staticSlides = [
 ];
 
 const rawConfig = await fetch(POSTS_CONFIG_URL)
-        .then(r => r.ok ? r.json() : [])
-        .catch(() => []);
+  .then((r) => (r.ok ? r.json() : []))
+  .catch(() => []);
 const configMap = {};
-rawConfig.forEach(item => { if (item.slug) configMap[item.slug] = item; });
+rawConfig.forEach((item) => {
+  if (item.slug) configMap[item.slug] = item;
+});
 
-const stripHtml = html => {
-    const tmp = document.createElement('div');
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || '';
-  };
+const stripHtml = (html) => {
+  const tmp = document.createElement("div");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
+};
 
 const SLIDE_INTERVAL = 5000;
 
@@ -91,11 +94,12 @@ export default function HeroCarousel() {
 
       try {
         const gqlResponse = await fetch(
-          `https://${SHOP_DOMAIN}/api/2025-07/graphql.json`, {
-            method: 'POST',
+          `https://${SHOP_DOMAIN}/api/2025-07/graphql.json`,
+          {
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
-              'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN
+              "Content-Type": "application/json",
+              "X-Shopify-Storefront-Access-Token": STOREFRONT_TOKEN,
             },
             body: JSON.stringify({
               query: `
@@ -115,9 +119,9 @@ export default function HeroCarousel() {
                     }
                   }
                 }
-              `
-            })
-          }
+              `,
+            }),
+          },
         );
 
         const gqlJson = await gqlResponse.json();
@@ -125,8 +129,8 @@ export default function HeroCarousel() {
 
         if (latestNode && window.innerWidth > 768) {
           const override = configMap[latestNode.handle] || {};
-          const imgUrl = override['replacement-image'] || latestNode.image?.url;
-          const headerPos = override['header-pos'] || 'center';
+          const imgUrl = override["replacement-image"] || latestNode.image?.url;
+          const headerPos = override["header-pos"] || "center";
 
           newSlides.push({
             id: latestNode.id || latestNode.handle,
@@ -137,7 +141,7 @@ export default function HeroCarousel() {
             title: latestNode.title,
             dateObj: new Date(latestNode.publishedAt),
             slug: latestNode.handle,
-            excerpt: stripHtml(latestNode.excerpt).slice(0, 200).trim()
+            excerpt: stripHtml(latestNode.excerpt).slice(0, 200).trim(),
           });
         }
       } catch (err) {

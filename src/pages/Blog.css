@@ -15,7 +15,7 @@
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .blog-card-image {
@@ -43,7 +43,6 @@
   object-position: center 30%;
 }
 
-
 .blog-card-image.focus-top40p {
   object-position: center 40%;
 }
@@ -51,7 +50,6 @@
 .blog-card-image.focus-top60p {
   object-position: center 60%;
 }
-
 
 /* for ones where the bottom is more interesting: */
 .blog-card-image.focus-bottom {
@@ -111,4 +109,3 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
-
