@@ -102,7 +102,7 @@ export default function Header() {
           </div>
         </div>
         <a href="/courses">Courses</a>
-        <a href="/news">News & Recaps</a>
+        <a href="/blog">News & Recaps</a>
         <a href="/shop">Shop</a>
         <hr
           style={{ borderColor: "rgba(255,255,255,0.2)", margin: "0.5rem 0" }}
