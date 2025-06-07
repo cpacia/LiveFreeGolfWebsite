@@ -57,7 +57,7 @@ export default function Header() {
             </div>
           </div>
           <a href="/courses">Courses</a>
-          <a href="/news">News & Recaps</a>
+          <a href="/blog">News & Recaps</a>
           <a href="/shop">Shop</a>
         </nav>
 

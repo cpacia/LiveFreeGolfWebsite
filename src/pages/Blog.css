@@ -1,0 +1,114 @@
+/* BlogList.css */
+.blog-list-wrapper {
+  padding: 2rem;
+}
+
+.blog-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.blog-card-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  object-position: center center;
+}
+
+/* for images that need to show more of the top edge: */
+.blog-card-image.focus-top {
+  object-position: center top;
+}
+
+/* for images that need to show more of the top edge: */
+.blog-card-image.focus-top10p {
+  object-position: center 10%;
+}
+
+.blog-card-image.focus-top20p {
+  object-position: center 20%;
+}
+
+.blog-card-image.focus-top30p {
+  object-position: center 30%;
+}
+
+
+.blog-card-image.focus-top40p {
+  object-position: center 40%;
+}
+
+.blog-card-image.focus-top60p {
+  object-position: center 60%;
+}
+
+
+/* for ones where the bottom is more interesting: */
+.blog-card-image.focus-bottom {
+  object-position: center bottom;
+}
+
+.blog-card-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 1rem;
+}
+
+.blog-card-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.blog-card-title a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.blog-card-excerpt {
+  flex-grow: 1;
+  margin: 0 0 1rem;
+  color: #555;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.blog-card-readmore {
+  align-self: flex-start;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--color-primary-green);
+}
+
+.blog-card-readmore:hover {
+  text-decoration: underline;
+}
+
+.load-more-button {
+  display: block;
+  margin: 2rem auto 0;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background-color: var(--color-primary-green);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.load-more-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+

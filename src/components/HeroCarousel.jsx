@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./HeroCarousel.css";
 
+const SHOP_DOMAIN       = 'chad-622.myshopify.com';
+const STOREFRONT_TOKEN = 'cfed2819f4fda26e6be3560f1f4c9198';
+const BLOG_HANDLE      = 'walker-and-blais-blaze-through-the-field-on-way-to-victory';
+const POSTS_CONFIG_URL = '/posts.json';
+
 const staticSlides = [
   {
     id: "blurb", // ← unique key for the static slide
@@ -11,6 +16,18 @@ const staticSlides = [
     cta: { text: "Learn More", href: "/tour-info" },
   },
 ];
+
+const rawConfig = await fetch(POSTS_CONFIG_URL)
+        .then(r => r.ok ? r.json() : [])
+        .catch(() => []);
+const configMap = {};
+rawConfig.forEach(item => { if (item.slug) configMap[item.slug] = item; });
+
+const stripHtml = html => {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || '';
+  };
 
 const SLIDE_INTERVAL = 5000;
 
@@ -73,29 +90,59 @@ export default function HeroCarousel() {
       }
 
       try {
-        const postsRes = await fetch("/blog-posts.json");
-        const posts = await postsRes.json();
-        const latest = posts
-          .map((p) => ({ ...p, dateObj: new Date(p.date + "T00:00:00") }))
-          .sort((a, b) => b.dateObj - a.dateObj)[0];
+        const gqlResponse = await fetch(
+          `https://${SHOP_DOMAIN}/api/2025-07/graphql.json`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN
+            },
+            body: JSON.stringify({
+              query: `
+                query LatestPost {
+                  blog(handle: "${BLOG_HANDLE}") {
+                    articles(first: 1, reverse: true) {
+                      edges {
+                        node {
+                          id
+                          title
+                          handle
+                          publishedAt
+                          excerpt: contentHtml
+                          image { url altText }
+                        }
+                      }
+                    }
+                  }
+                }
+              `
+            })
+          }
+        );
 
-        if (latest && window.innerWidth > 768) {
+        const gqlJson = await gqlResponse.json();
+        const latestNode = gqlJson?.data?.blog?.articles?.edges?.[0]?.node;
+
+        if (latestNode && window.innerWidth > 768) {
+          const override = configMap[latestNode.handle] || {};
+          const imgUrl = override['replacement-image'] || latestNode.image?.url;
+          const headerPos = override['header-pos'] || 'center';
+
           newSlides.push({
-            id: latest.id || latest.slug || `post-${latest.date}`, // fallback if neither exists
+            id: latestNode.id || latestNode.handle,
             isPost: true,
+            thumbnailUrl: imgUrl,
             img: "/images/slide3.png",
-            thumbnailUrl: latest.thumbnailUrl,
-            padding: latest.thumbnailPadding,
-            dateObj: latest.dateObj,
-            title: latest.title,
-            slug: latest.slug,
-            excerpt: latest.excerpt,
+            headerPos: headerPos,
+            title: latestNode.title,
+            dateObj: new Date(latestNode.publishedAt),
+            slug: latestNode.handle,
+            excerpt: stripHtml(latestNode.excerpt).slice(0, 200).trim()
           });
         }
       } catch (err) {
-        console.error("Failed to load posts:", err);
+        console.error("Failed to load blog post:", err);
       }
-
       setSlides(newSlides);
     };
 
@@ -171,10 +218,10 @@ export default function HeroCarousel() {
               ) : s.isPost ? (
                 <div className="post-slide">
                   <img
-                    src={`images/blog-posts/${s.thumbnailUrl}`}
+                    src={s.thumbnailUrl}
                     alt={s.title}
                     className="post-image"
-                    style={{ objectPosition: `center ${s.padding}rem` }}
+                    style={{ objectPosition: `center ${s.headerPos}` }}
                   />
                   <div className="post-text">
                     <h2 className="post-title">{s.title}</h2>

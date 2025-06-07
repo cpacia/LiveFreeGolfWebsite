@@ -14,6 +14,8 @@ import ColonyCup from "./pages/ColonyCup";
 import AdminLogin from "./pages/AdminLogin";
 import AdminPanel from "./pages/AdminPanel";
 import Results from "./pages/Results";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import AdminRoute from "./components/AdminRoute";
 import AdminSchedule from "./components/AdminSchedule";
 import "./App.css";
@@ -35,6 +37,8 @@ export default function App() {
         <Route path="/disabled-list" element={<DisabledList />} />
         <Route path="/match-play" element={<MatchPlay />} />
         <Route path="/colony-cup" element={<ColonyCup />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/results" element={<Results />} />
         <Route path="/admin/*" element={<AdminRoute />} />
       </Routes>
