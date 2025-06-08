@@ -15,7 +15,6 @@ export default function ProductPage() {
 
   useEffect(() => {
     let active = true;
-
     async function fetchProduct() {
       try {
         const res = await fetch(
@@ -62,19 +61,11 @@ export default function ProductPage() {
             })
           }
         );
-
         const { data, errors } = await res.json();
-        console.log('GraphQL response:', { data, errors });
         if (!active) return;
-
-        if (errors?.length) {
-          throw new Error(errors.map(e => e.message).join('; '));
-        }
-
+        if (errors?.length) throw new Error(errors.map(e => e.message).join('; '));
         const p = data?.productByHandle;
-        if (!p) {
-          throw new Error('Product not found');
-        }
+        if (!p) throw new Error('Product not found');
 
         // init selectedOptions
         const init = {};
@@ -82,16 +73,14 @@ export default function ProductPage() {
 
         setSelectedOptions(init);
         setProduct(p);
-        console.log('Fetched product:', p);
       } catch (e) {
         if (active) setError(e.message);
       } finally {
         if (active) setLoading(false);
       }
     }
-
     fetchProduct();
-    return () => { active = false; };
+    return () => { active = false };
   }, [handle]);
 
   if (loading) return <div className="product-page">Loading…</div>;
@@ -102,18 +91,19 @@ export default function ProductPage() {
   const course    = product.course?.value;
   const town      = product.town?.value;
   const state     = product.state?.value;
-  const formattedDate = rawDate 
-    ? new Date(rawDate).toLocaleDateString() 
+  const formattedDate = rawDate
+    ? new Date(rawDate).toLocaleDateString('en-US', {
+        month: 'short', day: 'numeric', year: 'numeric'
+      })
     : null;
 
   // find matching variant
   const variants = product.variants.edges.map(e => e.node);
-  const selectedVariant =
-    variants.find(v =>
-      v.selectedOptions.every(
-        ({ name, value }) => selectedOptions[name] === value
-      )
-    ) || variants[0];
+  const selectedVariant = variants.find(v =>
+    v.selectedOptions.every(
+      ({ name, value }) => selectedOptions[name] === value
+    )
+  ) || variants[0];
 
   // format price
   const price = new Intl.NumberFormat('en-US', {
@@ -126,6 +116,7 @@ export default function ProductPage() {
 
   return (
     <div className="product-page-container">
+      {/* LEFT: IMAGE */}
       <div className="product-image-column">
         <img
           className="product-image"
@@ -134,34 +125,38 @@ export default function ProductPage() {
         />
       </div>
 
+      {/* RIGHT: INFO */}
       <div className="product-info-column">
         <h1 className="product-title">{product.title}</h1>
+
+        {/* DATE | COURSE */}
         {(formattedDate || course) && (
-		  <div className="tournament-meta">
-			<div className="tournament-date-course">
-			  {formattedDate}
-			  {formattedDate && course ? '  |  ' : ''}
-			  {course}
-			</div>
-			{(town || state) && (
-			  <div className="tournament-location">
-				{town}{town && state ? ', ' : ''}{state}
-			  </div>
-			)}
-		  </div>
-		)}
+          <div className="tournament-meta">
+            <div className="tournament-date-course">
+              {formattedDate}
+              {formattedDate && course ? '  |  ' : ''}
+              {course}
+            </div>
+            {(town || state) && (
+              <div className="tournament-location">
+                {town}{town && state ? ', ' : ''}{state}
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="product-price">{price}</div>
 
+        {/* OPTIONS */}
         {product.options.map(opt => (
           <div key={opt.name} className="option-group">
             <div className="option-label">
-              {opt.name !== 'Title' ? opt.name : ''}
+              {opt.name !== 'Title' ? opt.name : 'Choose'}
             </div>
             <div className="option-buttons">
               {opt.values.map(val => {
                 if (val === 'Default Title') return null;
                 const isActive = selectedOptions[opt.name] === val;
-
                 if (opt.name.toLowerCase() === 'color') {
                   return (
                     <button
@@ -172,7 +167,6 @@ export default function ProductPage() {
                     />
                   );
                 }
-
                 return (
                   <button
                     key={val}
@@ -187,27 +181,16 @@ export default function ProductPage() {
           </div>
         ))}
 
-        <div className="quantity-wrapper">
-          <label htmlFor="quantity">Quantity</label>
-          <input
-            id="quantity"
-            type="number"
-            min="1"
-            value={quantity}
-            onChange={e => setQuantity(Math.max(1, Number(e.target.value)))}
-          />
-        </div>
-
+        {/* ADD TO CART */}
         <button
           className="add-to-cart-button"
           disabled={!selectedVariant.availableForSale}
-          onClick={() =>
-            alert(`Add ${quantity}× ${selectedVariant.id}`)
-          }
+          onClick={() => alert(`Add ${quantity}× ${selectedVariant.id}`)}
         >
           {selectedVariant.availableForSale ? 'Add to Cart' : 'Sold Out'}
         </button>
 
+        {/* SHOP PAY */}
         <button
           className="shop-pay-button"
           onClick={() => alert('Redirect to checkout')}
@@ -215,6 +198,7 @@ export default function ProductPage() {
           Buy with <img src="/Shop-Pay-Logo-white.svg" alt="Shop Pay" />
         </button>
 
+        {/* DESCRIPTION */}
         <div
           className="product-description"
           dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}

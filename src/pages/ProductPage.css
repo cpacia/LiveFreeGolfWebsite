@@ -1,25 +1,22 @@
-/* ProductPage.css */
-
 /* Container */
 .product-page-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 5rem;
+  gap: 3rem;
   max-width: 1200px;
   margin: 2rem auto;
   padding: 0 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
-                "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, sans-serif;
   color: #212b36;
 }
 
 /* Left column: product image */
 .product-image-column {
-  flex: 1 1 650px;
+  flex: 1 1 600px;
 }
-
 .product-image {
-  width: 90%;
+  width: 100%;
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -27,59 +24,102 @@
 
 /* Right column: product info */
 .product-info-column {
-  flex: 1 1 250px;
+  text-align: left;
+  flex: 1 1 300px;
   display: flex;
   flex-direction: column;
-  gap: 0rem;
+  gap: 1.5rem;
 }
 
-/* Title */
+/* Title & Price */
 .product-title {
   font-size: 2rem;
   font-weight: 600;
-  line-height: 1.2;
   margin: 0;
-  color: #091e42;
-  text-align: left;
+  color: #163627;
 }
-
-/* Price */
 .product-price {
   font-size: 1.5rem;
   font-weight: 500;
-  color: #212b36;
-  text-align: left;
-  margin-bottom: 2rem;
+  margin: 0;
+  color: #163627;
 }
 
-/* Variant selector */
-.variant-select {
-  width: 100%;
-  max-width: 200px;
-  padding: 0.5rem;
-  font-size: 1rem;
+/* Metafields: date|course and location */
+.tournament-meta {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #5e6c84;
+}
+.tournament-date-course {
+  font-weight: 500;
+}
+.tournament-location {
+  margin-top: 0.25rem;
+}
+
+/* Option group */
+.option-group {
+  margin-top: 1rem;
+}
+.option-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #5e6c84;
+  margin-bottom: 0.5rem;
+}
+.option-buttons {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.option-button {
+  padding: 0.5rem 1rem;
+  background: #f7f8fa;
+  color: #163627;
+  border: 1px solid #163627;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.option-button.active {
+  background: #163627;
+  color: #fff;
+  border-color: #091e42;
+}
+.option-button:hover {
+  border-color: #333333;
+}
+
+.color-swatch {
+  width: 2rem;
+  height: 2rem;
   border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  background: #fff;
-  appearance: none;
-  margin-bottom: 2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.color-swatch.active {
+  border-color: #091e42;
+  box-shadow: 0 0 0 2px rgba(9,30,66,0.2);
+}
+.color-swatch:hover {
+  border-color: #333333;
 }
 
-/* Quantity input */
+/* Quantity */
 .quantity-wrapper {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-top: 1.5rem;
 }
-
 .quantity-wrapper label {
   font-size: 1rem;
   color: #5e6c84;
 }
-
-.quantity-wrapper input[type="number"] {
+.quantity-wrapper input {
   width: 4rem;
   padding: 0.5rem;
   font-size: 1rem;
@@ -87,55 +127,48 @@
   border-radius: 4px;
 }
 
-/* Add to Cart button */
-.add-to-cart-button {
+/* Buttons */
+.add-to-cart-button,
+.shop-pay-button {
   width: 100%;
-  background-color: #fff;
-  color: #091e42;
+  padding: 0.75rem;
   font-size: 1rem;
   font-weight: 600;
-  padding: 0.75rem;
-  border: 1px solid #d9d9d9;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s, border-color 0.2s;
+  margin-top: 1rem;
 }
 
-.add-to-cart-button:hover {
-  background-color: #f7f8fa;
-  border-color: #c1c7d0;
-}
-
-/* Shop Pay–style button */
-.shop-pay-button {
-  display: inline-flex;            /* 1) make it a flex container */
-  align-items: center;             /* 2) vertically center children */
-  justify-content: center;         /* 3) horizontally center if you’d like */
-  gap: 0.5rem;                     /* spacing between <img> and text */
-  vertical-align: middle;          /* align the button box itself if inline */
-  padding: 0.75rem 0 0.8rem 0;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #fff;
+.add-to-cart-button {
   background: #fff;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  cursor: pointer;
-  background: var(--color-primary-green);
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  color: #163627;
+  border: 1px solid #163627;
+}
+.add-to-cart-button:hover {
+  background: #f2f2f2;
+  color: #163627;
+  border-color: #163627;
 }
 
+.shop-pay-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #1e4620;   /* match your primary green */
+  color: #fff;
+  border: none;
+  margin-top: -10px;
+}
 .shop-pay-button:hover {
-  background-color: #10281c;
-  border-color: #c1c7d0;
+  background: #10281c;
 }
-
 .shop-pay-button img {
   height: 1.25rem;
-  margin-top: 0.1rem;
 }
 
-/* Product description */
+/* Description */
 .product-description {
   margin-top: 2rem;
   font-size: 1rem;
@@ -143,39 +176,12 @@
   color: #5e6c84;
 }
 
-.product-description h2,
-.product-description h3 {
-  margin-top: 1.5rem;
-  color: #091e42;
-}
-
-.tournament-meta {
-  text-align: left;
-  margin: 1rem 0;
-  font-size: 0.95rem;
-  line-height: 1.4;
-  color: #5e6c84;;
-}
-
-.tournament-date-course {
-  color: #5e6c84;
-  font-weight: 500;
-  color: #5e6c84;
-}
-
-.tournament-location {
-  color: #5e6c84;
-  margin-top: 0.25rem;
-}
-
-
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 768px) {
   .product-page-container {
     flex-direction: column;
     align-items: center;
   }
-
   .product-info-column {
     width: 100%;
   }
