@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
 import logo from "/logo.png"; // Vite serves from public/
+import { useCart } from "../context/CartContext"; 
 
 const CartIcon = () => (
   <svg
@@ -29,6 +30,9 @@ const CartIcon = () => (
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const toggleMobile = () => setMobileOpen(prev => !prev);
+  const { items, openCart } = useCart();                      // ← new
+  // sum up all quantities
+  const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
 
   return (
     <header className="site-header">
@@ -66,9 +70,15 @@ export default function Header() {
           <Link to="/membership" className="btn-register">
             Register ▶
           </Link>
-          <Link to="/cart" className="cart-icon" aria-label="View Cart">
+          <button
+            type="button"
+            className="cart-icon"
+            onClick={openCart}
+            aria-label="View Cart"
+            data-count={itemCount}
+          >
             <CartIcon />
-          </Link>
+          </button>
         </div>
 
         {/* ─── Hamburger (mobile only; hidden on desktop via CSS) ────────── */}

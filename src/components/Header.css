@@ -76,6 +76,7 @@
   margin-left: 1rem; /* give it some breathing room */
   color: #ffffff; /* white in header */
   transition: color 0.2s;
+  background-color: var(--primary-color-green);
 }
 
 .cart-icon svg {
@@ -87,22 +88,48 @@
   color: var(--color-accent-yellow);
 }
 /* Badge for item count */
-.cart-icon::after {
+/* Full-circle badge, centered text */
+.cart-icon[data-count]::after {
   content: attr(data-count);
   position: absolute;
-  top: -6px;
-  right: -8px;
-  background: var(--color-accent-yellow);
-  color: var(--color-dark);
-  font-size: 0.7rem;
-  padding: 2px 4px;
-  border-radius: 6px;
-  display: none; /* only show when count >0 */
+  /* adjust these to move the badge around */
+  top: 0;      
+  right: 0;   
+  transform: translate(10%, -10%);
+
+  /* make it a circle */
+  width: 18px;       
+  height: 18px;      
+  border-radius: 50%;
+
+  /* style */
+  background-color: #F5C94E;   /* badge fill */
+  color: #001F1A;              /* badge text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  line-height: 18px;              /* ensure centered */
+  pointer-events: none;        /* clicks pass through */
 }
+
 
 .cart-icon[data-count]:not([data-count="0"])::after {
   display: block;
 }
+
+.cart-icon:focus,
+.cart-icon:active {
+  outline: none;
+  box-shadow: none;
+}
+
+.actions .cart-icon,
+.mobile-menu .cart-icon {
+  position: relative;    /* ← required for the badge */
+}
+
 
 /* Dropdown Menu */
 .dropdown {
