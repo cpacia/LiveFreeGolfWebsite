@@ -39,21 +39,25 @@ export default function Footer() {
             input: {
               email,
               acceptsMarketing: true,
+              password: "newsletter-temp-password",
             },
           },
         }),
       });
 
       const json = await response.json();
-      const errors = json?.data?.customerCreate?.userErrors;
 
-      if (errors?.length) {
-        console.error(errors);
-        setStatus("error");
-      } else {
-        setStatus("success");
-        setEmail("");
-      }
+      const userErrors = json?.data?.customerCreate?.userErrors;
+		if (userErrors?.length) {
+		  const msg = userErrors[0].message;
+		  if (msg.includes("please click the link")) {
+			setStatus("verify");
+		  } else {
+			setStatus("error");
+		  }
+		} else {
+		  setStatus("success");
+		}
     } catch (err) {
       console.error(err);
       setStatus("error");
@@ -126,6 +130,9 @@ export default function Footer() {
           </form>
         {status === "success" && <p>Thank you for subscribing!</p>}
         {status === "error" && <p>Something went wrong. Try again.</p>}
+        {status === "verify" && (
+		  <p>Check your email to confirm your subscription!</p>
+		)}
         </div>
       </div>
     </footer>
