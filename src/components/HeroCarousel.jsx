@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./HeroCarousel.css";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 const SHOP_DOMAIN = "chad-622.myshopify.com";
 const STOREFRONT_TOKEN = "cfed2819f4fda26e6be3560f1f4c9198";

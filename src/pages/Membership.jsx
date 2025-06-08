@@ -1,6 +1,6 @@
 import React from "react";
 import "./Membership.css";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 const tiers = [
   {

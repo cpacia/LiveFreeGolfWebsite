@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./EventsAndRankingsSection.css";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 export default function EventsAndRankingsSection() {
   const [events, setEvents] = useState([]);

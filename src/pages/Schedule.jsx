@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { getImageUrl } from "../lib/api";
 import "./Schedule.css";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 export default function Schedule() {
   const [years, setYears] = useState([]); // e.g. [2025, 2024, 2023, …]

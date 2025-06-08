@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Link }                         from 'react-router-dom';
-import './Shop.css';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import "./Shop.css";
 
-const SHOP_DOMAIN      = 'chad-622.myshopify.com';
-const STOREFRONT_TOKEN = 'cfed2819f4fda26e6be3560f1f4c9198';
-const COLLECTION_HANDLE = 'lfg-gear';
+const SHOP_DOMAIN = "chad-622.myshopify.com";
+const STOREFRONT_TOKEN = "cfed2819f4fda26e6be3560f1f4c9198";
+const COLLECTION_HANDLE = "lfg-gear";
 
 export default function ShopPage() {
   const [products, setProducts] = useState([]);
-  const [loading,  setLoading]  = useState(true);
-  const [error,    setError]    = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -17,10 +17,10 @@ export default function ShopPage() {
         const res = await fetch(
           `https://${SHOP_DOMAIN}/api/2024-10/graphql.json`,
           {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
-              'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN
+              "Content-Type": "application/json",
+              "X-Shopify-Storefront-Access-Token": STOREFRONT_TOKEN,
             },
             body: JSON.stringify({
               query: `
@@ -43,16 +43,17 @@ export default function ShopPage() {
                   }
                 }
               `,
-              variables: { handle: COLLECTION_HANDLE }
-            })
-          }
+              variables: { handle: COLLECTION_HANDLE },
+            }),
+          },
         );
 
         const { data, errors } = await res.json();
-        if (errors?.length) throw new Error(errors.map(e => e.message).join(', '));
+        if (errors?.length)
+          throw new Error(errors.map((e) => e.message).join(", "));
 
         const edges = data.collectionByHandle?.products.edges || [];
-        setProducts(edges.map(e => e.node));
+        setProducts(edges.map((e) => e.node));
       } catch (e) {
         setError(e.message);
       } finally {
@@ -64,21 +65,24 @@ export default function ShopPage() {
   }, []);
 
   if (loading) return <div className="shop-page">Loading…</div>;
-  if (error)   return <div className="shop-page error">{error}</div>;
+  if (error) return <div className="shop-page error">{error}</div>;
 
   return (
     <div className="shop-page">
       <h1 className="shop-title">LFG Gear</h1>
       <div className="product-grid">
-        {products.map(product => {
-          const price = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: product.priceRange.minVariantPrice.currencyCode
+        {products.map((product) => {
+          const price = new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: product.priceRange.minVariantPrice.currencyCode,
           }).format(parseFloat(product.priceRange.minVariantPrice.amount));
 
           return (
             <div key={product.id} className="product-card">
-              <Link to={`/listing/${product.handle}`} className="product-card-link">
+              <Link
+                to={`/listing/${product.handle}`}
+                className="product-card-link"
+              >
                 <img
                   src={product.featuredImage?.url}
                   alt={product.featuredImage?.altText || product.title}
@@ -94,4 +98,3 @@ export default function ShopPage() {
     </div>
   );
 }
-

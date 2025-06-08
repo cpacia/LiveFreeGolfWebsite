@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./EventsPreview.css";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 export default function EventsPreview({ limit = 3, eventsEndpoint }) {
   const [events, setEvents] = useState([]);

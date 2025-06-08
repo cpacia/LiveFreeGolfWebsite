@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./MatchPlay.css";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 export default function MatchPlay() {
   const [activeTab, setActiveTab] = useState("about"); // "about" or "bracket"

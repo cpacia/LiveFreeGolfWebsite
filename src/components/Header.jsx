@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
 import logo from "/logo.png"; // Vite serves from public/
-import { useCart } from "../context/CartContext"; 
+import { useCart } from "../context/CartContext";
 
 const CartIcon = () => (
   <svg
@@ -29,17 +29,13 @@ const CartIcon = () => (
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const toggleMobile = () => setMobileOpen(prev => !prev);
-  const { items, openCart } = useCart();                      // ← new
+  const toggleMobile = () => setMobileOpen((prev) => !prev);
+  const { items, openCart } = useCart(); // ← new
   // sum up all quantities
   const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
-  
-   const MobileLink = ({ to, children, className }) => (
-    <Link
-      to={to}
-      className={className}
-      onClick={() => setMobileOpen(false)}
-    >
+
+  const MobileLink = ({ to, children, className }) => (
+    <Link to={to} className={className} onClick={() => setMobileOpen(false)}>
       {children}
     </Link>
   );
@@ -125,21 +121,22 @@ export default function Header() {
         <MobileLink to="/courses">Courses</MobileLink>
         <MobileLink to="/blog">News & Recaps</MobileLink>
         <MobileLink to="/shop">Shop</MobileLink>
-        <hr style={{ borderColor: "rgba(255,255,255,0.2)", margin: "0.5rem 0" }} />
+        <hr
+          style={{ borderColor: "rgba(255,255,255,0.2)", margin: "0.5rem 0" }}
+        />
         <MobileLink to="/membership" className="btn-register">
           Register ▶
         </MobileLink>
         <button
-            type="button"
-            className="cart-icon"
-            onClick={openCart}
-            aria-label="View Cart"
-            {...(itemCount > 0 && { "data-count": itemCount })}
-          >
+          type="button"
+          className="cart-icon"
+          onClick={openCart}
+          aria-label="View Cart"
+          {...(itemCount > 0 && { "data-count": itemCount })}
+        >
           Cart
-          </button>
+        </button>
       </div>
     </header>
   );
 }
-

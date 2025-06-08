@@ -156,16 +156,15 @@
 }
 
 .quantity-selector span {
-  margin-left: .5rem;
-  margin-right: .5rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
-
 
 .remove-btn {
   margin-top: 0;
-  margin-left: 0;    /* pushes “Remove” to the right of the quantity */
+  margin-left: 0; /* pushes “Remove” to the right of the quantity */
   background: none;
   border: none;
-  color: #e63946;       /* or whatever your accent/red is */
+  color: #e63946; /* or whatever your accent/red is */
   cursor: pointer;
 }
