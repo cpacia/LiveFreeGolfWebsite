@@ -7,18 +7,21 @@ const tiers = [
     title: "LFG + GHIN",
     price: "$140",
     highlights: ["Full league membership", "GHIN handicap included"],
+    url: "/listing/ghin-membership",
   },
   {
     id: "lfg-only",
     title: "LFG Only",
     price: "$85",
     highlights: ["League membership only"],
+    url: "/listing/membership",
   },
   {
     id: "ghin-only",
     title: "GHIN Only",
     price: "$65",
     highlights: ["GHIN handicap only"],
+    url: "/listing/ghin-only",
   },
 ];
 
@@ -44,7 +47,7 @@ export default function Membership() {
                     <li key={i}>{h}</li>
                   ))}
                 </ul>
-                <a href="/membership" className="btn-primary tier-cta">
+                <a href={tier.url} className="btn-primary tier-cta">
                   Sign Up ▶
                 </a>
               </div>

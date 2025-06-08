@@ -35,6 +35,7 @@
 .blog-post-content {
   line-height: 1.8;
   font-size: 1rem;
+  text-align: left;
 }
 
 .blog-post-content img {

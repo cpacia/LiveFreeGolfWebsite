@@ -205,8 +205,7 @@ export default function Schedule() {
                   // Not complete + registration is open → “Register”
                   <div className="action-link">
                     <a
-                      href={evt.shopifyUrl || evt.blueGolfUrl || "#"}
-                      target="_blank"
+                      href={`/listing/${evt.shopifyUrl}`}
                       rel="noopener noreferrer"
                     >
                       Register ▶

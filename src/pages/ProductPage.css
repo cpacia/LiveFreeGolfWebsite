@@ -19,7 +19,7 @@
 }
 
 .product-image {
-  width: 100%;
+  width: 90%;
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -30,7 +30,7 @@
   flex: 1 1 250px;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0rem;
 }
 
 /* Title */
@@ -49,6 +49,7 @@
   font-weight: 500;
   color: #212b36;
   text-align: left;
+  margin-bottom: 2rem;
 }
 
 /* Variant selector */
@@ -61,6 +62,7 @@
   border-radius: 4px;
   background: #fff;
   appearance: none;
+  margin-bottom: 2rem;
 }
 
 /* Quantity input */
@@ -68,6 +70,8 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .quantity-wrapper label {
@@ -109,7 +113,7 @@
   justify-content: center;         /* 3) horizontally center if you’d like */
   gap: 0.5rem;                     /* spacing between <img> and text */
   vertical-align: middle;          /* align the button box itself if inline */
-  padding: 0.75rem;
+  padding: 0.75rem 0 0.8rem 0;
   font-size: 1rem;
   font-weight: 500;
   color: #fff;
@@ -128,6 +132,7 @@
 
 .shop-pay-button img {
   height: 1.25rem;
+  margin-top: 0.1rem;
 }
 
 /* Product description */
@@ -143,6 +148,26 @@
   margin-top: 1.5rem;
   color: #091e42;
 }
+
+.tournament-meta {
+  text-align: left;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #5e6c84;;
+}
+
+.tournament-date-course {
+  color: #5e6c84;
+  font-weight: 500;
+  color: #5e6c84;
+}
+
+.tournament-location {
+  color: #5e6c84;
+  margin-top: 0.25rem;
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
