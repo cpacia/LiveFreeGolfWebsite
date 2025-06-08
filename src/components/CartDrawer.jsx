@@ -2,6 +2,9 @@ import React from 'react';
 import { useCart } from '../context/CartContext';
 import './Cart.css';
 
+const SHOP_DOMAIN      = 'chad-622.myshopify.com';
+const STOREFRONT_TOKEN = 'cfed2819f4fda26e6be3560f1f4c9198';
+
 export default function CartDrawer() {
   const {
     isOpen,
@@ -11,6 +14,52 @@ export default function CartDrawer() {
     updateQuantity,
     subtotal,
   } = useCart();
+  
+
+ const handleCheckout = async () => {
+    if (items.length === 0) return;
+
+    // Build the lines array with both quantity & global variant ID
+    const lines = items.map(item => ({
+      merchandiseId: item.variantId,  
+      quantity:      item.quantity,
+    }));
+
+    const mutation = `
+      mutation cartCreate($input: CartInput!) {
+        cartCreate(input: $input) {
+          cart {
+            id
+            checkoutUrl
+          }
+          userErrors { field message }
+          warnings   { code  message }
+        }
+      }
+    `;
+
+    const res = await fetch(
+      `https://${SHOP_DOMAIN}/api/2024-10/graphql.json`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN,
+        },
+        body: JSON.stringify({ query: mutation, variables: { input: { lines } } }),
+      }
+    );
+
+    const { data, errors } = await res.json();
+    if (errors?.length || data.cartCreate.userErrors.length) {
+      console.error('Cart API error', errors, data.cartCreate.userErrors);
+      return;
+    }
+
+    // finally redirect into Shopify’s hosted checkout
+    window.location.href = data.cartCreate.cart.checkoutUrl;
+  };
+
 
   return (
     <>  {/* Overlay */}
@@ -63,7 +112,7 @@ export default function CartDrawer() {
             <span>Subtotal</span>
             <span>${subtotal.toFixed(2)}</span>
           </div>
-          <button className="checkout-btn">Checkout</button>
+          <button className="checkout-btn" onClick={handleCheckout}>Checkout</button>
         </footer>
       </aside>
     </>

@@ -16,6 +16,46 @@ export default function ProductPage() {
   const [quantity, setQuantity]           = useState(1);
   const [loading, setLoading]             = useState(true);
   const [error, setError]                 = useState('');
+  
+const handleBuyNow = async () => {
+   // build the single‐item lines array
+   const lines = [
+     {
+       merchandiseId: selectedVariant.id,  // must be the GID string
+       quantity:      quantity,
+     }
+   ];
+
+   const mutation = `
+     mutation cartCreate($input: CartInput!) {
+       cartCreate(input: $input) {
+         cart { checkoutUrl }
+         userErrors { field message }
+       }
+     }
+   `;
+
+   const res = await fetch(
+     `https://${SHOP_DOMAIN}/api/2024-10/graphql.json`,
+     {
+       method: 'POST',
+       headers: {
+         'Content-Type': 'application/json',
+         'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN,
+       },
+       body: JSON.stringify({ query: mutation, variables: { input: { lines } } }),
+     }
+   );
+
+   const { data, errors } = await res.json();
+   if (errors?.length || data.cartCreate.userErrors.length) {
+     console.error('Cart API error', errors, data.cartCreate.userErrors);
+     return;
+   }
+
+   // drop into Shopify’s hosted checkout (Shop Pay will be front-and-center)
+   window.location.href = data.cartCreate.cart.checkoutUrl;
+ };
 
   useEffect(() => {
     let active = true;
@@ -78,11 +118,12 @@ export default function ProductPage() {
     setSelectedOptions(prev => ({ ...prev, [name]: value }));
   const onAddToCart = () => {
     addItem({
-      id: selectedVariant.id,
-      title: product.title,
-      price: priceAmount,
-      image: mainImage
-    }, quantity);
+     id:        selectedVariant.id,        // used for de-duping in your context
+     variantId: selectedVariant.id,       
+     title:     product.title,
+     price:     priceAmount,
+     image:     mainImage
+   }, quantity);
   };
 
   return (
@@ -168,7 +209,7 @@ export default function ProductPage() {
         {selectedVariant.availableForSale && (
           <button
             className="shop-pay-button"
-            onClick={() => alert('Redirect to checkout')}
+            onClick={handleBuyNow}
           >
             Buy with <img src="/Shop-Pay-Logo-white.svg" alt="Shop Pay" />
           </button>

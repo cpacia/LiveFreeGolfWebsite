@@ -75,7 +75,7 @@ export default function Header() {
             className="cart-icon"
             onClick={openCart}
             aria-label="View Cart"
-            data-count={itemCount}
+            {...(itemCount > 0 && { "data-count": itemCount })}
           >
             <CartIcon />
           </button>
