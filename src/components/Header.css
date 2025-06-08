@@ -323,7 +323,7 @@
     padding-top: 4rem; /* push content down below the logo/close icon */
     z-index: 999; /* above all page content */
     overflow-y: auto; /* if menu items overflow, let it scroll */
-    margin-bottom: -10px;
+    margin-bottom: -12px;
   }
 
   /* 2) Hide any default box‐shadow or extra padding you previously added */
