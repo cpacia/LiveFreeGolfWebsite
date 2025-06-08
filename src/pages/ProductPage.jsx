@@ -8,6 +8,7 @@ const STOREFRONT_TOKEN = 'cfed2819f4fda26e6be3560f1f4c9198';
 export default function ProductPage() {
   const { handle } = useParams();
   const [product, setProduct]           = useState(null);
+  const [mainImage, setMainImage]       = useState('');
   const [selectedOptions, setSelectedOptions] = useState({});
   const [quantity, setQuantity]         = useState(1);
   const [loading, setLoading]           = useState(true);
@@ -32,6 +33,9 @@ export default function ProductPage() {
                     id
                     title
                     descriptionHtml
+                    images(first: 10) {
+                      edges { node { url altText } }
+                    }
                     featuredImage { url altText }
                     options { name values }
                     variants(first: 250) {
@@ -42,18 +46,10 @@ export default function ProductPage() {
                         price { amount currencyCode }
                       } }
                     }
-                    date: metafield(namespace: "event", key: "date") {
-                      value
-                    }
-                    course: metafield(namespace: "event", key: "course") {
-                      value
-                    }
-                    town: metafield(namespace: "event", key: "town") {
-                      value
-                    }
-                    state: metafield(namespace: "event", key: "state") {
-                      value
-                    }
+                    date: metafield(namespace: "event", key: "date") { value }
+                    course: metafield(namespace: "event", key: "course") { value }
+                    town: metafield(namespace: "event", key: "town") { value }
+                    state: metafield(namespace: "event", key: "state") { value }
                   }
                 }
               `,
@@ -61,6 +57,7 @@ export default function ProductPage() {
             })
           }
         );
+
         const { data, errors } = await res.json();
         if (!active) return;
         if (errors?.length) throw new Error(errors.map(e => e.message).join('; '));
@@ -70,8 +67,11 @@ export default function ProductPage() {
         // init selectedOptions
         const init = {};
         p.options.forEach(opt => { init[opt.name] = opt.values[0]; });
-
         setSelectedOptions(init);
+
+        // set main image to featured (fallback)
+        setMainImage(p.featuredImage?.url || p.images.edges[0]?.node.url || '');
+
         setProduct(p);
       } catch (e) {
         if (active) setError(e.message);
@@ -86,7 +86,7 @@ export default function ProductPage() {
   if (loading) return <div className="product-page">Loading…</div>;
   if (error)   return <div className="product-page error">{error}</div>;
 
-  // pull out metafield values
+  // metafields
   const rawDate   = product.date?.value;
   const course    = product.course?.value;
   const town      = product.town?.value;
@@ -97,15 +97,13 @@ export default function ProductPage() {
       })
     : null;
 
-  // find matching variant
+  // variants & price
   const variants = product.variants.edges.map(e => e.node);
   const selectedVariant = variants.find(v =>
     v.selectedOptions.every(
       ({ name, value }) => selectedOptions[name] === value
     )
   ) || variants[0];
-
-  // format price
   const price = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: selectedVariant.price.currencyCode
@@ -116,20 +114,30 @@ export default function ProductPage() {
 
   return (
     <div className="product-page-container">
-      {/* LEFT: IMAGE */}
+      {/* LEFT: IMAGE + THUMBNAILS */}
       <div className="product-image-column">
         <img
           className="product-image"
-          src={product.featuredImage?.url}
+          src={mainImage}
           alt={product.featuredImage?.altText || product.title}
         />
+        <div className="thumbnail-list">
+          {product.images.edges.map(({ node }, idx) => (
+            <button
+              key={idx}
+              className={`thumbnail-item ${mainImage === node.url ? 'active' : ''}`}
+              onClick={() => setMainImage(node.url)}
+            >
+              <img src={node.url} alt={node.altText || `${product.title} ${idx+1}`} />
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* RIGHT: INFO */}
       <div className="product-info-column">
         <h1 className="product-title">{product.title}</h1>
 
-        {/* DATE | COURSE */}
         {(formattedDate || course) && (
           <div className="tournament-meta">
             <div className="tournament-date-course">
@@ -181,6 +189,18 @@ export default function ProductPage() {
           </div>
         ))}
 
+        {/* QUANTITY */}
+        <div className="quantity-wrapper">
+          <label htmlFor="quantity">Quantity</label>
+          <input
+            id="quantity"
+            type="number"
+            min="1"
+            value={quantity}
+            onChange={e => setQuantity(Math.max(1, Number(e.target.value)))}
+          />
+        </div>
+
         {/* ADD TO CART */}
         <button
           className="add-to-cart-button"
@@ -192,13 +212,13 @@ export default function ProductPage() {
 
         {/* SHOP PAY */}
         {selectedVariant.availableForSale && (
-		  <button
-			className="shop-pay-button"
-			onClick={() => alert('Redirect to checkout')}
-		  >
-			Buy with <img src="/Shop-Pay-Logo-white.svg" alt="Shop Pay" />
-		  </button>
-		)}
+          <button
+            className="shop-pay-button"
+            onClick={() => alert('Redirect to checkout')}
+          >
+            Buy with <img src="/Shop-Pay-Logo-white.svg" alt="Shop Pay" />
+          </button>
+        )}
 
         {/* DESCRIPTION */}
         <div
