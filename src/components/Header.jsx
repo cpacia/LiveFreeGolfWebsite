@@ -33,6 +33,16 @@ export default function Header() {
   const { items, openCart } = useCart();                      // ← new
   // sum up all quantities
   const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
+  
+   const MobileLink = ({ to, children, className }) => (
+    <Link
+      to={to}
+      className={className}
+      onClick={() => setMobileOpen(false)}
+    >
+      {children}
+    </Link>
+  );
 
   return (
     <header className="site-header">
@@ -98,30 +108,36 @@ export default function Header() {
         className="mobile-menu"
         style={{ display: mobileOpen ? "flex" : "none" }}
       >
-        <Link to="/">Home</Link>
-        <Link to="/schedule">Schedule</Link>
-        <Link to="/standings">Standings</Link>
+        <MobileLink to="/">Home</MobileLink>
+        <MobileLink to="/schedule">Schedule</MobileLink>
+        <MobileLink to="/standings">Standings</MobileLink>
 
         <div className="dropdown">
           <button className="dropbtn">Tour Info ▾</button>
           <div className="dropdown-content">
-            <Link to="/tour-details">Tour Details</Link>
-            <Link to="/match-play">Match Play Tournament</Link>
-            <Link to="/colony-cup">Colony Cup</Link>
-            <Link to="/disabled-list">Disabled List</Link>
+            <MobileLink to="/tour-details">Tour Details</MobileLink>
+            <MobileLink to="/match-play">Match Play Tournament</MobileLink>
+            <MobileLink to="/colony-cup">Colony Cup</MobileLink>
+            <MobileLink to="/disabled-list">Disabled List</MobileLink>
           </div>
         </div>
 
-        <Link to="/courses">Courses</Link>
-        <Link to="/blog">News & Recaps</Link>
-        <Link to="/shop">Shop</Link>
+        <MobileLink to="/courses">Courses</MobileLink>
+        <MobileLink to="/blog">News & Recaps</MobileLink>
+        <MobileLink to="/shop">Shop</MobileLink>
         <hr style={{ borderColor: "rgba(255,255,255,0.2)", margin: "0.5rem 0" }} />
-        <Link to="/membership" className="btn-register">
+        <MobileLink to="/membership" className="btn-register">
           Register ▶
-        </Link>
-        <Link to="/cart" className="cart-icon">
+        </MobileLink>
+        <button
+            type="button"
+            className="cart-icon"
+            onClick={openCart}
+            aria-label="View Cart"
+            {...(itemCount > 0 && { "data-count": itemCount })}
+          >
           Cart
-        </Link>
+          </button>
       </div>
     </header>
   );
