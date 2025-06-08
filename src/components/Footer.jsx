@@ -1,8 +1,65 @@
 import React from "react";
 import "./Footer.css";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+
+const SHOP_DOMAIN = "chad-622.myshopify.com";
+const STOREFRONT_TOKEN = "cfed2819f4fda26e6be3560f1f4c9198";
 
 export default function Footer() {
+	const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("loading");
+
+    try {
+      const response = await fetch(`https://${SHOP_DOMAIN}/api/2023-07/graphql.json`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Shopify-Storefront-Access-Token": STOREFRONT_TOKEN,
+        },
+        body: JSON.stringify({
+          query: `
+            mutation customerCreate($input: CustomerCreateInput!) {
+              customerCreate(input: $input) {
+                customer {
+                  id
+                }
+                userErrors {
+                  field
+                  message
+                }
+              }
+            }
+          `,
+          variables: {
+            input: {
+              email,
+              acceptsMarketing: true,
+            },
+          },
+        }),
+      });
+
+      const json = await response.json();
+      const errors = json?.data?.customerCreate?.userErrors;
+
+      if (errors?.length) {
+        console.error(errors);
+        setStatus("error");
+      } else {
+        setStatus("success");
+        setEmail("");
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus("error");
+    }
+  };
+
   return (
     <footer className="site-footer">
       <div className="container">
@@ -57,12 +114,18 @@ export default function Footer() {
           </a>
         </div>
         <div className="newsletter">
+          <form onSubmit={handleSubmit} className="newsletter-form">
           <input
             type="email"
             placeholder="Sign up for updates"
             aria-label="Newsletter email"
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
-          <button>Subscribe ▶</button>
+          <button type="submit" disabled={status === "loading"}>{status === "loading" ? "Subscribing..." : "Subscribe ▶"}</button>
+          </form>
+        {status === "success" && <p>Thank you for subscribing!</p>}
+        {status === "error" && <p>Something went wrong. Try again.</p>}
         </div>
       </div>
     </footer>
