@@ -227,7 +227,7 @@
   background: transparent !important;
   padding: 2rem; /* generous breathing room */
   border-radius: 8px; /* soft corners */
-  max-width: 700px; /* narrow enough for readability */
+  max-width: 1200px; /* narrow enough for readability */
   color: var(--color-dark); /* dark text for contrast */
   text-align: left;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0); /* subtle depth over the image */
