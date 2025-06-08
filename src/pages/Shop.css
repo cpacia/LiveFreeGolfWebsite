@@ -1,0 +1,78 @@
+/* Container */
+.shop-page {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, sans-serif;
+  color: #212b36;
+}
+
+.shop-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #091e42;
+}
+
+/* Grid of product cards */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+/* Individual card */
+.product-card {
+  text-align: left;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+/* Make entire card clickable */
+.product-card-link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Product image */
+.product-card-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+/* Title */
+.product-card-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin: 1rem;
+  line-height: 1.2;
+}
+
+/* Price */
+.product-card-price {
+  margin: 0 1rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #091e42;
+}
+
+/* Error & Loading states */
+.shop-page .error {
+  color: #d9534f;
+  text-align: center;
+  margin: 2rem;
+}
+

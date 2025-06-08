@@ -16,6 +16,7 @@ import AdminPanel from "./pages/AdminPanel";
 import Results from "./pages/Results";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import Shop from "./pages/Shop";
 import ProductPage from "./pages/ProductPage";
 import AdminRoute from "./components/AdminRoute";
 import AdminSchedule from "./components/AdminSchedule";
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="/colony-cup" element={<ColonyCup />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/shop" element={<Shop />} />
         <Route path="/listing/:handle" element={<ProductPage />} />
         <Route path="/results" element={<Results />} />
         <Route path="/admin/*" element={<AdminRoute />} />

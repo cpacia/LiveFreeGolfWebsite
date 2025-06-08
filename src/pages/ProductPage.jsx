@@ -191,12 +191,14 @@ export default function ProductPage() {
         </button>
 
         {/* SHOP PAY */}
-        <button
-          className="shop-pay-button"
-          onClick={() => alert('Redirect to checkout')}
-        >
-          Buy with <img src="/Shop-Pay-Logo-white.svg" alt="Shop Pay" />
-        </button>
+        {selectedVariant.availableForSale && (
+		  <button
+			className="shop-pay-button"
+			onClick={() => alert('Redirect to checkout')}
+		  >
+			Buy with <img src="/Shop-Pay-Logo-white.svg" alt="Shop Pay" />
+		  </button>
+		)}
 
         {/* DESCRIPTION */}
         <div
