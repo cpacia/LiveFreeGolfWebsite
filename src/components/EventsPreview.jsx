@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./EventsPreview.css";
+import { Link } from "react-router-dom"
 
 export default function EventsPreview({ limit = 3, eventsEndpoint }) {
   const [events, setEvents] = useState([]);
@@ -19,7 +20,7 @@ export default function EventsPreview({ limit = 3, eventsEndpoint }) {
             <h3>{evt.name}</h3>
             <p>{evt.course}</p>
             <div className="actions">
-              <a href={`/schedule#event-${evt.id}`}>Details ▶</a>
+              <Link to={`/schedule#event-${evt.id}`}>Details ▶</Link>
             </div>
           </div>
         ))}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./MatchPlay.css";
+import { Link } from "react-router-dom"
 
 export default function MatchPlay() {
   const [activeTab, setActiveTab] = useState("about"); // "about" or "bracket"
@@ -302,14 +303,14 @@ export default function MatchPlay() {
             </div>
 
             {registrationOpen && (
-              <a
-                href={shopifyUrl}
+              <Link
+                to={shopifyUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-register"
               >
                 Register For Match Play ►
-              </a>
+              </Link>
             )}
           </div>
 
@@ -447,7 +448,7 @@ export default function MatchPlay() {
                         {yr === selectedYear ? (
                           <span className="current-year">{yr}</span>
                         ) : (
-                          <a href={`?year=${yr}`}>{yr}</a>
+                          <Link to={`?year=${yr}`}>{yr}</Link>
                         )}
                       </React.Fragment>
                     ))}

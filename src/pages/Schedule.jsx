@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { getImageUrl } from "../lib/api";
 import "./Schedule.css";
+import { Link } from "react-router-dom"
 
 export default function Schedule() {
   const [years, setYears] = useState([]); // e.g. [2025, 2024, 2023, …]
@@ -194,22 +195,22 @@ export default function Schedule() {
                 {evt.isComplete ? (
                   // If event is complete, link to “Results”
                   <div className="results-link">
-                    <a
-                      href={`/results?eventID=${evt.eventID}`}
+                    <Link
+                      to={`/results?eventID=${evt.eventID}`}
                       rel="noopener noreferrer"
                     >
                       Results
-                    </a>
+                    </Link>
                   </div>
                 ) : evt.registrationOpen ? (
                   // Not complete + registration is open → “Register”
                   <div className="action-link">
-                    <a
-                      href={`/listing/${evt.shopifyUrl}`}
+                    <Link
+                      to={`/listing/${evt.shopifyUrl}`}
                       rel="noopener noreferrer"
                     >
                       Register ▶
-                    </a>
+                    </Link>
                   </div>
                 ) : (
                   // Not complete + registration not open → “Registering Soon”

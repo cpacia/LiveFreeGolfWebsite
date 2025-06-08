@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./EventsAndRankingsSection.css";
+import { Link } from "react-router-dom"
 
 export default function EventsAndRankingsSection() {
   const [events, setEvents] = useState([]);
@@ -101,7 +102,7 @@ export default function EventsAndRankingsSection() {
           {events.length > 0 ? (
             events.map((e) => {
               const { month, day } = fmtBadge(e.dateObj);
-              const detailsUrl = e.blueGolfUrl || e.shopifyUrl || "#";
+              const detailsUrl = "/listing/" + e.shopifyUrl;
 
               return (
                 <li key={e.eventID} className="event-item">
@@ -114,14 +115,14 @@ export default function EventsAndRankingsSection() {
                   <div className="event-details">
                     <h3 className="event-title">{e.name}</h3>
                     <p className="event-course">{e.course}</p>
-                    <a
-                      href={detailsUrl}
+                    <Link
+                      to={detailsUrl}
                       className="event-link"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       Details
-                    </a>
+                    </Link>
                   </div>
                 </li>
               );

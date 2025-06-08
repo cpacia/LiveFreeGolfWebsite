@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./HeroCarousel.css";
+import { Link } from "react-router-dom"
 
 const SHOP_DOMAIN = "chad-622.myshopify.com";
 const STOREFRONT_TOKEN = "cfed2819f4fda26e6be3560f1f4c9198";
@@ -199,9 +200,9 @@ export default function HeroCarousel() {
                 <div className="blurb-card">
                   <h2>Live Free Golf Tour</h2>
                   <p>New Hampshire amateur golf at its finest!</p>
-                  <a href="/tour-details" className="btn-primary">
+                  <Link to="/tour-details" className="btn-primary">
                     Learn More ▶
-                  </a>
+                  </Link>
                 </div>
               ) : s.isEvent ? (
                 <div className="event-card">
@@ -211,12 +212,12 @@ export default function HeroCarousel() {
                     {fmt(s.date)} | {s.course}
                   </p>
                   <div className="cta-group">
-                    <a href="/schedule" className="btn-secondary">
+                    <Link to="/schedule" className="btn-secondary">
                       View Schedule
-                    </a>
-                    <a href="/membership" className="btn-primary">
+                    </Link>
+                    <Link to="/membership" className="btn-primary">
                       Register Now
-                    </a>
+                    </Link>
                   </div>
                 </div>
               ) : s.isPost ? (
@@ -231,9 +232,9 @@ export default function HeroCarousel() {
                     <h2 className="post-title">{s.title}</h2>
                     <p className="post-date">{fmt(s.dateObj)}</p>
                     <p className="post-excerpt">{s.excerpt}</p>
-                    <a href={`/blog/${s.slug}`} className="btn-primary">
+                    <Link to={`/blog/${s.slug}`} className="btn-primary">
                       Read More ▶
-                    </a>
+                    </Link>
                   </div>
                 </div>
               ) : (
@@ -243,13 +244,13 @@ export default function HeroCarousel() {
                   <h1>{s.headline}</h1>
                   <div className="cta-group">
                     {(s.ctas || []).map((cta, idx) => (
-                      <a
+                      <Link
                         key={`${cta.text}-${idx}`}
-                        href={cta.href}
+                        to={cta.href}
                         className="btn-primary"
                       >
                         {cta.text}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </>

@@ -1,5 +1,6 @@
 import React from "react";
 import "./MembershipSection.css";
+import { Link } from "react-router-dom"
 
 const tiers = [
   {
@@ -40,9 +41,9 @@ export default function MembershipSection() {
                   <li key={i}>{h}</li>
                 ))}
               </ul>
-              <a href={tier.url} className="btn-primary tier-cta">
+              <Link to={tier.url} className="btn-primary tier-cta">
                 Sign Up ▶
-              </a>
+              </Link>
             </div>
           ))}
         </div>

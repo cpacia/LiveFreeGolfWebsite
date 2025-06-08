@@ -1,13 +1,14 @@
 import React from "react";
 import "./Footer.css";
+import { Link } from "react-router-dom"
 
 export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="container">
         <div className="links">
-          <a href="/">Home</a>
-          <a href="/membership">Membership</a>
+          <Link to="/">Home</Link>
+          <Link to="/membership">Membership</Link>
           <a href="mailto:chad@livefreegolf.com">Contact</a>
         </div>
         <div className="social">

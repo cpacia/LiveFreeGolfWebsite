@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Standings.css";
+import { Link } from "react-router-dom"
 
 export default function Standings() {
   // Holds the JSON response:
@@ -103,7 +104,7 @@ export default function Standings() {
                   results will count toward their total, so consistent high
                   finishes are crucial. For a full breakdown of how points are
                   awarded, see the{" "}
-                  <a href="/tour-details#points">Point System</a>.
+                  <Link to="/tour-details#points">Point System</Link>.
                 </>
               ) : (
                 <>
@@ -162,7 +163,7 @@ export default function Standings() {
                   {yr === calendarYear ? (
                     <span className="current-year">{yr}</span>
                   ) : (
-                    <a href={`?year=${yr}`}>{yr}</a>
+                    <Link to={`?year=${yr}`}>{yr}</Link>
                   )}
                 </React.Fragment>
               ))}
