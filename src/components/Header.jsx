@@ -1,5 +1,6 @@
 // Header.jsx
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Header.css";
 import logo from "/logo.png"; // Vite serves from public/
 
@@ -27,48 +28,47 @@ const CartIcon = () => (
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  const toggleMobile = () => {
-    setMobileOpen((prev) => !prev);
-  };
+  const toggleMobile = () => setMobileOpen(prev => !prev);
 
   return (
     <header className="site-header">
       <div className="container">
         {/* ─── Logo ────────────────────────────────────────────────────────── */}
         <div className="logo">
-          <a href="/">
+          <Link to="/">
             <img src={logo} alt="Live Free Golf Logo" />
-          </a>
+          </Link>
         </div>
 
         {/* ─── Normal nav (desktop) ──────────────────────────────────────── */}
         <nav className="main-nav">
-          <a href="/">Home</a>
-          <a href="/schedule">Schedule</a>
-          <a href="/standings">Standings</a>
+          <Link to="/">Home</Link>
+          <Link to="/schedule">Schedule</Link>
+          <Link to="/standings">Standings</Link>
+
           <div className="dropdown">
             <button className="dropbtn">Tour Info ▾</button>
             <div className="dropdown-content">
-              <a href="/tour-details">Tour Details</a>
-              <a href="/match-play">Match Play Tournament</a>
-              <a href="/colony-cup">Colony Cup</a>
-              <a href="/disabled-list">Disabled List</a>
+              <Link to="/tour-details">Tour Details</Link>
+              <Link to="/match-play">Match Play Tournament</Link>
+              <Link to="/colony-cup">Colony Cup</Link>
+              <Link to="/disabled-list">Disabled List</Link>
             </div>
           </div>
-          <a href="/courses">Courses</a>
-          <a href="/blog">News & Recaps</a>
-          <a href="/shop">Shop</a>
+
+          <Link to="/courses">Courses</Link>
+          <Link to="/blog">News & Recaps</Link>
+          <Link to="/shop">Shop</Link>
         </nav>
 
         {/* ─── Actions (desktop) ─────────────────────────────────────────── */}
         <div className="actions">
-          <a href="/membership" className="btn-register">
+          <Link to="/membership" className="btn-register">
             Register ▶
-          </a>
-          <a href="/cart" className="cart-icon" aria-label="View Cart">
+          </Link>
+          <Link to="/cart" className="cart-icon" aria-label="View Cart">
             <CartIcon />
-          </a>
+          </Link>
         </div>
 
         {/* ─── Hamburger (mobile only; hidden on desktop via CSS) ────────── */}
@@ -88,32 +88,32 @@ export default function Header() {
         className="mobile-menu"
         style={{ display: mobileOpen ? "flex" : "none" }}
       >
-        {/* Note: repeating the same links as .main-nav, but stacked */}
-        <a href="/">Home</a>
-        <a href="/schedule">Schedule</a>
-        <a href="/standings">Standings</a>
+        <Link to="/">Home</Link>
+        <Link to="/schedule">Schedule</Link>
+        <Link to="/standings">Standings</Link>
+
         <div className="dropdown">
           <button className="dropbtn">Tour Info ▾</button>
           <div className="dropdown-content">
-            <a href="/tour-details">Tour Details</a>
-            <a href="/match-play">Match Play Tournament</a>
-            <a href="/colony-cup">Colony Cup</a>
-            <a href="/disabled-list">Disabled List</a>
+            <Link to="/tour-details">Tour Details</Link>
+            <Link to="/match-play">Match Play Tournament</Link>
+            <Link to="/colony-cup">Colony Cup</Link>
+            <Link to="/disabled-list">Disabled List</Link>
           </div>
         </div>
-        <a href="/courses">Courses</a>
-        <a href="/blog">News & Recaps</a>
-        <a href="/shop">Shop</a>
-        <hr
-          style={{ borderColor: "rgba(255,255,255,0.2)", margin: "0.5rem 0" }}
-        />
-        <a href="/membership" className="btn-register">
+
+        <Link to="/courses">Courses</Link>
+        <Link to="/blog">News & Recaps</Link>
+        <Link to="/shop">Shop</Link>
+        <hr style={{ borderColor: "rgba(255,255,255,0.2)", margin: "0.5rem 0" }} />
+        <Link to="/membership" className="btn-register">
           Register ▶
-        </a>
-        <a href="/cart" className="cart-icon">
+        </Link>
+        <Link to="/cart" className="cart-icon">
           Cart
-        </a>
+        </Link>
       </div>
     </header>
   );
 }
+
