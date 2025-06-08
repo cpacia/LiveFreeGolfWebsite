@@ -87,6 +87,7 @@ export default function HeroCarousel() {
             name: nextEvent.name,
             date: nextEvent.dateObj,
             course: nextEvent.course,
+            shopifyUrl: nextEvent.shopifyUrl,
           });
         }
       } catch (err) {
@@ -215,7 +216,7 @@ export default function HeroCarousel() {
                     <Link to="/schedule" className="btn-secondary">
                       View Schedule
                     </Link>
-                    <Link to="/membership" className="btn-primary">
+                    <Link to={`/listing/${s.shopifyUrl}`} className="btn-primary">
                       Register Now
                     </Link>
                   </div>
