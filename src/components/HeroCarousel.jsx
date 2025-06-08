@@ -216,7 +216,10 @@ export default function HeroCarousel() {
                     <Link to="/schedule" className="btn-secondary">
                       View Schedule
                     </Link>
-                    <Link to={`/listing/${s.shopifyUrl}`} className="btn-primary">
+                    <Link
+                      to={`/listing/${s.shopifyUrl}`}
+                      className="btn-primary"
+                    >
                       Register Now
                     </Link>
                   </div>

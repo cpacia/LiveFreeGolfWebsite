@@ -7,7 +7,7 @@ const SHOP_DOMAIN = "chad-622.myshopify.com";
 const STOREFRONT_TOKEN = "cfed2819f4fda26e6be3560f1f4c9198";
 
 export default function Footer() {
-	const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle");
 
   const handleSubmit = async (e) => {
@@ -15,14 +15,16 @@ export default function Footer() {
     setStatus("loading");
 
     try {
-      const response = await fetch(`https://${SHOP_DOMAIN}/api/2023-07/graphql.json`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Shopify-Storefront-Access-Token": STOREFRONT_TOKEN,
-        },
-        body: JSON.stringify({
-          query: `
+      const response = await fetch(
+        `https://${SHOP_DOMAIN}/api/2023-07/graphql.json`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Shopify-Storefront-Access-Token": STOREFRONT_TOKEN,
+          },
+          body: JSON.stringify({
+            query: `
             mutation customerCreate($input: CustomerCreateInput!) {
               customerCreate(input: $input) {
                 customer {
@@ -35,29 +37,30 @@ export default function Footer() {
               }
             }
           `,
-          variables: {
-            input: {
-              email,
-              acceptsMarketing: true,
-              password: "newsletter-temp-password",
+            variables: {
+              input: {
+                email,
+                acceptsMarketing: true,
+                password: "newsletter-temp-password",
+              },
             },
-          },
-        }),
-      });
+          }),
+        },
+      );
 
       const json = await response.json();
 
       const userErrors = json?.data?.customerCreate?.userErrors;
-		if (userErrors?.length) {
-		  const msg = userErrors[0].message;
-		  if (msg.includes("please click the link")) {
-			setStatus("verify");
-		  } else {
-			setStatus("error");
-		  }
-		} else {
-		  setStatus("success");
-		}
+      if (userErrors?.length) {
+        const msg = userErrors[0].message;
+        if (msg.includes("please click the link")) {
+          setStatus("verify");
+        } else {
+          setStatus("error");
+        }
+      } else {
+        setStatus("success");
+      }
     } catch (err) {
       console.error(err);
       setStatus("error");
@@ -119,20 +122,22 @@ export default function Footer() {
         </div>
         <div className="newsletter">
           <form onSubmit={handleSubmit} className="newsletter-form">
-          <input
-            type="email"
-            placeholder="Sign up for updates"
-            aria-label="Newsletter email"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <button type="submit" disabled={status === "loading"}>{status === "loading" ? "Subscribing..." : "Subscribe ▶"}</button>
+            <input
+              type="email"
+              placeholder="Sign up for updates"
+              aria-label="Newsletter email"
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <button type="submit" disabled={status === "loading"}>
+              {status === "loading" ? "Subscribing..." : "Subscribe ▶"}
+            </button>
           </form>
-        {status === "success" && <p>Thank you for subscribing!</p>}
-        {status === "error" && <p>Something went wrong. Try again.</p>}
-        {status === "verify" && (
-		  <p>Check your email to confirm your subscription!</p>
-		)}
+          {status === "success" && <p>Thank you for subscribing!</p>}
+          {status === "error" && <p>Something went wrong. Try again.</p>}
+          {status === "verify" && (
+            <p>Check your email to confirm your subscription!</p>
+          )}
         </div>
       </div>
     </footer>
