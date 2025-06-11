@@ -106,12 +106,14 @@ export default function ProductPage() {
   // format data
   const rawDate = product.date?.value;
   const formattedDate = rawDate
-    ? new Date(rawDate).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      })
-    : null;
+  ? new Date(
+      ...rawDate.split("-").map((v, i) => (i === 1 ? parseInt(v) - 1 : parseInt(v)))
+    ).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+  : null;
   const variants = product.variants.edges.map((e) => e.node);
   const selectedVariant =
     variants.find((v) =>
