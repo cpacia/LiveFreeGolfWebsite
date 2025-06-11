@@ -109,15 +109,11 @@ export default function TourDetailsPage() {
               Only your top six point totals count toward your season total.
             </li>
             <li>
-              The top X [ask chad to clarify] players in points after the
-              regular season qualify for the first playoff event.
+              The two playoff events are open to all members regardless of standing and award up 
+              to double the points.
             </li>
             <li>
-              The top X [ask chad to clarify] players in points after the first
-              playoff event qualify for the second playoff event.
-            </li>
-            <li>
-              The top X [ask chad to clarify] players in points after the second
+              The top 24 players in points after the second
               playoff event qualify for the Championship.
             </li>
             <li>
@@ -131,7 +127,7 @@ export default function TourDetailsPage() {
         <section id="skins">
           <h2>Skins</h2>
           <p>
-            [X% of your tournament registration fee] is placed into the skins
+            A portion of the registration fees is placed into the skins
             pool. The pool is divided equally among all 18 holes. The player
             with the lowest net score on a hole wins that skin. If two or more
             players tie for lowest, no one wins—those skins carry over to holes
