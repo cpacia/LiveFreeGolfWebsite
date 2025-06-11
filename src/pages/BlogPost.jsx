@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./BlogPost.css";
 
-const SHOP_DOMAIN = "chad-622.myshopify.com";
+const SHOP_DOMAIN = "checkout.livefreegolf.com";
 const STOREFRONT_TOKEN = "cfed2819f4fda26e6be3560f1f4c9198";
 const BLOG_HANDLE =
   "walker-and-blais-blaze-through-the-field-on-way-to-victory";

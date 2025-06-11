@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./HeroCarousel.css";
 import { Link } from "react-router-dom";
 
-const SHOP_DOMAIN = "chad-622.myshopify.com";
+const SHOP_DOMAIN = "checkout.livefreegolf.com";
 const STOREFRONT_TOKEN = "cfed2819f4fda26e6be3560f1f4c9198";
 const BLOG_HANDLE =
   "walker-and-blais-blaze-through-the-field-on-way-to-victory";

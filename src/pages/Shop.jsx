@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Shop.css";
 
-const SHOP_DOMAIN = "chad-622.myshopify.com";
+const SHOP_DOMAIN = "checkout.livefreegolf.com";
 const STOREFRONT_TOKEN = "cfed2819f4fda26e6be3560f1f4c9198";
 const COLLECTION_HANDLE = "lfg-gear";
 
