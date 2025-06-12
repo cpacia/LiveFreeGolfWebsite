@@ -1,0 +1,39 @@
+/* make the table full-width and collapse borders */
+.admin-players-table {
+  max-width: 700px;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+/* cells and headers get a light border and some breathing room */
+.admin-players-table th,
+.admin-players-table td {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+}
+
+/* style the header row */
+.admin-players-table th {
+  text-align: left;
+  background-color: var(--color-primary-green);
+  color: #fff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.admin-players-table th:nth-child(1),
+.admin-players-table td:nth-child(1) {
+  width: 300px;
+}
+
+/* second column */
+.admin-players-table th:nth-child(2),
+.admin-players-table td:nth-child(2) {
+  width: 100px;
+}
+
+/* third column */
+.admin-players-table th:nth-child(3),
+.admin-players-table td:nth-child(3) {
+  width: 200px;
+}

@@ -10,6 +10,9 @@ export default function MatchPlay() {
   const [selectedYear, setSelectedYear] = useState("");
   const [years, setYears] = useState([]); // all available bracket years
   const [matches, setMatches] = useState([]); // array of MatchPlayMatch
+  const [playersList, setPlayersList] = useState([]);
+  const [playersLoading, setPlayersLoading] = useState(false);
+  const [playersError, setPlayersError] = useState(null);
 
   // ─── 1) Fetch MatchPlayInfo to get latestYear + registration flag ─────────
   useEffect(() => {
@@ -71,6 +74,21 @@ export default function MatchPlay() {
 
     fetchBracketResults();
   }, [activeTab, selectedYear, latestYear]);
+  
+  // ─── Fetch players when players tab is active ───────────────────────
+  useEffect(() => {
+    if (activeTab !== "players") return;
+    setPlayersLoading(true);
+    setPlayersError(null);
+    fetch("/api/match-play/players")
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data) => setPlayersList(Array.isArray(data) ? data : []))
+      .catch((err) => setPlayersError(err.message))
+      .finally(() => setPlayersLoading(false));
+  }, [activeTab]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -300,6 +318,12 @@ export default function MatchPlay() {
               >
                 Bracket
               </button>
+              <button
+                className={`tab ${activeTab === "players" ? "tab-active" : ""}`}
+                onClick={() => handleTabClick("players")}
+              >
+                Players
+              </button>
             </div>
 
             {registrationOpen && (
@@ -456,6 +480,35 @@ export default function MatchPlay() {
                 </>
               ) : (
                 <p>Loading bracket…</p>
+              )}
+            </div>
+          )}
+          {/* PLAYERS TAB */}
+          {activeTab === "players" && (
+            <div className="ml-content-container">
+              {playersLoading ? (
+                <p>Loading players…</p>
+              ) : playersError ? (
+                <p className="error-text">Error: {playersError}</p>
+              ) : playersList.length === 0 ? (
+                <p>No players available.</p>
+              ) : (
+                <table className="disabled-table">
+                  <thead>
+                    <tr>
+                      <th>Player</th>
+                      <th>Handicap</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {playersList.map((pl) => (
+                      <tr key={pl.player}>
+                        <td>{pl.player}</td>
+                        <td>{pl.handicap}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               )}
             </div>
           )}

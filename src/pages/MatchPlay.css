@@ -192,6 +192,16 @@
   border-right: 2px transparent;
 }
 
+.ml-content-container {
+  max-width: 400px;
+  margin-top: 1.5rem;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--color-dark);
+  line-height: 1.5;
+}
+
 /* ──────────────────────────────────────────────────────────── */
 /* “Year” links at the bottom (2025, 2024, 2023, …)            */
 /* ──────────────────────────────────────────────────────────── */
