@@ -157,32 +157,56 @@ export default function Schedule() {
             <div key={evt.eventID} className="schedule-event-item">
               {/* ─────── Left Side: Thumbnail + Basic Info ─────── */}
               <div className="event-left">
-                <Link
-                  to={`/listing/${evt.shopifyUrl}`}
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    className="thumbnail"
-                    src={getImageUrl(`/api/events/${evt.eventID}/thumbnail`)}
-                    alt={`${evt.name} thumbnail`}
-                    onError={(e) => {
-                      // Remove this handler so we don't loop if default-logo.png also fails
-                      e.currentTarget.onerror = null;
-                      // Fallback to our local default logo
-                      e.currentTarget.src = "/images/default-logo.png";
-                    }}
-                  />
-                </Link>
-
-                <div className="event-info">
-                  <div className="event-name">
+                {evt.isComplete ? (
+                  <div>
+                    <img
+                      className="thumbnail"
+                      src={getImageUrl(`/api/events/${evt.eventID}/thumbnail`)}
+                      alt={`${evt.name} thumbnail`}
+                      onError={(e) => {
+                        // Remove this handler so we don't loop if default-logo.png also fails
+                        e.currentTarget.onerror = null;
+                        // Fallback to our local default logo
+                        e.currentTarget.src = "/images/default-logo.png";
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <div>
                     <Link
                       to={`/listing/${evt.shopifyUrl}`}
                       rel="noopener noreferrer"
                     >
-                      {evt.name}
+                      <img
+                        className="thumbnail"
+                        src={getImageUrl(
+                          `/api/events/${evt.eventID}/thumbnail`,
+                        )}
+                        alt={`${evt.name} thumbnail`}
+                        onError={(e) => {
+                          // Remove this handler so we don't loop if default-logo.png also fails
+                          e.currentTarget.onerror = null;
+                          // Fallback to our local default logo
+                          e.currentTarget.src = "/images/default-logo.png";
+                        }}
+                      />
                     </Link>
                   </div>
+                )}
+                <div className="event-info">
+                  {evt.isComplete ? (
+                    <div className="event-name">{evt.name}</div>
+                  ) : (
+                    <div className="event-name">
+                      <Link
+                        to={`/listing/${evt.shopifyUrl}`}
+                        rel="noopener noreferrer"
+                      >
+                        {evt.name}
+                      </Link>
+                    </div>
+                  )}
+
                   <div className="event-meta">
                     {formatDateWithoutYear(evt.date)} &nbsp;|&nbsp; {evt.course}
                     <br />
