@@ -37,7 +37,11 @@ export default function AdminPlayers() {
     const method = isNew ? "POST" : "PUT";
     const payload = isNew
       ? { player: draft.player, handicap: draft.handicap }
-      : { player: draft.player, handicap: draft.handicap, originalPlayer: draft.originalPlayer || draft.player };
+      : {
+          player: draft.player,
+          handicap: draft.handicap,
+          originalPlayer: draft.originalPlayer || draft.player,
+        };
 
     fetch(url, {
       method,
@@ -46,7 +50,10 @@ export default function AdminPlayers() {
       body: JSON.stringify(payload),
     })
       .then((res) => {
-        if (!res.ok) return res.text().then((text) => { throw new Error(text || `HTTP ${res.status}`); });
+        if (!res.ok)
+          return res.text().then((text) => {
+            throw new Error(text || `HTTP ${res.status}`);
+          });
         return res.json();
       })
       .then((saved) => {
@@ -118,14 +125,16 @@ export default function AdminPlayers() {
             {players.map((item) => {
               const isEditing = editingPlayer === item.key;
               return (
-                <tr key={item.key} className={isEditing ? 'editing' : ''}>
+                <tr key={item.key} className={isEditing ? "editing" : ""}>
                   <td>
                     {isEditing ? (
                       <input
                         type="text"
                         className="cell-input"
                         value={draft.player}
-                        onChange={(e) => setDraft({ ...draft, player: e.target.value })}
+                        onChange={(e) =>
+                          setDraft({ ...draft, player: e.target.value })
+                        }
                         placeholder="Name"
                       />
                     ) : (
@@ -138,7 +147,9 @@ export default function AdminPlayers() {
                         type="text"
                         className="cell-input"
                         value={draft.handicap}
-                        onChange={(e) => setDraft({ ...draft, handicap: e.target.value })}
+                        onChange={(e) =>
+                          setDraft({ ...draft, handicap: e.target.value })
+                        }
                         placeholder="Handicap"
                       />
                     ) : (
@@ -151,16 +162,28 @@ export default function AdminPlayers() {
                         <button className="btn-save" onClick={handleSave}>
                           Save
                         </button>
-                        <button className="btn-cancel" onClick={() => handleCancel(item)}>
+                        <button
+                          className="btn-cancel"
+                          onClick={() => handleCancel(item)}
+                        >
                           Cancel
                         </button>
                       </>
                     ) : (
                       <>
-                        <button className="btn-edit" onClick={() => { setEditingPlayer(item.key); setDraft({ ...item, originalPlayer: item.player }); }}>
+                        <button
+                          className="btn-edit"
+                          onClick={() => {
+                            setEditingPlayer(item.key);
+                            setDraft({ ...item, originalPlayer: item.player });
+                          }}
+                        >
                           Edit
                         </button>
-                        <button className="btn-delete" onClick={() => handleDelete(item)}>
+                        <button
+                          className="btn-delete"
+                          onClick={() => handleDelete(item)}
+                        >
                           Delete
                         </button>
                       </>

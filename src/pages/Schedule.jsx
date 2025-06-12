@@ -157,27 +157,31 @@ export default function Schedule() {
             <div key={evt.eventID} className="schedule-event-item">
               {/* ─────── Left Side: Thumbnail + Basic Info ─────── */}
               <div className="event-left">
-                <img
-                  className="thumbnail"
-                  src={getImageUrl(`/api/events/${evt.eventID}/thumbnail`)}
-                  alt={`${evt.name} thumbnail`}
-                  onError={(e) => {
-                    // Remove this handler so we don't loop if default-logo.png also fails
-                    e.currentTarget.onerror = null;
-                    // Fallback to our local default logo
-                    e.currentTarget.src = "/images/default-logo.png";
-                  }}
-                />
+                <Link
+                  to={`/listing/${evt.shopifyUrl}`}
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    className="thumbnail"
+                    src={getImageUrl(`/api/events/${evt.eventID}/thumbnail`)}
+                    alt={`${evt.name} thumbnail`}
+                    onError={(e) => {
+                      // Remove this handler so we don't loop if default-logo.png also fails
+                      e.currentTarget.onerror = null;
+                      // Fallback to our local default logo
+                      e.currentTarget.src = "/images/default-logo.png";
+                    }}
+                  />
+                </Link>
 
                 <div className="event-info">
                   <div className="event-name">
-                    <a
-                      href={evt.blueGolfUrl}
-                      target="_blank"
+                    <Link
+                      to={`/listing/${evt.shopifyUrl}`}
                       rel="noopener noreferrer"
                     >
                       {evt.name}
-                    </a>
+                    </Link>
                   </div>
                   <div className="event-meta">
                     {formatDateWithoutYear(evt.date)} &nbsp;|&nbsp; {evt.course}

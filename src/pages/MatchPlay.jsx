@@ -74,7 +74,7 @@ export default function MatchPlay() {
 
     fetchBracketResults();
   }, [activeTab, selectedYear, latestYear]);
-  
+
   // ─── Fetch players when players tab is active ───────────────────────
   useEffect(() => {
     if (activeTab !== "players") return;

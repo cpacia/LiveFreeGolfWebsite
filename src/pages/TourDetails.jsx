@@ -109,12 +109,12 @@ export default function TourDetailsPage() {
               Only your top six point totals count toward your season total.
             </li>
             <li>
-              The two playoff events are open to all members regardless of standing and award up 
-              to double the points.
+              The two playoff events are open to all members regardless of
+              standing and award up to double the points.
             </li>
             <li>
-              The top 24 players in points after the second
-              playoff event qualify for the Championship.
+              The top 24 players in points after the second playoff event
+              qualify for the Championship.
             </li>
             <li>
               The Championship uses a "starting strokes" format whereby players
@@ -127,12 +127,12 @@ export default function TourDetailsPage() {
         <section id="skins">
           <h2>Skins</h2>
           <p>
-            A portion of the registration fees is placed into the skins
-            pool. The pool is divided equally among all 18 holes. The player
-            with the lowest net score on a hole wins that skin. If two or more
-            players tie for lowest, no one wins—those skins carry over to holes
-            with a unique low score. Only 50% of your handicap strokes are
-            applied when calculating net scores for skins.
+            A portion of the registration fees is placed into the skins pool.
+            The pool is divided equally among all 18 holes. The player with the
+            lowest net score on a hole wins that skin. If two or more players
+            tie for lowest, no one wins—those skins carry over to holes with a
+            unique low score. Only 50% of your handicap strokes are applied when
+            calculating net scores for skins.
           </p>
         </section>
 

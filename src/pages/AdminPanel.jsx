@@ -90,7 +90,7 @@ export default function AdminPanel() {
 
             {/* /admin/match-play */}
             <Route path="match-play" element={<AdminMatchPlay />} />
-            
+
             {/* /admin/players */}
             <Route path="players" element={<AdminPlayers />} />
 

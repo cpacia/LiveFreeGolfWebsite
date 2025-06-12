@@ -352,7 +352,7 @@
     width: calc(100% - 2rem);
     margin-top: -2rem;
   }
-  
+
   .hero-carousel .event-card {
     margin-left: -1rem;
     margin-right: 1rem;
@@ -360,21 +360,21 @@
     width: calc(100% - 2rem);
     margin-top: -3rem;
   }
-  
+
   .blurb-card h2 {
     font-size: 4rem !important;
   }
-  
+
   .event-card .label {
     font-size: 1.75rem !important;
   }
-  
+
   .event-card .title {
     font-size: 2.25rem !important;
   }
-  
+
   .event-card .sub {
-    font-size: 1rem !important
+    font-size: 1rem !important;
   }
 
   .hero-carousel .overlay {
