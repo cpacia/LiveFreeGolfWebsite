@@ -56,11 +56,11 @@ export default function Membership() {
               "X-Shopify-Storefront-Access-Token": STOREFRONT_TOKEN,
             },
             body: JSON.stringify({ query }),
-          }
+          },
         );
 
         const { data, errors } = await res.json();
-        if (errors) throw new Error(errors.map(e => e.message).join(", "));
+        if (errors) throw new Error(errors.map((e) => e.message).join(", "));
 
         const raw = {
           "lfg-ghin": data.ghin.variants.edges[0].node.price,
@@ -98,7 +98,10 @@ export default function Membership() {
         <h2 className="section-title">Become a Tour Member</h2>
         {error && <div className="error">{error}</div>}
         <p className="blurb2">
-          Purchase one of the membership options below to join the 2025 LFG Tour. You must have a valid GHIN handicap to compete. If you already have one, feel free to purchase the LFG membership only. Otherwise, you can purchase a membership and a GHIN and we'll get you a handicap.
+          Purchase one of the membership options below to join the 2025 LFG
+          Tour. You must have a valid GHIN handicap to compete. If you already
+          have one, feel free to purchase the LFG membership only. Otherwise,
+          you can purchase a membership and a GHIN and we'll get you a handicap.
         </p>
         <div className="membership-grid2">
           <div className="swiper">
@@ -124,4 +127,3 @@ export default function Membership() {
     </section>
   );
 }
-

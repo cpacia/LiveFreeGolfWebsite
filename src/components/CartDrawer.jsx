@@ -6,8 +6,15 @@ const SHOP_DOMAIN = "checkout.livefreegolf.com";
 const STOREFRONT_TOKEN = "cfed2819f4fda26e6be3560f1f4c9198";
 
 export default function CartDrawer() {
-  const { isOpen, closeCart, items, removeItem, updateQuantity, subtotal } =
-    useCart();
+  const {
+    isOpen,
+    closeCart,
+    items,
+    removeItem,
+    updateQuantity,
+    subtotal,
+    clearCart,
+  } = useCart();
 
   const handleCheckout = async () => {
     if (items.length === 0) return;
@@ -48,6 +55,8 @@ export default function CartDrawer() {
       console.error("Cart API error", errors, data.cartCreate.userErrors);
       return;
     }
+
+    setTimeout(() => clearCart(), 5000);
 
     // finally redirect into Shopify’s hosted checkout
     window.location.href = data.cartCreate.cart.checkoutUrl;

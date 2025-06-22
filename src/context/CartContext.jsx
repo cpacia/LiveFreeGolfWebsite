@@ -41,6 +41,11 @@ export function CartProvider({ children }) {
     0,
   );
 
+  // Clears all items from the cart
+  const clearCart = () => {
+    setItems([]);
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -52,6 +57,7 @@ export function CartProvider({ children }) {
         removeItem,
         updateQuantity,
         subtotal,
+        clearCart,
       }}
     >
       {children}

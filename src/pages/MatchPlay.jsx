@@ -346,9 +346,10 @@ export default function MatchPlay() {
               </h2>
 
               <p>
-                In addition to the regular season schedule we also play a season-long match play tournament. The field will include {" "}
+                In addition to the regular season schedule we also play a
+                season-long match play tournament. The field will include{" "}
                 <strong>16, 24, or 32 players</strong>, depending on the number
-                of entries. Each match must be scheduled and played within  a{" "}
+                of entries. Each match must be scheduled and played within a{" "}
                 <strong>one-month window</strong>, at a time and location agreed
                 upon by both players.
               </p>
