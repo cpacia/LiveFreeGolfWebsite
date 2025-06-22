@@ -56,7 +56,10 @@ export default function CartDrawer() {
       return;
     }
 
-    setTimeout(() => clearCart(), 3000);
+    setTimeout(() => {
+      clearCart();
+      closeCart();
+    }, 3000);
 
     // finally redirect into Shopify’s hosted checkout
     window.location.href = data.cartCreate.cart.checkoutUrl;
