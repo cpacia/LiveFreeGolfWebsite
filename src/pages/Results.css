@@ -377,6 +377,8 @@
   .teams-table th:nth-child(2),
   .teams-table td:nth-child(2) {
     width: 40%; /* Rank (narrow) */
+    word-wrap: break-word; /* break long words if necessary */
+    overflow-wrap: break-word; /* newer name for word-wrap */
   }
 
   .teams-table th:nth-child(3),
