@@ -221,7 +221,7 @@ export default function Schedule() {
               {/* ─────── Right Side: Handicap + Conditional Link ─────── */}
               <div className="event-right">
                 {evt.isComplete ? (
-                  // If event is complete, link to “Results”
+                  // 1) Event complete → show “Results”
                   <div className="results-link">
                     <Link
                       to={`/results?eventID=${evt.eventID}`}
@@ -231,7 +231,7 @@ export default function Schedule() {
                     </Link>
                   </div>
                 ) : evt.registrationOpen ? (
-                  // Not complete + registration is open → “Register”
+                  // 2) Registration open → show “Register” button
                   <div className="action-link">
                     <Link
                       to={`/listing/${evt.shopifyUrl}`}
@@ -240,8 +240,11 @@ export default function Schedule() {
                       Register ▶
                     </Link>
                   </div>
+                ) : new Date(evt.date) <= new Date() ? (
+                  // 3) Registration not open & event date ≤ now → “Registration Closed”
+                  <span>Registration Closed</span>
                 ) : (
-                  // Not complete + registration not open → “Registering Soon”
+                  // 4) Registration not open & event date > now → “Registering Soon”
                   <span>Registering Soon</span>
                 )}
               </div>
