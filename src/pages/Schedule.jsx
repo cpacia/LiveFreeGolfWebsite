@@ -118,6 +118,9 @@ export default function Schedule() {
             const [y, m, d] = evt.date.split("-").map(Number);
             const eventDay = new Date(y, m - 1, d);
             eventDay.setHours(0, 0, 0, 0);
+            
+            const weekFromNow = new Date(now);
+			weekFromNow.setDate(weekFromNow.getDate() + 7);
 
             // Coerce registrationOpen to boolean
             const regOpen =
@@ -198,7 +201,7 @@ export default function Schedule() {
                         Register ▶
                       </Link>
                     </div>
-                  ) : eventDay <= now ? (
+                  ) : eventDay <= weekFromNow ? (
                     <span>Registration Closed</span>
                   ) : (
                     <span>Registering Soon</span>
