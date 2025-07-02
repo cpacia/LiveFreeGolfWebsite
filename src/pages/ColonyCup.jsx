@@ -129,7 +129,7 @@ export default function ColonyCup() {
           return (
             <div key={year} className="colonycup-table-block">
               <h3 className="winning-team-heading">
-                {entry.winningTeam ? `${year} Winning Team` : `${year} Colony Cup Team`}
+                {entry.winningTeam ? `${year} Winning Team` : `${year} Colony Cup Standings`}
               </h3>
 
               {isCurrent && players.length === 0 ? (
