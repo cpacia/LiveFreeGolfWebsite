@@ -125,11 +125,16 @@ export default function ColonyCup() {
             try { const parsed = JSON.parse(entry.team); if (Array.isArray(parsed)) players = parsed; } catch {}
           }
           const grid = players.length > 0 ? make4x3Grid(players) : makeTBDGrid();
+          
+          const headerText =
+			  players.length === 0
+				? `${year} Colony Cup Standings`
+				: `${year} Colony Cup Team`;
 
           return (
             <div key={year} className="colonycup-table-block">
               <h3 className="winning-team-heading">
-                {entry.winningTeam ? `${year} Winning Team` : `${year} Colony Cup Standings`}
+                {headerText}
               </h3>
 
               {isCurrent && players.length === 0 ? (
