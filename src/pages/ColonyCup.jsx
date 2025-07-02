@@ -36,8 +36,8 @@ export default function ColonyCup() {
   // Fallback: if this year's team is empty, fetch standings
   useEffect(() => {
     if (!loading && !error) {
-      const currentYear = new Date().getFullYear().toString();
-      const thisEntry = infos.find((e) => e.year === currentYear);
+      const currentYear = new Date().getFullYear();
+	  const thisEntry  = infos.find(e => Number(e.year) === currentYear);
       let team = [];
       if (thisEntry) {
         if (Array.isArray(thisEntry.team)) team = thisEntry.team;
