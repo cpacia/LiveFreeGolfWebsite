@@ -342,7 +342,7 @@ export default function MatchPlay() {
           {activeTab === "about" && (
             <div className="matchplay-blurb">
               <h2 className="standings-year-heading">
-                LFG Match Play Tournament
+                LFG Match Play Tournament 🏆
               </h2>
 
               <p>
