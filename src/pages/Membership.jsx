@@ -31,8 +31,23 @@ export default function Membership() {
   const [prices, setPrices] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  // Initialize with current year as a fallback, then overwrite from API
+  const [year, setYear] = useState(new Date().getFullYear());
 
   useEffect(() => {
+    // Fetch the dynamic current year
+    async function fetchCurrentYear() {
+      try {
+        const res = await fetch("/api/current-year");
+        if (!res.ok) throw new Error("Failed to fetch current year");
+        const data = await res.json();
+        setYear(data.calendarYear);
+      } catch (e) {
+        console.error("Error fetching current year:", e);
+      }
+    }
+
+    // Fetch membership prices from Shopify Storefront API
     async function fetchPrices() {
       try {
         const query = `query GetMembershipPrices {
@@ -56,7 +71,7 @@ export default function Membership() {
               "X-Shopify-Storefront-Access-Token": STOREFRONT_TOKEN,
             },
             body: JSON.stringify({ query }),
-          },
+          }
         );
 
         const { data, errors } = await res.json();
@@ -89,6 +104,7 @@ export default function Membership() {
       }
     }
 
+    fetchCurrentYear();
     fetchPrices();
   }, []);
 
@@ -98,7 +114,7 @@ export default function Membership() {
         <h2 className="section-title">Become a Tour Member</h2>
         {error && <div className="error">{error}</div>}
         <p className="blurb2">
-          Purchase one of the membership options below to join the 2025 LFG
+          Purchase one of the membership options below to join the {year} LFG
           Tour. You must have a valid GHIN handicap to compete. If you already
           have one, feel free to purchase the LFG membership only. Otherwise,
           you can purchase a membership and a GHIN and we'll get you a handicap.
@@ -127,3 +143,4 @@ export default function Membership() {
     </section>
   );
 }
+
