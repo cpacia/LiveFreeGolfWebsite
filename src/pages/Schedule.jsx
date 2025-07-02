@@ -43,7 +43,9 @@ export default function Schedule() {
     fetch(buildFetchUrl(season))
       .then((res) => res.json())
       .then((data) => setEvents(data.events))
-      .catch((err) => console.error("Failed to load events for year", season, err))
+      .catch((err) =>
+        console.error("Failed to load events for year", season, err),
+      )
       .finally(() => setLoading(false));
   }, [season]);
 
@@ -118,9 +120,9 @@ export default function Schedule() {
             const [y, m, d] = evt.date.split("-").map(Number);
             const eventDay = new Date(y, m - 1, d);
             eventDay.setHours(0, 0, 0, 0);
-            
+
             const weekFromNow = new Date(now);
-			weekFromNow.setDate(weekFromNow.getDate() + 7);
+            weekFromNow.setDate(weekFromNow.getDate() + 7);
 
             // Coerce registrationOpen to boolean
             const regOpen =
@@ -135,7 +137,9 @@ export default function Schedule() {
                     <div>
                       <img
                         className="thumbnail"
-                        src={getImageUrl(`/api/events/${evt.eventID}/thumbnail`)}
+                        src={getImageUrl(
+                          `/api/events/${evt.eventID}/thumbnail`,
+                        )}
                         alt={`${evt.name} thumbnail`}
                         onError={(e) => {
                           e.currentTarget.onerror = null;
@@ -145,10 +149,15 @@ export default function Schedule() {
                     </div>
                   ) : (
                     <div>
-                      <Link to={`/listing/${evt.shopifyUrl}`} rel="noopener noreferrer">
+                      <Link
+                        to={`/listing/${evt.shopifyUrl}`}
+                        rel="noopener noreferrer"
+                      >
                         <img
                           className="thumbnail"
-                          src={getImageUrl(`/api/events/${evt.eventID}/thumbnail`)}
+                          src={getImageUrl(
+                            `/api/events/${evt.eventID}/thumbnail`,
+                          )}
                           alt={`${evt.name} thumbnail`}
                           onError={(e) => {
                             e.currentTarget.onerror = null;
@@ -172,7 +181,8 @@ export default function Schedule() {
                       </div>
                     )}
                     <div className="event-meta">
-                      {formatDateWithoutYear(evt.date)} &nbsp;|&nbsp; {evt.course}
+                      {formatDateWithoutYear(evt.date)} &nbsp;|&nbsp;{" "}
+                      {evt.course}
                       <br />
                       {evt.town}, {evt.state}
                     </div>
@@ -215,4 +225,3 @@ export default function Schedule() {
     </div>
   );
 }
-

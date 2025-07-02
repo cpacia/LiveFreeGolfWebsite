@@ -1,31 +1,26 @@
-// src/components/ColonyCup.jsx
 import React, { useState, useEffect } from "react";
 import "./ColonyCup.css";
 
 export default function ColonyCup() {
-  const [infos, setInfos] = useState([]); // Holds up to two items
+  const [infos, setInfos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [standings, setStandings] = useState(null);
+  const [standingsError, setStandingsError] = useState(null);
 
+  // Fetch Colony Cup info
   useEffect(() => {
-    const fetchCup = async () => {
+    async function fetchCup() {
       setLoading(true);
       setError(null);
-
       try {
         const resp = await fetch("/api/colony-cup");
-        if (!resp.ok) {
-          throw new Error(`HTTP ${resp.status}`);
-        }
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
-
-        // data is an array of up to two ColonyCupInfo objects
         if (Array.isArray(data)) {
-          // Sort by numeric year ascending (lowest first)
           data.sort((a, b) => Number(a.year) - Number(b.year));
           setInfos(data);
         } else {
-          // If API ever returns a single object, wrap it in an array
           setInfos([data]);
         }
       } catch (e) {
@@ -34,23 +29,47 @@ export default function ColonyCup() {
       } finally {
         setLoading(false);
       }
-    };
-
+    }
     fetchCup();
   }, []);
 
-  /**
-   * Given an array of up to 12 names, returns a 4×3 2D array.
-   * If fewer than 12 names, pads with empty strings. If more, slices to 12.
-   */
+  // Fallback: if this year's team is empty, fetch standings
+  useEffect(() => {
+    if (!loading && !error) {
+      const currentYear = new Date().getFullYear().toString();
+      const thisEntry = infos.find((e) => e.year === currentYear);
+      let team = [];
+      if (thisEntry) {
+        if (Array.isArray(thisEntry.team)) team = thisEntry.team;
+        else if (typeof thisEntry.team === "string") {
+          try {
+            const parsed = JSON.parse(thisEntry.team);
+            if (Array.isArray(parsed)) team = parsed;
+          } catch {}
+        }
+      }
+      if (thisEntry && team.length === 0) {
+        async function fetchStandings() {
+          try {
+            const resp = await fetch("/api/standings");
+            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+            const data = await resp.json();
+            setStandings(data);
+          } catch (e) {
+            console.error(e);
+            setStandingsError("Failed to load season standings.");
+          }
+        }
+        fetchStandings();
+      }
+    }
+  }, [loading, error, infos]);
+
+  // Helpers for grid
   const make4x3Grid = (namesArray = []) => {
     const MAX = 12;
     const names = namesArray.slice(0, MAX);
-    // Pad to length 12 with empty strings
-    while (names.length < MAX) {
-      names.push("");
-    }
-    // Chunk into 4 rows × 3 columns
+    while (names.length < MAX) names.push("");
     const grid = [];
     for (let i = 0; i < MAX; i += 3) {
       grid.push(names.slice(i, i + 3));
@@ -58,114 +77,129 @@ export default function ColonyCup() {
     return grid;
   };
 
-  /**
-   * If there are no players in “team”, produce a 4×3 grid where
-   * the center cell is "TBD" and every other cell is a zero-width space (U+200B).
-   */
   const makeTBDGrid = () => {
-    const rows = 4;
-    const cols = 3;
-    return Array.from({ length: rows }).map((_, r) =>
-      Array.from({ length: cols }).map((_, c) =>
-        r === 1 && c === 1 ? "TBD" : "\u200B",
-      ),
+    const ROWS = 4;
+    const COLS = 3;
+    return Array.from({ length: ROWS }).map((_, r) =>
+      Array.from({ length: COLS }).map((_, c) => (r === 1 && c === 1 ? "TBD" : "\u200B"))
     );
   };
+
+  if (loading) return <p className="loading-text">Loading…</p>;
+  if (error) return <p className="error-text">{error}</p>;
 
   return (
     <div className="full-bleed colonycup-content">
       <div className="content-container">
-        {/* Loading / error states */}
-        {loading && <p className="loading-text">Loading…</p>}
-        {error && <p className="error-text">{error}</p>}
+        {/* Heading & Blurb */}
+        <h2 className="colonycup-heading">Colony Cup 🏆</h2>
+        <section className="colonycup-blurb">
+          <p>
+            Each fall, two 12-player teams from around the State battle it out for bragging
+            rights—and the chance to return as defending champions next year. Over one
+            action-packed weekend, golfers face off in various 9-hole, head-to-head matches,
+            accumulating points to push their squad to victory.
+          </p>
+          <p>
+            The prior year’s winning team automatically earns a spot in the next Colony Cup.
+            Their captain may choose to drop up to <strong>two</strong> players and replace
+            them with the draft picks at positions #6 and #8. If only one player is dropped,
+            the captain receives the 8th pick.
+          </p>
+          <p><em>(Any dropped player who remains eligible will be picked up by the opposing team.)</em></p>
+          <p>
+            This year's captain fills out the squad by selecting the nine highest-ranked
+            available players, plus two additional “captain’s picks” from the top-50 season
+            rankings.
+          </p>
+        </section>
 
-        {!loading && !error && (
-          <>
-            {/* Main heading */}
-            <h2 className="colonycup-heading">Colony Cup 🏆</h2>
+        {infos.length === 0 && <p className="no-team-text">No Colony Cup data available.</p>}
 
-            {/* Static blurb: adjust text as needed */}
-            <section className="colonycup-blurb">
-              <p>
-                Each fall, two 12-player teams from around the State battle it
-                out for bragging rights—and the chance to return as defending
-                champions next year. Over one action-packed weekend, golfers
-                face off in various 9-hole, head-to-head matches, accumulating
-                points to push their squad to victory.
-              </p>
+        {infos.map((entry) => {
+          const year = entry.year;
+          const isCurrent = year === new Date().getFullYear().toString();
+          let players = [];
+          if (Array.isArray(entry.team)) players = entry.team;
+          else if (typeof entry.team === 'string') {
+            try { const parsed = JSON.parse(entry.team); if (Array.isArray(parsed)) players = parsed; } catch {}
+          }
+          const grid = players.length > 0 ? make4x3Grid(players) : makeTBDGrid();
 
-              <p>
-                The prior year’s winning team automatically earns a spot in the
-                next Colony Cup. Their captain may choose to drop up to{" "}
-                <strong>two</strong> players—at his sole discretion—and replace
-                them with the draft picks at positions #6 and #8. If only one
-                player is dropped, the captain receives the 8th pick in the
-                draft.
-              </p>
-              <p>
-                <em>
-                  (Any dropped player who remains eligible to play will be
-                  picked up by the opposing team.)
-                </em>
-              </p>
+          return (
+            <div key={year} className="colonycup-table-block">
+              <h3 className="winning-team-heading">
+                {entry.winningTeam ? `${year} Winning Team` : `${year} Colony Cup Team`}
+              </h3>
 
-              <p>
-                The captain of this year's team fills out the squad by selecting
-                the nine highest-ranked players who are available (i.e. not
-                currently on another Colony Cup team), plus two additional
-                “captain’s picks” drawn from anyone inside the top-50 season
-                rankings.
-              </p>
-            </section>
-
-            {/* If infos exist, map over up to two items to render two tables */}
-            {infos.length === 0 && (
-              <p className="no-team-text">No Colony Cup data available.</p>
-            )}
-
-            {infos.map((entry) => {
-              const year = entry.year;
-              // “team” should be an array of names; if missing or empty, show TBD grid
-              let players = [];
-              if (Array.isArray(entry.team)) {
-                players = entry.team;
-              } else if (typeof entry.team === "string") {
-                try {
-                  const parsed = JSON.parse(entry.team);
-                  players = Array.isArray(parsed) ? parsed : [];
-                } catch {
-                  players = [];
-                }
-              }
-              const grid =
-                players.length > 0 ? make4x3Grid(players) : makeTBDGrid();
-
-              return (
-                <div key={year} className="colonycup-table-block">
-                  {/* Modified heading logic: show "<year> Colony Cup Team" if winningTeam is false */}
-                  <h3 className="winning-team-heading">
-                    {entry.winningTeam
-                      ? `${year} Winning Team`
-                      : `${year} Colony Cup Team`}
-                  </h3>
-
-                  <table className="winning-team-table">
-                    <tbody>
-                      {grid.map((row, rowIndex) => (
-                        <tr key={rowIndex}>
-                          {row.map((name, colIndex) => (
-                            <td key={colIndex}>{name}</td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              );
-            })}
-          </>
-        )}
+              {isCurrent && players.length === 0 ? (
+                <table className="standings-table">
+                  <thead>
+                    <tr>
+                      <th>
+                        <span className="full-header">Rank</span>
+                        <span className="abbr-header">Rk</span>
+                      </th>
+                      <th>Player</th>
+                      <th>Points</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {standingsError && (
+                      <tr>
+                        <td colSpan="3" className="error-text">
+                          {standingsError}
+                        </td>
+                      </tr>
+                    )}
+                    {!standings && !standingsError && (
+                      <tr>
+                        <td colSpan="3">Loading standings…</td>
+                      </tr>
+                    )}
+                    {standings &&
+                      standings.season
+                        .filter((p) => {
+                          const lastYear = (Number(year) - 1).toString();
+                          const lastEntry = infos.find((e) => e.year === lastYear);
+                          let lastTeam = [];
+                          if (lastEntry) {
+                            if (Array.isArray(lastEntry.team)) lastTeam = lastEntry.team;
+                            else if (typeof lastEntry.team === 'string') {
+                              try { const parsed = JSON.parse(lastEntry.team); if (Array.isArray(parsed)) lastTeam = parsed;} catch{}
+                            }
+                          }
+                          return !lastTeam.includes(p.player);
+                        })
+                        .sort((a, b) => Number(a.rank) - Number(b.rank))
+                        .slice(0, 20)
+                        .map((p, i) => (
+                          <tr key={p.ID}>
+                            <td>{i + 1}</td>
+                            <td>{p.player}</td>
+                            <td>{p.points}</td>
+                          </tr>
+                        ))}
+                  </tbody>
+                </table>
+              ) : (
+                <table className="winning-team-table">
+                  <tbody>
+                    {grid.map((row, rowIndex) => (
+                      <tr key={rowIndex}>
+                        {row.map((name, colIndex) => (
+                          <td key={colIndex}>{name}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 }
+
