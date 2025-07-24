@@ -6,8 +6,8 @@ export default function AdminPlayers() {
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [editingPlayer, setEditingPlayer] = useState(null);
-  const [draft, setDraft] = useState(null);
+  const [editingKey, setEditingKey] = useState(null);
+  const [editingValues, setEditingValues] = useState({});
   const [newCount, setNewCount] = useState(0);
 
   useEffect(() => {
@@ -16,7 +16,12 @@ export default function AdminPlayers() {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
       })
-      .then((data) => setPlayers(Array.isArray(data) ? data : []))
+      .then((data) => {
+        const withKeys = Array.isArray(data)
+          ? data.map((p, i) => ({ ...p, key: p.player || `player_${i}` }))
+          : [];
+        setPlayers(withKeys);
+      })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
@@ -26,21 +31,24 @@ export default function AdminPlayers() {
     setNewCount((n) => n + 1);
     const newPlayer = { key, player: "", handicap: "" };
     setPlayers((prev) => [newPlayer, ...prev]);
-    setEditingPlayer(key);
-    setDraft(newPlayer);
+    setEditingKey(key);
+    setEditingValues({ player: "", handicap: "" });
+  };
+
+  const handleEdit = (item) => {
+    setEditingKey(item.key);
+    setEditingValues({ player: item.player, handicap: item.handicap });
   };
 
   const handleSave = () => {
-    if (!draft) return;
-    const isNew = String(draft.key).startsWith("__new__");
+    const isNew = String(editingKey).startsWith("__new__");
     const url = "/api/match-play/player";
     const method = isNew ? "POST" : "PUT";
     const payload = isNew
-      ? { player: draft.player, handicap: draft.handicap }
+      ? editingValues
       : {
-          player: draft.player,
-          handicap: draft.handicap,
-          originalPlayer: draft.originalPlayer || draft.player,
+          ...editingValues,
+          originalPlayer: players.find((p) => p.key === editingKey)?.player,
         };
 
     fetch(url, {
@@ -57,15 +65,13 @@ export default function AdminPlayers() {
         return res.json();
       })
       .then((saved) => {
-        // saved has { player, handicap }
-        setPlayers((prev) => {
-          if (isNew) {
-            return [saved, ...prev.filter((p) => p.key !== draft.key)];
-          }
-          return prev.map((p) => (p.key === draft.key ? saved : p));
-        });
-        setEditingPlayer(null);
-        setDraft(null);
+        setPlayers((prev) =>
+          isNew
+            ? [saved, ...prev.filter((p) => p.key !== editingKey)]
+            : prev.map((p) => (p.key === editingKey ? { ...saved, key: p.key } : p))
+        );
+        setEditingKey(null);
+        setEditingValues({});
       })
       .catch((err) => {
         console.error("Save failed:", err);
@@ -73,16 +79,15 @@ export default function AdminPlayers() {
       });
   };
 
-  const handleCancel = (item) => {
-    if (String(item.key).startsWith("__new__")) {
-      setPlayers((prev) => prev.filter((p) => p.key !== item.key));
+  const handleCancel = () => {
+    if (String(editingKey).startsWith("__new__")) {
+      setPlayers((prev) => prev.filter((p) => p.key !== editingKey));
     }
-    setEditingPlayer(null);
-    setDraft(null);
+    setEditingKey(null);
+    setEditingValues({});
   };
 
   const handleDelete = (item) => {
-    // delete by player name only
     fetch("/api/match-play/player", {
       method: "DELETE",
       credentials: "include",
@@ -123,7 +128,7 @@ export default function AdminPlayers() {
           </thead>
           <tbody>
             {players.map((item) => {
-              const isEditing = editingPlayer === item.key;
+              const isEditing = editingKey === item.key;
               return (
                 <tr key={item.key} className={isEditing ? "editing" : ""}>
                   <td>
@@ -131,9 +136,12 @@ export default function AdminPlayers() {
                       <input
                         type="text"
                         className="cell-input"
-                        value={draft.player}
+                        value={editingValues.player}
                         onChange={(e) =>
-                          setDraft({ ...draft, player: e.target.value })
+                          setEditingValues((prev) => ({
+                            ...prev,
+                            player: e.target.value,
+                          }))
                         }
                         placeholder="Name"
                       />
@@ -146,9 +154,12 @@ export default function AdminPlayers() {
                       <input
                         type="text"
                         className="cell-input"
-                        value={draft.handicap}
+                        value={editingValues.handicap}
                         onChange={(e) =>
-                          setDraft({ ...draft, handicap: e.target.value })
+                          setEditingValues((prev) => ({
+                            ...prev,
+                            handicap: e.target.value,
+                          }))
                         }
                         placeholder="Handicap"
                       />
@@ -162,10 +173,7 @@ export default function AdminPlayers() {
                         <button className="btn-save" onClick={handleSave}>
                           Save
                         </button>
-                        <button
-                          className="btn-cancel"
-                          onClick={() => handleCancel(item)}
-                        >
+                        <button className="btn-cancel" onClick={handleCancel}>
                           Cancel
                         </button>
                       </>
@@ -173,10 +181,7 @@ export default function AdminPlayers() {
                       <>
                         <button
                           className="btn-edit"
-                          onClick={() => {
-                            setEditingPlayer(item.key);
-                            setDraft({ ...item, originalPlayer: item.player });
-                          }}
+                          onClick={() => handleEdit(item)}
                         >
                           Edit
                         </button>
@@ -198,3 +203,4 @@ export default function AdminPlayers() {
     </>
   );
 }
+
