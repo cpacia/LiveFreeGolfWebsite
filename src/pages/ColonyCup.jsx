@@ -162,7 +162,10 @@ export default function ColonyCup() {
                         <span className="abbr-header">Rk</span>
                       </th>
                       <th>Player</th>
-                      <th>Points</th>
+                      <th>
+                        <span className="full-header">Points</span>
+                        <span className="abbr-header">Pts</span>
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
