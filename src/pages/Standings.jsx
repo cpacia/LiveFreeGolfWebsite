@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Standings.css";
 import { Link } from "react-router-dom";
+import { format, parseISO } from "date-fns";
 
 export default function Standings() {
   // Holds the JSON response:
@@ -79,7 +80,7 @@ export default function Standings() {
     setModalLoading(true);
     setModalOpen(true);
     try {
-      const endpoint = `/api/standings-data/${activeTab}/${encodeURIComponent(row.user)}?year=${encodeURIComponent(calendarYear)}`;
+      const endpoint = `/api/standings-data/${activeTab}/${encodeURIComponent(row.player)}?year=${encodeURIComponent(calendarYear)}`;
       const resp = await fetch(endpoint);
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const data = await resp.json();
@@ -280,12 +281,12 @@ export default function Standings() {
                     ) : (
                       modalRows.map((r, i) => (
                         <tr key={i}>
-                          <td>{r.date}</td>
+                          <td>{format(parseISO(r.date), "MMM d")}</td>
                           <td>{r.usedInCalc ? "*" : ""}</td>
                           <td>{r.name}</td>
-                          <td>{r.scores}</td>
+                          <td>{r.score}</td>
                           <td>{r.place}</td>
-                          <td>{r.lscore}</td>
+                          <td>{r.points}</td>
                         </tr>
                       ))
                     )}
