@@ -331,3 +331,74 @@
     text-align: center;
   }
 }
+
+/* Make modal table behave like the main table on mobile */
+@media (max-width: 768px) {
+  .modal-table {
+    table-layout: fixed;
+  }
+  .modal-table thead {
+    display: table-header-group !important;
+  }
+  .modal-table tbody {
+    display: table-row-group !important;
+  }
+  .modal-table tr {
+    display: table-row !important;
+  }
+  .modal-table th,
+  .modal-table td {
+    display: table-cell !important;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* Abbreviated headers in the modal on mobile */
+  .modal-table .full-header {
+    display: none !important;
+  }
+  .modal-table .abbr-header {
+    display: inline !important;
+  }
+  .modal-table th .abbr-header {
+    display: block;
+    text-align: center;
+  }
+
+  /* Slightly different mobile widths for readability */
+  .modal-table th:nth-child(1),
+  .modal-table td:nth-child(1) {
+    width: 18%;
+  } /* Date */
+  .modal-table th:nth-child(2),
+  .modal-table td:nth-child(2) {
+    width: 6%;
+  } /* * */
+  .modal-table th:nth-child(3),
+  .modal-table td:nth-child(3) {
+    width: 40%;
+  } /* Tourn */
+  .modal-table td:nth-child(3) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .modal-table th:nth-child(4),
+  .modal-table td:nth-child(4) {
+    width: 12%;
+  } /* Scr */
+  .modal-table td:nth-child(4) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .modal-table th:nth-child(5),
+  .modal-table td:nth-child(5) {
+    width: 10%;
+  } /* Pl */
+  .modal-table th:nth-child(6),
+  .modal-table td:nth-child(6) {
+    width: 14%;
+  } /* Pts */
+}

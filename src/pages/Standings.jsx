@@ -247,12 +247,27 @@ export default function Standings() {
                 <table className="modal-table details-table">
                   <thead>
                     <tr>
-                      <th>Date</th>
+                      <th>
+                        <span className="full-header">Date</span>
+                        <span className="abbr-header">Date</span>
+                      </th>
                       <th>{/* blank column for * */}</th>
-                      <th>Tournament</th>
-                      <th>Score</th>
-                      <th>Place</th>
-                      <th>Points</th>
+                      <th>
+                        <span className="full-header">Tournament</span>
+                        <span className="abbr-header">Tourn</span>
+                      </th>
+                      <th>
+                        <span className="full-header">Score</span>
+                        <span className="abbr-header">Scr</span>
+                      </th>
+                      <th>
+                        <span className="full-header">Place</span>
+                        <span className="abbr-header">Pl</span>
+                      </th>
+                      <th>
+                        <span className="full-header">Points</span>
+                        <span className="abbr-header">Pts</span>
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
