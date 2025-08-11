@@ -73,7 +73,7 @@ export default function Standings() {
     // Expect `row.user` to exist per new API shape
     if (!row || !row.user) return;
     setModalTitle(
-      `${row.player} — ${activeTab === "season" ? "Season" : "WGR"} details`,
+      `${row.player} — ${activeTab === "season" ? "Season" : "WGR"} Results`,
     );
     setModalRows([]);
     setModalError(null);
