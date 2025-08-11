@@ -71,7 +71,7 @@ export default function Membership() {
               "X-Shopify-Storefront-Access-Token": STOREFRONT_TOKEN,
             },
             body: JSON.stringify({ query }),
-          }
+          },
         );
 
         const { data, errors } = await res.json();
@@ -143,4 +143,3 @@ export default function Membership() {
     </section>
   );
 }
-

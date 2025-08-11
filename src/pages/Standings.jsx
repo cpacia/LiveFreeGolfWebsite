@@ -7,8 +7,8 @@ export default function Standings() {
   // {
   //   calendarYear: "2025",
   //   additionalYears: ["2024", "2023", …],
-  //   season: [ { year, player, rank, events, points }, … ],
-  //   wgr: [ { year, player, rank, events, points }, … ]
+  //   season: [ { year, player, user, rank, events, points }, … ],
+  //   wgr:    [ { year, player, user, rank, events, points }, … ]
   // }
   const [calendarYear, setCalendarYear] = useState("");
   const [additionalYears, setAdditionalYears] = useState([]);
@@ -17,6 +17,13 @@ export default function Standings() {
   const [activeTab, setActiveTab] = useState("season"); // 'season' or 'wgr'
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Modal state
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalLoading, setModalLoading] = useState(false);
+  const [modalError, setModalError] = useState(null);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalRows, setModalRows] = useState([]); // [{ date, usedInCalc, scores, name, lscore, place }]
 
   // Fetch for a given year (or current if yearParam is null/empty)
   const fetchStandings = async (yearParam = "") => {
@@ -60,10 +67,34 @@ export default function Standings() {
     setActiveTab(tab);
   };
 
+  // When a player's name is clicked
+  const handlePlayerClick = async (row) => {
+    // Expect `row.user` to exist per new API shape
+    if (!row || !row.user) return;
+    setModalTitle(
+      `${row.player} — ${activeTab === "season" ? "Season" : "WGR"} details`,
+    );
+    setModalRows([]);
+    setModalError(null);
+    setModalLoading(true);
+    setModalOpen(true);
+    try {
+      const endpoint = `/api/standings-data/${activeTab}/${encodeURIComponent(row.user)}?year=${encodeURIComponent(calendarYear)}`;
+      const resp = await fetch(endpoint);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const data = await resp.json();
+      setModalRows(Array.isArray(data) ? data : []);
+    } catch (e) {
+      console.error(e);
+      setModalError("Failed to load player details.");
+    } finally {
+      setModalLoading(false);
+    }
+  };
+
   // Choose which data to render in the table
   const tableRows = activeTab === "season" ? seasonData : wgrData;
 
-  // Column headers are always: Rank, Player, Events, Points
   return (
     <div className="full-bleed standings-content">
       <div className="content-container">
@@ -146,7 +177,16 @@ export default function Standings() {
                   tableRows.map((row, idx) => (
                     <tr key={idx}>
                       <td>{row.rank}</td>
-                      <td>{row.player}</td>
+                      <td>
+                        {/* Name becomes a hyperlink-like button that triggers the modal fetch */}
+                        <button
+                          className="link-button"
+                          onClick={() => handlePlayerClick(row)}
+                          title={`View ${row.player} details`}
+                        >
+                          {row.player}
+                        </button>
+                      </td>
                       <td>{row.events}</td>
                       <td>{row.points}</td>
                     </tr>
@@ -163,7 +203,15 @@ export default function Standings() {
                   {yr === calendarYear ? (
                     <span className="current-year">{yr}</span>
                   ) : (
-                    <Link to={`?year=${yr}`}>{yr}</Link>
+                    <Link
+                      to={`?year=${yr}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleYearClick(yr);
+                      }}
+                    >
+                      {yr}
+                    </Link>
                   )}
                 </React.Fragment>
               ))}
@@ -171,6 +219,68 @@ export default function Standings() {
           </>
         )}
       </div>
+
+      {/* Modal for player details */}
+      {modalOpen && (
+        <div className="modal-backdrop" onClick={() => setModalOpen(false)}>
+          <div
+            className="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="player-details-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-header">
+              <h3 id="player-details-title">{modalTitle}</h3>
+              <button
+                className="modal-close"
+                onClick={() => setModalOpen(false)}
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+            <div className="modal-body">
+              {modalLoading && <p className="loading-text">Loading…</p>}
+              {modalError && <p className="error-text">{modalError}</p>}
+              {!modalLoading && !modalError && (
+                <table className="modal-table details-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>{/* blank column for * */}</th>
+                      <th>Tournament</th>
+                      <th>Score</th>
+                      <th>Place</th>
+                      <th>Points</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {modalRows.length === 0 ? (
+                      <tr>
+                        <td colSpan="6" style={{ textAlign: "center" }}>
+                          No results.
+                        </td>
+                      </tr>
+                    ) : (
+                      modalRows.map((r, i) => (
+                        <tr key={i}>
+                          <td>{r.date}</td>
+                          <td>{r.usedInCalc ? "*" : ""}</td>
+                          <td>{r.name}</td>
+                          <td>{r.scores}</td>
+                          <td>{r.place}</td>
+                          <td>{r.lscore}</td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

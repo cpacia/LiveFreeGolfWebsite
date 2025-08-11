@@ -37,7 +37,7 @@ export default function ColonyCup() {
   useEffect(() => {
     if (!loading && !error) {
       const currentYear = new Date().getFullYear();
-	  const thisEntry  = infos.find(e => Number(e.year) === currentYear);
+      const thisEntry = infos.find((e) => Number(e.year) === currentYear);
       let team = [];
       if (thisEntry) {
         if (Array.isArray(thisEntry.team)) team = thisEntry.team;
@@ -81,7 +81,9 @@ export default function ColonyCup() {
     const ROWS = 4;
     const COLS = 3;
     return Array.from({ length: ROWS }).map((_, r) =>
-      Array.from({ length: COLS }).map((_, c) => (r === 1 && c === 1 ? "TBD" : "\u200B"))
+      Array.from({ length: COLS }).map((_, c) =>
+        r === 1 && c === 1 ? "TBD" : "\u200B",
+      ),
     );
   };
 
@@ -95,46 +97,61 @@ export default function ColonyCup() {
         <h2 className="colonycup-heading">Colony Cup 🏆</h2>
         <section className="colonycup-blurb">
           <p>
-            Each fall, two 12-player teams from around the State battle it out for bragging
-            rights—and the chance to return as defending champions next year. Over one
-            action-packed weekend, golfers face off in various 9-hole, head-to-head matches,
-            accumulating points to push their squad to victory.
+            Each fall, two 12-player teams from around the State battle it out
+            for bragging rights—and the chance to return as defending champions
+            next year. Over one action-packed weekend, golfers face off in
+            various 9-hole, head-to-head matches, accumulating points to push
+            their squad to victory.
           </p>
           <p>
-            The prior year’s winning team automatically earns a spot in the next Colony Cup.
-            Their captain may choose to drop up to <strong>two</strong> players and replace
-            them with the draft picks at positions #6 and #8. If only one player is dropped,
-            the captain receives the 8th pick.
+            The prior year’s winning team automatically earns a spot in the next
+            Colony Cup. Their captain may choose to drop up to{" "}
+            <strong>two</strong> players and replace them with the draft picks
+            at positions #6 and #8. If only one player is dropped, the captain
+            receives the 8th pick.
           </p>
-          <p><em>(Any dropped player who remains eligible will be picked up by the opposing team.)</em></p>
           <p>
-            This year's captain fills out the squad by selecting the nine highest-ranked
-            available players, plus two additional “captain’s picks” from the top-50 season
-            rankings.
+            <em>
+              (Any dropped player who remains eligible will be picked up by the
+              opposing team.)
+            </em>
+          </p>
+          <p>
+            This year's captain fills out the squad by selecting the nine
+            highest-ranked available players, plus two additional “captain’s
+            picks” from the top-50 season rankings.
           </p>
         </section>
 
-        {infos.length === 0 && <p className="no-team-text">No Colony Cup data available.</p>}
+        {infos.length === 0 && (
+          <p className="no-team-text">No Colony Cup data available.</p>
+        )}
 
         {infos.map((entry) => {
           const year = entry.year;
           const isCurrent = year === new Date().getFullYear().toString();
           let players = [];
           if (Array.isArray(entry.team)) players = entry.team;
-          else if (typeof entry.team === 'string') {
-            try { const parsed = JSON.parse(entry.team); if (Array.isArray(parsed)) players = parsed; } catch {}
+          else if (typeof entry.team === "string") {
+            try {
+              const parsed = JSON.parse(entry.team);
+              if (Array.isArray(parsed)) players = parsed;
+            } catch {}
           }
-          const grid = players.length > 0 ? make4x3Grid(players) : makeTBDGrid();
-          
-          let headerText = `${year} Colony Cup ${entry.winningTeam 
-			? 'Winning Team' 
-			: (players.length === 0 ? 'Standings' : 'Team')}`;
+          const grid =
+            players.length > 0 ? make4x3Grid(players) : makeTBDGrid();
+
+          let headerText = `${year} Colony Cup ${
+            entry.winningTeam
+              ? "Winning Team"
+              : players.length === 0
+                ? "Standings"
+                : "Team"
+          }`;
 
           return (
             <div key={year} className="colonycup-table-block">
-              <h3 className="winning-team-heading">
-                {headerText}
-              </h3>
+              <h3 className="winning-team-heading">{headerText}</h3>
 
               {isCurrent && players.length === 0 ? (
                 <table className="standings-table">
@@ -165,12 +182,18 @@ export default function ColonyCup() {
                       standings.season
                         .filter((p) => {
                           const lastYear = (Number(year) - 1).toString();
-                          const lastEntry = infos.find((e) => e.year === lastYear);
+                          const lastEntry = infos.find(
+                            (e) => e.year === lastYear,
+                          );
                           let lastTeam = [];
                           if (lastEntry) {
-                            if (Array.isArray(lastEntry.team)) lastTeam = lastEntry.team;
-                            else if (typeof lastEntry.team === 'string') {
-                              try { const parsed = JSON.parse(lastEntry.team); if (Array.isArray(parsed)) lastTeam = parsed;} catch{}
+                            if (Array.isArray(lastEntry.team))
+                              lastTeam = lastEntry.team;
+                            else if (typeof lastEntry.team === "string") {
+                              try {
+                                const parsed = JSON.parse(lastEntry.team);
+                                if (Array.isArray(parsed)) lastTeam = parsed;
+                              } catch {}
                             }
                           }
                           return !lastTeam.includes(p.player);
@@ -206,4 +229,3 @@ export default function ColonyCup() {
     </div>
   );
 }
-

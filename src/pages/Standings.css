@@ -166,6 +166,125 @@
   color: #0056b3; /* darker blue on hover */
 }
 
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  color: var(--link-color, #0b5fff);
+  font: inherit;
+}
+.link-button:hover {
+  text-decoration: none;
+}
+.link-button:focus,
+.link-button:active {
+  outline: none;
+  box-shadow: none;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal {
+  background: #fff;
+  max-width: 900px;
+  width: min(92vw, 900px);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.modal-body {
+  padding: 12px 16px;
+  max-height: min(70vh, 800px);
+  overflow: auto;
+}
+.modal-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  table-layout: fixed;
+  margin-bottom: 1rem;
+}
+
+.modal-table th,
+.modal-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-dark);
+}
+
+.modal-table th {
+  background-color: var(--color-primary-green);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: 500;
+}
+.modal-table th:nth-child(1),
+.modal-table td:nth-child(1) {
+  text-align: left;
+  width: 4%;
+}
+.modal-table th:nth-child(2),
+.modal-table td:nth-child(2) {
+  text-align: center;
+  width: 1%;
+}
+.modal-table th:nth-child(3),
+.modal-table td:nth-child(3) {
+  text-align: left;
+  width: 40%;
+}
+.modal-table th:nth-child(4),
+.modal-table td:nth-child(4) {
+  text-align: center;
+  width: 8%;
+}
+.modal-table th:nth-child(5),
+.modal-table td:nth-child(5) {
+  text-align: center;
+  width: 4%;
+}
+.modal-table th:nth-child(6),
+.modal-table td:nth-child(6) {
+  text-align: center;
+  width: 7%;
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px;
+}
+.details-table {
+  margin-top: 6px;
+}
+.details-table th,
+.details-table td {
+  white-space: nowrap;
+}
+
 @media (max-width: 768px) {
   /* 1) Make sure the table itself stays as a table */
   .standings-table {

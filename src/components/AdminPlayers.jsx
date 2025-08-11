@@ -68,7 +68,9 @@ export default function AdminPlayers() {
         setPlayers((prev) =>
           isNew
             ? [saved, ...prev.filter((p) => p.key !== editingKey)]
-            : prev.map((p) => (p.key === editingKey ? { ...saved, key: p.key } : p))
+            : prev.map((p) =>
+                p.key === editingKey ? { ...saved, key: p.key } : p,
+              ),
         );
         setEditingKey(null);
         setEditingValues({});
@@ -203,4 +205,3 @@ export default function AdminPlayers() {
     </>
   );
 }
-

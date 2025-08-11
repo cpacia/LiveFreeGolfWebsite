@@ -244,20 +244,16 @@ export default function MatchPlay() {
                     // Store winner -> score in map
                     if (match.winner && match.score) {
                       const roundIndex = c;
-					  const roundKey = `${match.winner}-${roundIndex}`;
+                      const roundKey = `${match.winner}-${roundIndex}`;
                       winnerToScoreMap.set(roundKey, match.score);
                     }
 
                     // Retrieve previous scores if available
                     const prevRound = c - 1;
                     const prevKey1 = `${match.player1}-${prevRound}`;
-                    const p1ScoreFromLastRound = winnerToScoreMap.get(
-                      prevKey1,
-                    );
+                    const p1ScoreFromLastRound = winnerToScoreMap.get(prevKey1);
                     const prevKey2 = `${match.player2}-${prevRound}`;
-                    const p2ScoreFromLastRound = winnerToScoreMap.get(
-                      prevKey2,
-                    );
+                    const p2ScoreFromLastRound = winnerToScoreMap.get(prevKey2);
 
                     return (
                       <div
