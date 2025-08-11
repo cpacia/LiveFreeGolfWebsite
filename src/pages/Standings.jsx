@@ -255,7 +255,7 @@ export default function Standings() {
                       <th>{/* blank column for * */}</th>
                       <th>
                         <span className="full-header">Tournament</span>
-                        <span className="abbr-header">Tourn</span>
+                        <span className="abbr-header">Tournament</span>
                       </th>
                       <th>
                         <span className="full-header">Score</span>
