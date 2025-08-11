@@ -172,12 +172,14 @@
   padding: 0;
   margin: 0;
   cursor: pointer;
-  text-decoration: underline;
-  color: var(--link-color, #0b5fff);
+  text-decoration: none;
+  color: #007bff;
+  font-weight: 500;
   font: inherit;
 }
 .link-button:hover {
   text-decoration: none;
+  color: #0056b3;
 }
 .link-button:focus,
 .link-button:active {
