@@ -20,6 +20,7 @@ import Shop from "./pages/Shop";
 import ProductPage from "./pages/ProductPage";
 import Results from "./pages/Results";
 import AdminRoute from "./components/AdminRoute";
+import TeeTimes from "./pages/TeeTimes";
 
 import "./App.css";
 
@@ -44,6 +45,7 @@ export default function App() {
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/listing/:handle" element={<ProductPage />} />
+        <Route path="/teetimes/:handle" element={<TeeTimes />} />
         <Route path="/results" element={<Results />} />
         <Route path="/admin/*" element={<AdminRoute />} />
       </Routes>

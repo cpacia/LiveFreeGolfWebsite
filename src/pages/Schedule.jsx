@@ -212,7 +212,14 @@ export default function Schedule() {
                       </Link>
                     </div>
                   ) : eventDay <= weekFromNow ? (
-                    <span>Registration Closed</span>
+                    <div className="teetimes-link">
+                      <Link
+                        to={`/teetimes/${evt.shopifyUrl}?eventID=${evt.eventID}`}
+                        rel="noopener noreferrer"
+                      >
+                        Tee Times ▶
+                      </Link>
+                    </div>
                   ) : (
                     <span>Registering Soon</span>
                   )}

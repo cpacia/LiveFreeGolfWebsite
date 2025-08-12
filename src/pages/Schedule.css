@@ -219,6 +219,30 @@
   font-size: 0.875rem; /* 14px */
 }
 
+.teetimes-link a {
+  display: inline-block;
+  background-color: var(--color-accent-white); /* #F2C14E */
+  color: var(--color-dark); /* #333333 */
+  text-decoration: none;
+  padding: 0.5rem 0.5rem; /* 8px 16px */
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  border: 2px solid var(--color-primary-green);
+  border-radius: 6px;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.teetimes-link a:hover {
+  color: #111;
+  background-color: #d1a640; /* darker #F2C14E */
+}
+
+.teetimes-link span {
+  font-style: italic;
+  font-size: 0.875rem; /* 14px */
+}
+
 .results-link a {
   display: inline-block;
   background-color: var(--color-primary-green);
@@ -257,6 +281,12 @@
   }
 
   .action-link a {
+    padding: 0.5rem 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  
+  .teetimes-link a {
     padding: 0.5rem 0.5rem;
     white-space: nowrap;
     overflow: hidden;

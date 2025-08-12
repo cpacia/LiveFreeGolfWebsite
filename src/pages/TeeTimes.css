@@ -1,0 +1,48 @@
+.teetime-info-column {
+  text-align: left;
+  flex: 1 1 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.teetime-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  table-layout: fixed;
+  margin-bottom: 1rem;
+}
+
+.teetime-table th,
+.teetime-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-dark);
+}
+
+.teetime-table th {
+  background-color: var(--color-primary-green);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: 500;
+}
+
+.teetime-table th:nth-child(1),
+.teetime-table td:nth-child(1) {
+  text-align: center;
+  width: 15%;
+}
+.teetime-table th:nth-child(2),
+.teetime-table td:nth-child(2) {
+  text-align: center;
+  width: 9%;
+}
+.teetime-table th:nth-child(3),
+.teetime-table td:nth-child(3) {
+  text-align: left;
+  width: 75%;
+}
