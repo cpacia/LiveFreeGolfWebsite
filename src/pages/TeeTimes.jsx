@@ -110,10 +110,6 @@ export default function TeeTimesPage() {
         players: t.players ?? t.Players ?? [],
       });
     }
-    for (const [k, arr] of map.entries()) {
-      arr.sort((a, b) => (a.time || "").localeCompare(b.time || ""));
-      map.set(k, arr);
-    }
     return [...map.entries()].sort((a, b) => Number(a[0]) - Number(b[0]));
   }, [teeTimes]);
 
