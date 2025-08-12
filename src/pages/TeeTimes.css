@@ -33,7 +33,7 @@
 
 .teetime-table th:nth-child(1),
 .teetime-table td:nth-child(1) {
-  text-align: center;
+  text-align: left;
   width: 15%;
 }
 .teetime-table th:nth-child(2),
