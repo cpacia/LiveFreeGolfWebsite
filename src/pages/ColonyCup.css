@@ -93,3 +93,65 @@
   background-color: #eef2e9;
   cursor: default;
 }
+
+.rank-green {
+  background-color: green;
+  color: white;
+  font-weight: bold;
+}
+
+.rank-yellow {
+  background-color: var(--color-accent-yellow);
+  color: black;
+  font-weight: bold;
+}
+
+/* Force rank cell colors in the standings table (override zebra striping) */
+.standings-table td.rank-green {
+  background-color: #2e7d32 !important;
+  font-weight: 600;
+}
+
+.standings-table td.rank-yellow {
+  background-color: var(--color-accent-yellow) !important;
+  font-weight: 600;
+}
+
+/* (optional) if your zebra rule targets td directly, these ensure both odd/even win */
+.standings-table tbody tr:nth-child(even) td.rank-green,
+.standings-table tbody tr:nth-child(even) td.rank-yellow {
+  background-color: inherit; /* not needed with !important above, but harmless */
+}
+
+/* Legend under the standings table */
+.standings-key {
+  margin-top: 2rem;
+  margin-left: 1rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.standings-key .key-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.standings-key .key-color {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  border: 1px solid #ccc;
+}
+
+/* Reuse our rank colors for the legend squares */
+.standings-key .rank-green {
+  background-color: #2e7d32;
+}
+
+.standings-key .rank-yellow {
+  background-color: var(--color-accent-yellow);
+}

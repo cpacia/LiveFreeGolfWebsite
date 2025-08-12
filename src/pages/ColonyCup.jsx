@@ -154,6 +154,7 @@ export default function ColonyCup() {
               <h3 className="winning-team-heading">{headerText}</h3>
 
               {isCurrent && players.length === 0 ? (
+                <>
                 <table className="standings-table">
                   <thead>
                     <tr>
@@ -203,15 +204,32 @@ export default function ColonyCup() {
                         })
                         .sort((a, b) => Number(a.rank) - Number(b.rank))
                         .slice(0, 20)
-                        .map((p, i) => (
-                          <tr key={p.ID}>
-                            <td>{i + 1}</td>
-                            <td>{p.player}</td>
-                            <td>{p.points}</td>
-                          </tr>
-                        ))}
+                        .map((p, i) => {
+						  let rankClass = "";
+						  if (i + 1 <= 10) {
+							rankClass = "rank-green";
+						  } else if (i + 1 <= 16) {
+							rankClass = "rank-yellow";
+						  }
+						  return (
+							<tr key={p.ID}>
+							  <td className={rankClass}>{i + 1}</td>
+							  <td>{p.player}</td>
+							  <td>{p.points}</td>
+							</tr>
+						  );
+						})}
                   </tbody>
                 </table>
+                <div className="standings-key">
+				  <span className="key-item">
+					<span className="key-color rank-green"></span> In position
+				  </span>
+				  <span className="key-item">
+					<span className="key-color rank-yellow"></span> On the bubble
+				  </span>
+				</div>
+				</>
               ) : (
                 <table className="winning-team-table">
                   <tbody>
