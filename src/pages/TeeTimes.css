@@ -46,3 +46,10 @@
   text-align: left;
   width: 75%;
 }
+
+@media (max-width: 768px) {
+  .teetime-info-column {
+    width: 100%;
+    margin-top: -140px;
+  }
+}
