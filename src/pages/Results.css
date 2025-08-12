@@ -157,7 +157,7 @@
 
 .net-table th:nth-child(1),
 .net-table td:nth-child(1) {
-  width: 2%; /* Rank (narrow) */
+  width: 3%; /* Rank (narrow) */
 }
 
 .net-table th:nth-child(2),

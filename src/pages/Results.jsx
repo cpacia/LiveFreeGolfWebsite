@@ -171,8 +171,8 @@ export default function Results() {
           <thead>
             <tr>
               <th>
-                <span className="full-header">Rank</span>
-                <span className="abbr-header">Rk</span>
+                <span className="full-header">Place</span>
+                <span className="abbr-header">Pl</span>
               </th>
               <th>Player</th>
               <th>
@@ -235,8 +235,8 @@ export default function Results() {
           <thead>
             <tr>
               <th>
-                <span className="full-header">Rank</span>
-                <span className="abbr-header">Rk</span>
+                <span className="full-header">Place</span>
+                <span className="abbr-header">Pl</span>
               </th>
               <th>Player</th>
               <th>
@@ -301,8 +301,8 @@ export default function Results() {
           <thead>
             <tr>
               <th>
-                <span className="full-header">Rank</span>
-                <span className="abbr-header">Rk</span>
+                <span className="full-header">Place</span>
+                <span className="abbr-header">Pl</span>
               </th>
               <th>Team</th>
               {hasTotalColumn && (
@@ -355,8 +355,8 @@ export default function Results() {
           <thead>
             <tr>
               <th>
-                <span className="full-header">Rank</span>
-                <span className="abbr-header">Rk</span>
+                <span className="full-header">Place</span>
+                <span className="abbr-header">Pl</span>
               </th>
               <th>Player</th>
               <th>
@@ -429,8 +429,8 @@ export default function Results() {
             <thead>
               <tr>
                 <th>
-                  <span className="full-header">Rank</span>
-                  <span className="abbr-header">Rk</span>
+                  <span className="full-header">Place</span>
+                  <span className="abbr-header">Pl</span>
                 </th>
                 <th>Player</th>
                 <th>Skins</th>
