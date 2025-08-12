@@ -271,6 +271,9 @@
   text-align: center;
   width: 7%;
 }
+.modal-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
 .modal-close {
   background: none;
   border: none;
