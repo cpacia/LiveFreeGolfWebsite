@@ -133,7 +133,7 @@ export default function Schedule() {
             return (
               <div key={evt.eventID} className="schedule-event-item">
                 <div className="event-left">
-                  {evt.isComplete ? (
+                  {evt.isComplete || !regOpen ? (
                     <div>
                       <img
                         className="thumbnail"
@@ -168,7 +168,7 @@ export default function Schedule() {
                     </div>
                   )}
                   <div className="event-info">
-                    {evt.isComplete ? (
+                    {evt.isComplete || !regOpen ? (
                       <div className="event-name">{evt.name}</div>
                     ) : (
                       <div className="event-name">
