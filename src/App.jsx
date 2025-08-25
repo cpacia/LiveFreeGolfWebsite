@@ -21,6 +21,7 @@ import ProductPage from "./pages/ProductPage";
 import Results from "./pages/Results";
 import AdminRoute from "./components/AdminRoute";
 import TeeTimes from "./pages/TeeTimes";
+import AnalyticsTracker from "./components/AnalyticsTracker";
 
 import "./App.css";
 
@@ -30,6 +31,7 @@ export default function App() {
       <div className="full-bleed">
         <Header />
       </div>
+      <AnalyticsTracker />
 
       <Routes>
         <Route path="/" element={<Home />} />

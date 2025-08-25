@@ -1,8 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import ReactGA from "react-ga4";
 import App from "./App";
 import "./index.css";
 import { CartProvider } from "./context/CartContext";
+
+ReactGA.initialize("G-MH5T98LNWN");
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
