@@ -198,6 +198,19 @@
   padding-top: 32rem;
   margin-bottom: 14rem;
 }
+.player2-round4::after {
+  content: attr(data-score);
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translateY(550px) translateX(-80px);
+  font-size: 0.85rem;
+  color: #555;
+  white-space: nowrap;
+  z-index: 1;
+  left: auto;
+  right: 0;
+}
 
 .player1-round5 {
   margin-top: 32rem;
