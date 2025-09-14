@@ -139,7 +139,7 @@ export default function TourDetailsPage() {
         <section id="teams">
           <h2>Teams</h2>
           <p>
-            Every event except the Championship has a team event that runs
+            Every regular season event has a team event that runs
             simultaneously. Players are placed into better ball teams of four.
             The lowest individual score on the hole is your team's score for
             that hole. Each member of the winning team earns 15 bonus points
