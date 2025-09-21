@@ -52,6 +52,9 @@ export default function AdminPanel() {
             <Link to="/admin/change-password">Change Password</Link>
           </li>
           <li>
+            <Link to="https://lfg-server-production.up.railway.app/api/data-directory">Download Backup</Link>
+          </li>
+          <li>
             <Link onClick={handleLogout}>
               <i className="fas fa-sign-out-alt"></i> Logout
             </Link>
