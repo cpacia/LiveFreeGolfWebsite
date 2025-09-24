@@ -144,6 +144,15 @@ body,
   color: white;
 }
 
+/* Zebra striping for the point system table */
+#points table tbody tr:nth-child(odd) td {
+  background-color: #f9f9f9; /* light gray */
+}
+
+#points table tbody tr:nth-child(even) td {
+  background-color: #ffffff; /* white (keeps existing background for even rows) */
+}
+
 @media (max-width: 768px) {
   /* ───────────────────────────────────────────────────────────
      1) Hide the left nav panel entirely
