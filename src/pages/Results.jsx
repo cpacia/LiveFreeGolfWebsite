@@ -551,19 +551,29 @@ export default function Results() {
 
             {/* ===== 2) Dropdown Selector ===== */}
             <div className="results-dropdown-container results-dropdown-width">
-              <select
-                id="results-select"
-                className="results-dropdown schedule-dropdown"
-                value={selectedTable}
-                onChange={onSelectChange}
-              >
-                <option value="net">Net</option>
-                <option value="gross">Gross</option>
-                <option value="skins">Skins</option>
-                <option value="teams">Teams</option>
-                <option value="wgr">WGR</option>
-              </select>
-            </div>
+			  <select
+				id="results-select"
+				className="results-dropdown schedule-dropdown"
+				value={selectedTable}
+				onChange={onSelectChange}
+			  >
+				{eventData.netLeaderboardUrl && (
+				  <option value="net">Net</option>
+				)}
+				{eventData.grossLeaderboardUrl && (
+				  <option value="gross">Gross</option>
+				)}
+				{eventData.skinsLeaderboardUrl && (
+				  <option value="skins">Skins</option>
+				)}
+				{eventData.teamsLeaderboardUrl && (
+				  <option value="teams">Teams</option>
+				)}
+				{eventData.wgrLeaderboardUrl && (
+				  <option value="wgr">WGR</option>
+				)}
+			  </select>
+			</div>
 
             {/* ===== 3) Render the appropriate table(s) ===== */}
             <div className="results-table-container">{renderTable()}</div>
