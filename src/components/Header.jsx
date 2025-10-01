@@ -115,6 +115,7 @@ export default function Header() {
             <MobileLink to="/tour-details">Tour Details</MobileLink>
             <MobileLink to="/match-play">Match Play Tournament</MobileLink>
             <MobileLink to="/colony-cup">Colony Cup</MobileLink>
+            <MobileLink to="/past-champions">Past Champions</MobileLink>
             <MobileLink to="/disabled-list">Disabled List</MobileLink>
           </div>
         </div>
