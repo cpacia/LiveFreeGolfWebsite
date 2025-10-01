@@ -141,13 +141,7 @@ export default function ColonyCup() {
           const grid =
             players.length > 0 ? make4x3Grid(players) : makeTBDGrid();
 
-          let headerText = `${year} Colony Cup ${
-            entry.winningTeam
-              ? "Winning Team"
-              : players.length === 0
-                ? "Standings"
-                : "Team"
-          }`;
+          let headerText = `${year}`;
 
           return (
             <div key={year} className="colonycup-table-block">
