@@ -1,55 +1,89 @@
+/* Page section */
 .champion-content-section {
-  padding: 2rem 2rem;
-  /* Avoid creating a stacking context that traps the modal */
-  position: static;   /* or simply remove this line */
-  z-index: auto;      /* or remove */
-  height: 659px;
+  /* center the section and avoid trapping modals */
+  position: static;
+  z-index: auto;
+  padding: 1.5rem 0;
+  height: 718px;              /* was fixed; let content size it */
+  box-sizing: border-box;
 }
 
+/* Constrain and center the inner container */
+.champion-content-section .content-container {
+  width: 100%;
+  max-width: 980px;          /* match your site container if needed */
+  margin: 0 auto;            /* center */
+  padding: 0 16px;           /* comfy gutters on mobile */
+  box-sizing: border-box;
+}
+
+/* ---------- Hero ---------- */
 .pc-hero {
   display: grid;
-  grid-template-columns: 1fr;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  height: 100%;
+  grid-template-columns: 1fr;  /* single column by default (mobile) */
   gap: 24px;
+  align-items: start;
+  justify-items: center;       /* center children horizontally */
+  padding: 2rem 0;
 }
-@media (min-width: 900px) {
-  .pc-hero {
-    grid-template-columns: 3fr 2fr;
-    align-items: center;
-  }
-}
+
+/* Media block centers the image */
 .pc-hero-media {
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
+
+/* Image scales down and stays centered */
 .pc-hero-img {
   width: 100%;
+  max-width: 640px;           /* prevents edge-to-edge stretching on small screens */
   height: auto;
   border-radius: 16px;
   display: block;
   object-fit: cover;
+  margin: 0 auto;
 }
+
+/* Text block centered on mobile with the same max width as the image */
 .pc-hero-body {
-  padding: 4px 4px 4px 0;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 4px 0;
+  text-align: center;
 }
+
+/* Eyebrow + Title + Blurb */
 .pc-eyebrow {
+  display: inline-block;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-weight: 700;
-  color: #6b7280; /* slate-500ish */
+  color: #6b7280;
   margin-bottom: 6px;
 }
+
 .pc-title {
   font-size: clamp(28px, 6vw, 44px);
   line-height: 1.1;
   margin: 0 0 12px 0;
 }
+
 .pc-blurb {
-  color: #4b5563; /* slate-600ish */
+  color: #4b5563;
   margin: 0 0 16px 0;
   max-width: 65ch;
+  margin-left: auto;          /* center the text block itself */
+  margin-right: auto;
 }
+
+/* CTA centered on mobile */
+.pc-actions {
+  display: flex;
+  justify-content: center;
+}
+
 .pc-actions .pc-btn {
   appearance: none;
   border: none;
@@ -57,20 +91,48 @@
   padding: 12px 18px;
   font-weight: 700;
   cursor: pointer;
-  background: #e9c46a; /* your gold */
-  color: #1f2937; /* slate-800 */
+  background: #e9c46a;
+  color: #1f2937;
 }
+
 .pc-actions .pc-btn:hover {
   filter: brightness(0.95);
 }
 
-.pc-modal-backdrop{
-  position:fixed; inset:0; 
-  display:flex; align-items:center; justify-content:center;
-  background:rgba(0,0,0,0.5);
-  z-index:10000; /* higher than header/footer */
+/* ---------- Desktop layout ---------- */
+@media (min-width: 900px) {
+  .pc-hero {
+    grid-template-columns: 3fr 2fr; /* image left, text right */
+    align-items: center;
+    justify-items: stretch;
+  }
+  .pc-hero-media { justify-content: stretch; }
+  .pc-hero-img { max-width: none; }
+  .pc-hero-body {
+    max-width: none;
+    text-align: left;
+  }
+  .pc-actions { justify-content: flex-start; }
 }
-.pc-modal{
-  max-width:900px; width:90vw; max-height:85vh; overflow:auto;
-  background:#fff; border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,.25);
+
+/* ---------- Modal (portal) ---------- */
+.pc-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.5);
+  z-index: 10000; /* above header/footer */
 }
+
+.pc-modal {
+  max-width: 900px;
+  width: 90vw;
+  max-height: 85vh;
+  overflow: auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,.25);
+}
+
