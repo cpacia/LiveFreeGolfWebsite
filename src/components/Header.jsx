@@ -62,6 +62,7 @@ export default function Header() {
               <Link to="/tour-details">Tour Details</Link>
               <Link to="/match-play">Match Play Tournament</Link>
               <Link to="/colony-cup">Colony Cup</Link>
+              <Link to="/past-champions">Past Champions</Link>
               <Link to="/disabled-list">Disabled List</Link>
             </div>
           </div>

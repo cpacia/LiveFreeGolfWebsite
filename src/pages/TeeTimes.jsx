@@ -28,14 +28,16 @@ export default function TeeTimesPage() {
       try {
         setLoading(true);
         setError("");
-        const res = await fetch(`https://${SHOP_DOMAIN}/api/2024-10/graphql.json`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Shopify-Storefront-Access-Token": STOREFRONT_TOKEN,
-          },
-          body: JSON.stringify({
-            query: `query GetByHandle($handle: String!) {
+        const res = await fetch(
+          `https://${SHOP_DOMAIN}/api/2024-10/graphql.json`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Shopify-Storefront-Access-Token": STOREFRONT_TOKEN,
+            },
+            body: JSON.stringify({
+              query: `query GetByHandle($handle: String!) {
               productByHandle(handle: $handle) {
                 id
                 title
@@ -47,12 +49,14 @@ export default function TeeTimesPage() {
                 state: metafield(namespace: "event", key: "state") { value }
               }
             }`,
-            variables: { handle },
-          }),
-        });
+              variables: { handle },
+            }),
+          },
+        );
         const { data, errors } = await res.json();
         if (!active) return;
-        if (errors?.length) throw new Error(errors.map((e) => e.message).join("; "));
+        if (errors?.length)
+          throw new Error(errors.map((e) => e.message).join("; "));
         const p = data?.productByHandle;
         if (!p) throw new Error("Event not found");
         setProduct(p);
@@ -75,8 +79,11 @@ export default function TeeTimesPage() {
       try {
         setTeeTimesLoading(true);
         setTeeTimesError("");
-        const res = await fetch(`/api/tee-times/${encodeURIComponent(eventID)}`);
-        if (!res.ok) throw new Error(`Tee times request failed (${res.status})`);
+        const res = await fetch(
+          `/api/tee-times/${encodeURIComponent(eventID)}`,
+        );
+        if (!res.ok)
+          throw new Error(`Tee times request failed (${res.status})`);
         const data = await res.json();
         if (!active) return;
         setTeeTimes(Array.isArray(data) ? data : []);
@@ -94,9 +101,15 @@ export default function TeeTimesPage() {
   const formattedDate = useMemo(() => {
     const raw = product?.date?.value;
     if (!raw) return null;
-    const parts = raw.split("-").map((v, i) => (i === 1 ? parseInt(v) - 1 : parseInt(v)));
+    const parts = raw
+      .split("-")
+      .map((v, i) => (i === 1 ? parseInt(v) - 1 : parseInt(v)));
     const d = new Date(parts[0], parts[1], parts[2]);
-    return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    return d.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   }, [product]);
 
   const teeTimesByRound = useMemo(() => {
@@ -113,13 +126,16 @@ export default function TeeTimesPage() {
     return [...map.entries()].sort((a, b) => Number(a[0]) - Number(b[0]));
   }, [teeTimes]);
 
-  if (loading) return <div className="product-page-container">Loading event…</div>;
+  if (loading)
+    return <div className="product-page-container">Loading event…</div>;
   if (error) return <div className="product-page-container">{error}</div>;
 
   return (
     <div className="product-page-container">
       <div className="product-image-column">
-        {mainImage && <img className="product-image" src={mainImage} alt={product.title} />}
+        {mainImage && (
+          <img className="product-image" src={mainImage} alt={product.title} />
+        )}
         <div className="thumbnail-list">
           {product.images.edges.map(({ node }, idx) => (
             <button
@@ -127,7 +143,10 @@ export default function TeeTimesPage() {
               className={`thumbnail-item ${mainImage === node.url ? "active" : ""}`}
               onClick={() => setMainImage(node.url)}
             >
-              <img src={node.url} alt={node.altText || `${product.title} ${idx + 1}`} />
+              <img
+                src={node.url}
+                alt={node.altText || `${product.title} ${idx + 1}`}
+              />
             </button>
           ))}
         </div>
@@ -154,20 +173,29 @@ export default function TeeTimesPage() {
 
         <div style={{ marginTop: "1rem" }}>
           {teeTimesLoading && <div>Loading tee times…</div>}
-          {teeTimesError && <div style={{ color: "#b00020" }}>{teeTimesError}</div>}
-          {!teeTimesLoading && !teeTimesError && teeTimesByRound.length === 0 && (
-            <div>No tee times are available yet. Please check back closer to the event.</div>
+          {teeTimesError && (
+            <div style={{ color: "#b00020" }}>{teeTimesError}</div>
           )}
+          {!teeTimesLoading &&
+            !teeTimesError &&
+            teeTimesByRound.length === 0 && (
+              <div>
+                No tee times are available yet. Please check back closer to the
+                event.
+              </div>
+            )}
 
           {teeTimesByRound.map(([roundNum, items]) => (
             <div key={roundNum} style={{ marginBottom: "1.5rem" }}>
-              <div style={{
-                fontWeight: 600,
-                color: "#163627",
-                marginBottom: "0.5rem",
-                borderBottom: "1px solid #e5e7eb",
-                paddingBottom: "0.25rem",
-              }}>
+              <div
+                style={{
+                  fontWeight: 600,
+                  color: "#163627",
+                  marginBottom: "0.5rem",
+                  borderBottom: "1px solid #e5e7eb",
+                  paddingBottom: "0.25rem",
+                }}
+              >
                 {`Round ${roundNum || 1}`}
               </div>
               <div style={{ overflowX: "auto" }}>
@@ -197,4 +225,3 @@ export default function TeeTimesPage() {
     </div>
   );
 }
-

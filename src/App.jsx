@@ -21,6 +21,7 @@ import ProductPage from "./pages/ProductPage";
 import Results from "./pages/Results";
 import AdminRoute from "./components/AdminRoute";
 import TeeTimes from "./pages/TeeTimes";
+import PastChampions from "./pages/PastChampions";
 import AnalyticsTracker from "./components/AnalyticsTracker";
 
 import "./App.css";
@@ -43,6 +44,7 @@ export default function App() {
         <Route path="/disabled-list" element={<DisabledList />} />
         <Route path="/match-play" element={<MatchPlay />} />
         <Route path="/colony-cup" element={<ColonyCup />} />
+        <Route path="/past-champions" element={<PastChampions />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/shop" element={<Shop />} />

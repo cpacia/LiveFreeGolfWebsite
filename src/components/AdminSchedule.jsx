@@ -34,7 +34,7 @@ export default function AdminSchedule() {
   // Extract "year" from query parameters
   const params = new URLSearchParams(window.location.search);
   const yearParam = params.get("year") || "";
-  
+
   const [updateStandings, setUpdateStandings] = useState(false);
 
   // 2) Fetch existing events on mount or when yearParam changes
@@ -380,11 +380,14 @@ export default function AdminSchedule() {
                               }
 
                               // Determine POST vs PUT
-                              const urlBase = isNew ? "/api/events" : `/api/events/${draftEvent.eventID}`;
-							  // Only add ?updateStandings=true for PUT (not POST) and when box is checked
-							  const url = !isNew && updateStandings
-								  ? `${urlBase}?updateStandings=true`
-								  : urlBase;  
+                              const urlBase = isNew
+                                ? "/api/events"
+                                : `/api/events/${draftEvent.eventID}`;
+                              // Only add ?updateStandings=true for PUT (not POST) and when box is checked
+                              const url =
+                                !isNew && updateStandings
+                                  ? `${urlBase}?updateStandings=true`
+                                  : urlBase;
                               const method = isNew ? "POST" : "PUT";
 
                               fetch(url, {
@@ -769,20 +772,28 @@ export default function AdminSchedule() {
                     </td>
 
                     <td className="cell-label">Update standings</td>
-					<td className="cell-value">
-					  {isEditing ? (
-						<label style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
-						  <input
-							type="checkbox"
-							checked={updateStandings}
-							onChange={(e) => setUpdateStandings(e.target.checked)}
-						  />
-						  Update standings
-						</label>
-					  ) : (
-						"—"
-					  )}
-					</td>
+                    <td className="cell-value">
+                      {isEditing ? (
+                        <label
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.5rem",
+                          }}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={updateStandings}
+                            onChange={(e) =>
+                              setUpdateStandings(e.target.checked)
+                            }
+                          />
+                          Update standings
+                        </label>
+                      ) : (
+                        "—"
+                      )}
+                    </td>
                   </tr>
                 </tbody>
               </table>

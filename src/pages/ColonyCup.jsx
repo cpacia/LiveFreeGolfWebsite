@@ -155,81 +155,82 @@ export default function ColonyCup() {
 
               {isCurrent && players.length === 0 ? (
                 <>
-                <table className="standings-table">
-                  <thead>
-                    <tr>
-                      <th>
-                        <span className="full-header">Rank</span>
-                        <span className="abbr-header">Rk</span>
-                      </th>
-                      <th>Player</th>
-                      <th>
-                        <span className="full-header">Points</span>
-                        <span className="abbr-header">Pts</span>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {standingsError && (
+                  <table className="standings-table">
+                    <thead>
                       <tr>
-                        <td colSpan="3" className="error-text">
-                          {standingsError}
-                        </td>
+                        <th>
+                          <span className="full-header">Rank</span>
+                          <span className="abbr-header">Rk</span>
+                        </th>
+                        <th>Player</th>
+                        <th>
+                          <span className="full-header">Points</span>
+                          <span className="abbr-header">Pts</span>
+                        </th>
                       </tr>
-                    )}
-                    {!standings && !standingsError && (
-                      <tr>
-                        <td colSpan="3">Loading standings…</td>
-                      </tr>
-                    )}
-                    {standings &&
-                      standings.season
-                        .filter((p) => {
-                          const lastYear = (Number(year) - 1).toString();
-                          const lastEntry = infos.find(
-                            (e) => e.year === lastYear,
-                          );
-                          let lastTeam = [];
-                          if (lastEntry) {
-                            if (Array.isArray(lastEntry.team))
-                              lastTeam = lastEntry.team;
-                            else if (typeof lastEntry.team === "string") {
-                              try {
-                                const parsed = JSON.parse(lastEntry.team);
-                                if (Array.isArray(parsed)) lastTeam = parsed;
-                              } catch {}
+                    </thead>
+                    <tbody>
+                      {standingsError && (
+                        <tr>
+                          <td colSpan="3" className="error-text">
+                            {standingsError}
+                          </td>
+                        </tr>
+                      )}
+                      {!standings && !standingsError && (
+                        <tr>
+                          <td colSpan="3">Loading standings…</td>
+                        </tr>
+                      )}
+                      {standings &&
+                        standings.season
+                          .filter((p) => {
+                            const lastYear = (Number(year) - 1).toString();
+                            const lastEntry = infos.find(
+                              (e) => e.year === lastYear,
+                            );
+                            let lastTeam = [];
+                            if (lastEntry) {
+                              if (Array.isArray(lastEntry.team))
+                                lastTeam = lastEntry.team;
+                              else if (typeof lastEntry.team === "string") {
+                                try {
+                                  const parsed = JSON.parse(lastEntry.team);
+                                  if (Array.isArray(parsed)) lastTeam = parsed;
+                                } catch {}
+                              }
                             }
-                          }
-                          return !lastTeam.includes(p.player);
-                        })
-                        .sort((a, b) => Number(a.rank) - Number(b.rank))
-                        .slice(0, 20)
-                        .map((p, i) => {
-						  let rankClass = "";
-						  if (i + 1 <= 10) {
-							rankClass = "rank-green";
-						  } else if (i + 1 <= 16) {
-							rankClass = "rank-yellow";
-						  }
-						  return (
-							<tr key={p.ID}>
-							  <td className={rankClass}>{i + 1}</td>
-							  <td>{p.player}</td>
-							  <td>{p.points}</td>
-							</tr>
-						  );
-						})}
-                  </tbody>
-                </table>
-                <div className="standings-key">
-				  <span className="key-item">
-					<span className="key-color rank-green"></span> In position
-				  </span>
-				  <span className="key-item">
-					<span className="key-color rank-yellow"></span> On the bubble
-				  </span>
-				</div>
-				</>
+                            return !lastTeam.includes(p.player);
+                          })
+                          .sort((a, b) => Number(a.rank) - Number(b.rank))
+                          .slice(0, 20)
+                          .map((p, i) => {
+                            let rankClass = "";
+                            if (i + 1 <= 10) {
+                              rankClass = "rank-green";
+                            } else if (i + 1 <= 16) {
+                              rankClass = "rank-yellow";
+                            }
+                            return (
+                              <tr key={p.ID}>
+                                <td className={rankClass}>{i + 1}</td>
+                                <td>{p.player}</td>
+                                <td>{p.points}</td>
+                              </tr>
+                            );
+                          })}
+                    </tbody>
+                  </table>
+                  <div className="standings-key">
+                    <span className="key-item">
+                      <span className="key-color rank-green"></span> In position
+                    </span>
+                    <span className="key-item">
+                      <span className="key-color rank-yellow"></span> On the
+                      bubble
+                    </span>
+                  </div>
+                </>
               ) : (
                 <table className="winning-team-table">
                   <tbody>

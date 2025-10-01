@@ -8,6 +8,7 @@ import AdminDisabledList from "../components/AdminDisabledList";
 import AdminMatchPlay from "../components/AdminMatchPlay";
 import AdminColonyCup from "../components/AdminColonyCup";
 import AdminPlayers from "../components/AdminPlayers";
+import AdminChampions from "../components/AdminChampions";
 import "./AdminPanel.css";
 
 export default function AdminPanel() {
@@ -46,13 +47,18 @@ export default function AdminPanel() {
             <Link to="/admin/colony-cup">Colony Cup</Link>
           </li>
           <li>
+            <Link to="/admin/past-champions">Past Champions</Link>
+          </li>
+          <li>
             <Link to="/admin/disabled-list">Disabled List</Link>
           </li>
           <li>
             <Link to="/admin/change-password">Change Password</Link>
           </li>
           <li>
-            <Link to="https://lfg-server-production.up.railway.app/api/data-directory">Download Backup</Link>
+            <Link to="https://lfg-server-production.up.railway.app/api/data-directory">
+              Download Backup
+            </Link>
           </li>
           <li>
             <Link onClick={handleLogout}>
@@ -99,6 +105,9 @@ export default function AdminPanel() {
 
             {/* /admin/colony-cup */}
             <Route path="colony-cup" element={<AdminColonyCup />} />
+
+            {/* /admin/past-champions */}
+            <Route path="past-champions" element={<AdminChampions />} />
 
             {/* /admin/disabled-list */}
             <Route path="disabled-list" element={<AdminDisabledList />} />

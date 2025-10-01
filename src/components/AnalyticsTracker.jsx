@@ -7,9 +7,11 @@ export default function AnalyticsTracker() {
 
   useEffect(() => {
     // This fires every time the route changes
-    ReactGA.send({ hitType: "pageview", page: location.pathname + location.search });
+    ReactGA.send({
+      hitType: "pageview",
+      page: location.pathname + location.search,
+    });
   }, [location]);
 
   return null; // doesn't render anything
 }
-
