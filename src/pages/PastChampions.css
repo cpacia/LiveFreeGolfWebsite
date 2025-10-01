@@ -62,3 +62,14 @@
 .pc-actions .pc-btn:hover {
   filter: brightness(0.95);
 }
+
+.pc-modal-backdrop{
+  position:fixed; inset:0; 
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(0,0,0,0.5);
+  z-index:10000; /* higher than header/footer */
+}
+.pc-modal{
+  max-width:900px; width:90vw; max-height:85vh; overflow:auto;
+  background:#fff; border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,.25);
+}

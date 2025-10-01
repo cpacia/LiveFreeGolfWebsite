@@ -134,9 +134,9 @@ export default function PastChampion() {
 
       {/* Modal (structure based on Standings.jsx) :contentReference[oaicite:4]{index=4} */}
       {modalOpen && (
-        <div className="modal-backdrop" onClick={() => setModalOpen(false)}>
+        <div className="modal-backdrop pc-modal-backdrop" onClick={() => setModalOpen(false)}>
           <div
-            className="modal"
+            className="modal pc-modal"
             role="dialog"
             aria-modal="true"
             aria-labelledby="pc-season-title"
