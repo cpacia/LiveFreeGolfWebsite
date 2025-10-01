@@ -100,20 +100,30 @@
 }
 
 /* ---------- Desktop layout ---------- */
+/* ---------- Desktop layout: center right column ---------- */
 @media (min-width: 900px) {
   .pc-hero {
-    grid-template-columns: 3fr 2fr; /* image left, text right */
-    align-items: center;
-    justify-items: stretch;
+    grid-template-columns: 3fr 2fr;   /* image left, text right */
+    align-items: center;              /* vertical centering vs. image */
   }
-  .pc-hero-media { justify-content: stretch; }
-  .pc-hero-img { max-width: none; }
+
+  /* Center the whole right column contents */
   .pc-hero-body {
-    max-width: none;
-    text-align: left;
+    max-width: 560px;                 /* optional: keeps a nice measure */
+    margin: 0 auto;                   /* center within the right column */
+    text-align: center;               /* center headlines + text */
+    display: flex;                    /* center the CTA too */
+    flex-direction: column;
+    align-items: center;              /* center child elements */
   }
-  .pc-actions { justify-content: flex-start; }
+
+  /* Center the button on desktop as well */
+  .pc-actions {
+    justify-content: center;
+    width: 100%;
+  }
 }
+
 
 /* ---------- Modal (portal) ---------- */
 .pc-modal-backdrop {
