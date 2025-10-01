@@ -1,21 +1,21 @@
 // src/components/PastChampion.jsx
 import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { format, parseISO } from "date-fns";
 import { getImageUrl } from "../lib/api";
-import "../components/AdminSchedule.css"; // for shared card/typography utilities if you want
-import "./Standings.css"; // for modal styles (modal, modal-backdrop, etc.)
+import "../components/AdminSchedule.css";
+import "./Standings.css"; // includes .modal / .modal-backdrop base styles
 import "./PastChampions.css";
 
 export default function PastChampion() {
-  const [champion, setChampion] = useState(null); // { year, player, thumbnail? }
+  const [champion, setChampion] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Modal state (modeled after Standings) :contentReference[oaicite:2]{index=2}
   const [modalOpen, setModalOpen] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
   const [modalError, setModalError] = useState(null);
-  const [modalRows, setModalRows] = useState([]); // [{ date, usedInCalc, name, score, place, points }]
+  const [modalRows, setModalRows] = useState([]);
   const [modalTitle, setModalTitle] = useState("");
 
   useEffect(() => {
@@ -24,21 +24,12 @@ export default function PastChampion() {
       setError(null);
       try {
         const resp = await fetch("/api/champions", { cache: "no-store" });
-        if (resp.status === 404) {
-          setChampion(null);
-          return;
-        }
+        if (resp.status === 404) { setChampion(null); return; }
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
         const list = Array.isArray(data) ? data : data.champions || [];
-        if (!list.length) {
-          setChampion(null);
-          return;
-        }
-        // pick the most recent by numeric year
-        const latest = [...list].sort(
-          (a, b) => Number(b.year) - Number(a.year),
-        )[0];
+        if (!list.length) { setChampion(null); return; }
+        const latest = [...list].sort((a, b) => Number(b.year) - Number(a.year))[0];
         setChampion(latest);
       } catch (e) {
         console.error(e);
@@ -58,9 +49,8 @@ export default function PastChampion() {
     setModalLoading(true);
     setModalOpen(true);
     try {
-      // Same endpoint pattern your Standings.jsx uses for player details (season tab) :contentReference[oaicite:3]{index=3}
       const endpoint = `/api/standings-data/season/${encodeURIComponent(
-        champion.player,
+        champion.player
       )}?year=${encodeURIComponent(champion.year)}`;
       const resp = await fetch(endpoint);
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
@@ -74,18 +64,8 @@ export default function PastChampion() {
     }
   };
 
-  if (loading)
-    return (
-      <div className="content-container">
-        <p>Loading…</p>
-      </div>
-    );
-  if (error)
-    return (
-      <div className="content-container">
-        <p className="error-text">{error}</p>
-      </div>
-    );
+  if (loading) return <div className="content-container"><p>Loading…</p></div>;
+  if (error) return <div className="content-container"><p className="error-text">{error}</p></div>;
   if (!champion) {
     return (
       <div className="content-container">
@@ -98,7 +78,6 @@ export default function PastChampion() {
   return (
     <div className="champion-content-section full-bleed">
       <div className="content-container">
-        {/* Hero card */}
         <div className="pc-hero">
           <div className="pc-hero-media">
             <img
@@ -115,14 +94,11 @@ export default function PastChampion() {
           <div className="pc-hero-body">
             <div className="pc-eyebrow">{champion.year} CHAMPION</div>
             <h1 className="pc-title">{champion.player}</h1>
-
-            {/* If you later add a description field, drop it here */}
             <p className="pc-blurb">
               The {champion.year} season crowned {champion.player} as our tour
               champion. Click below to view the full tournament-by-tournament
               breakdown of their season.
             </p>
-
             <div className="pc-actions">
               <button className="pc-btn" onClick={openSeasonModal}>
                 View Season Results
@@ -132,8 +108,8 @@ export default function PastChampion() {
         </div>
       </div>
 
-      {/* Modal (structure based on Standings.jsx) :contentReference[oaicite:4]{index=4} */}
-      {modalOpen && (
+      {/* Portal-mounted modal so it sits above header/footer */}
+      {modalOpen && createPortal(
         <div className="modal-backdrop pc-modal-backdrop" onClick={() => setModalOpen(false)}>
           <div
             className="modal pc-modal"
@@ -144,13 +120,7 @@ export default function PastChampion() {
           >
             <div className="modal-header">
               <h3 id="pc-season-title">{modalTitle}</h3>
-              <button
-                className="modal-close"
-                onClick={() => setModalOpen(false)}
-                aria-label="Close"
-              >
-                ×
-              </button>
+              <button className="modal-close" onClick={() => setModalOpen(false)} aria-label="Close">×</button>
             </div>
 
             <div className="modal-body">
@@ -160,42 +130,21 @@ export default function PastChampion() {
                 <table className="modal-table details-table">
                   <thead>
                     <tr>
-                      <th>
-                        <span className="full-header">Date</span>
-                        <span className="abbr-header">Date</span>
-                      </th>
-                      <th>{/* * for usedInCalc */}</th>
-                      <th>
-                        <span className="full-header">Tournament</span>
-                        <span className="abbr-header">Tournament</span>
-                      </th>
-                      <th>
-                        <span className="full-header">Score</span>
-                        <span className="abbr-header">Scr</span>
-                      </th>
-                      <th>
-                        <span className="full-header">Place</span>
-                        <span className="abbr-header">Pl</span>
-                      </th>
-                      <th>
-                        <span className="full-header">Points</span>
-                        <span className="abbr-header">Pts</span>
-                      </th>
+                      <th><span className="full-header">Date</span><span className="abbr-header">Date</span></th>
+                      <th></th>
+                      <th><span className="full-header">Tournament</span><span className="abbr-header">Tournament</span></th>
+                      <th><span className="full-header">Score</span><span className="abbr-header">Scr</span></th>
+                      <th><span className="full-header">Place</span><span className="abbr-header">Pl</span></th>
+                      <th><span className="full-header">Points</span><span className="abbr-header">Pts</span></th>
                     </tr>
                   </thead>
                   <tbody>
                     {modalRows.length === 0 ? (
-                      <tr>
-                        <td colSpan="6" style={{ textAlign: "center" }}>
-                          No results.
-                        </td>
-                      </tr>
+                      <tr><td colSpan="6" style={{ textAlign: "center" }}>No results.</td></tr>
                     ) : (
                       modalRows.map((r, i) => (
                         <tr key={i}>
-                          <td>
-                            {r.date ? format(parseISO(r.date), "MMM d") : "—"}
-                          </td>
+                          <td>{r.date ? format(parseISO(r.date), "MMM d") : "—"}</td>
                           <td>{r.usedInCalc ? "*" : ""}</td>
                           <td>{r.name ?? "—"}</td>
                           <td>{r.score ?? "—"}</td>
@@ -209,8 +158,10 @@ export default function PastChampion() {
               )}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
 }
+

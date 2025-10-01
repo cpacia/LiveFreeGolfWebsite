@@ -1,7 +1,8 @@
 .champion-content-section {
   padding: 2rem 2rem;
-  position: relative;
-  z-index: 0;
+  /* Avoid creating a stacking context that traps the modal */
+  position: static;   /* or simply remove this line */
+  z-index: auto;      /* or remove */
   height: 659px;
 }
 
