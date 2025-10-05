@@ -1,5 +1,4 @@
-// File: Results.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { getImageUrl } from "../lib/api";
 import "./Results.css";
 import "./Schedule.css"; // <-- pull in the same Schedule‐page styles for the header
@@ -14,19 +13,20 @@ export default function Results() {
   const [loadingEvent, setLoadingEvent] = useState(true);
   const [errorEvent, setErrorEvent] = useState(null);
 
-  // 3) State for which table is selected
+  // 3) Classic tables state (non–Colony Cup)
   const [selectedTable, setSelectedTable] = useState("net");
-
-  // 4) State for table data + loading / error
-  //    tableData will be either:
-  //      • an Array (for net/gross/teams/wgr), or
-  //      • an Object { players: Array, holes: Array } (for skins),
-  //      • or null while loading/cleared
   const [tableData, setTableData] = useState(null);
   const [loadingTable, setLoadingTable] = useState(false);
   const [errorTable, setErrorTable] = useState(null);
 
-  // ─── New: helper to format "2025-05-26" as "May 26"
+  // 4) Colony Cup state
+  const [isColonyCup, setIsColonyCup] = useState(false);
+  const [colonyData, setColonyData] = useState(null); // full JSON from /api/results/colonycup/{eventID}
+  const [loadingColony, setLoadingColony] = useState(false);
+  const [errorColony, setErrorColony] = useState(null);
+  const [selectedCupEvent, setSelectedCupEvent] = useState(""); // e.g., "Scramble", "Best Ball", etc.
+
+  // ─── Helper: format "2025-05-26" as "May 26" ─────────────────────────────────
   function formatDateWithoutYear(isoDateString) {
     if (!isoDateString) return "";
     const dt = new Date(isoDateString);
@@ -36,7 +36,14 @@ export default function Results() {
     });
   }
 
-  // 5) Fetch event metadata upon mount (or if eventID changes)
+  // ─── Detect "Colony Cup" robustly ────────────────────────────────────────────
+  function detectColonyCup(evt) {
+    // Prefer event name when available; fall back to eventID
+    const str = `${evt?.name || ""} ${eventID}`.toLowerCase();
+    return str.includes("colony") && str.includes("cup");
+  }
+
+  // ─── Fetch event metadata ────────────────────────────────────────────────────
   useEffect(() => {
     if (!eventID) {
       setErrorEvent("No eventID provided.");
@@ -52,6 +59,8 @@ export default function Results() {
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
         setEventData(data);
+        const colony = detectColonyCup(data);
+        setIsColonyCup(colony);
       } catch (err) {
         console.error(err);
         setErrorEvent("Failed to load event information.");
@@ -63,19 +72,9 @@ export default function Results() {
     fetchEvent();
   }, [eventID]);
 
-  // Whenever the user changes the dropdown, *immediately* clear tableData + flip loadingTable
-  // so that the next render shows a loading state instead of trying to .map on old data.
-  const onSelectChange = (e) => {
-    const newTable = e.target.value;
-    setLoadingTable(true);
-    setErrorTable(null);
-    setTableData(null);
-    setSelectedTable(newTable);
-  };
-
-  // 6) Fetch the selected table’s data whenever selectedTable or eventID changes
+  // ─── Classic results fetching (only when NOT Colony Cup) ─────────────────────
   useEffect(() => {
-    if (!eventID) return;
+    if (!eventID || isColonyCup) return; // skip when Colony Cup
 
     const fetchTable = async () => {
       let url = "";
@@ -101,37 +100,28 @@ export default function Results() {
           return;
       }
 
+      setLoadingTable(true);
+      setErrorTable(null);
+      setTableData(null);
+
       try {
         const resp = await fetch(url);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
-        console.log("raw data for", selectedTable, data);
-
         if (selectedTable === "skins") {
-          // Expect { players: [...], holes: [...] }
           setTableData({
             players: Array.isArray(data.players) ? data.players : [],
             holes: Array.isArray(data.holes) ? data.holes : [],
           });
         } else {
-          // Force an array for net/gross/teams/wgr—even if backend wrapped it in { something: […] }
           let arr = [];
           if (Array.isArray(data)) {
             arr = data;
           } else {
-            // find the first array‐valued property:
-            const candidates = Object.keys(data).filter((k) =>
-              Array.isArray(data[k]),
+            const candidates = Object.keys(data || {}).filter((k) =>
+              Array.isArray(data[k])
             );
-            if (candidates.length > 0) {
-              arr = data[candidates[0]];
-            } else {
-              console.warn(
-                `Unexpected JSON shape for "${selectedTable}". Falling back to empty array.`,
-                data,
-              );
-              arr = [];
-            }
+            arr = candidates.length > 0 ? data[candidates[0]] : [];
           }
           setTableData(arr);
         }
@@ -144,28 +134,84 @@ export default function Results() {
     };
 
     fetchTable();
-  }, [selectedTable, eventID]);
+  }, [selectedTable, eventID, isColonyCup]);
 
-  // 7) Helper to render each table by type
-  const renderTable = () => {
-    // A) If we’re actively fetching, show “Loading…”
-    if (loadingTable) {
-      return <p className="loading-text">Loading results…</p>;
-    }
-    // B) If there’s a fetch error, display it
-    if (errorTable) {
-      return <p className="error-text">{errorTable}</p>;
-    }
+  // ─── Colony Cup data fetching ────────────────────────────────────────────────
+  useEffect(() => {
+    if (!eventID || !isColonyCup) return; // only when Colony Cup
 
-    // C) Now decide by selectedTable. For each case:
-    //    • If tableData is not yet in the correct shape, show “Loading” (or null)
-    //    • Otherwise, .map over the array(s).
+    const fetchColony = async () => {
+      setLoadingColony(true);
+      setErrorColony(null);
+      setColonyData(null);
+      try {
+        const resp = await fetch(`/api/results/colony-cup/${eventID}`);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const data = await resp.json();
+        setColonyData(data);
+
+        // Choose a sensible default event tab
+        const ordered = [
+          "Scramble",
+          "Best Ball",
+          "Champman",
+          "Match Play",
+        ];
+        const keys = Object.keys(data || {}).filter((k) => k !== "Colony Cup");
+        const first = ordered.find((k) => keys.includes(k)) || keys[0] || "";
+        setSelectedCupEvent(first);
+      } catch (err) {
+        console.error(err);
+        setErrorColony("Failed to load Colony Cup results.");
+      } finally {
+        setLoadingColony(false);
+      }
+    };
+
+    fetchColony();
+  }, [eventID, isColonyCup]);
+
+  // ─── UI helpers for Colony Cup ───────────────────────────────────────────────
+  const colonyOverview = useMemo(() => {
+    if (!colonyData || !colonyData["Colony Cup"]) return null;
+    const cc = colonyData["Colony Cup"];
+    // score like "14-16"
+    const [s1, s2] = String(cc.score || "-").split("-").map((s) => s.trim());
+    return {
+      team1: cc.team1 || "Team 1",
+      team2: cc.team2 || "Team 2",
+      score1: s1 || "-",
+      score2: s2 || "-",
+      winner: cc.winner || "",
+    };
+  }, [colonyData]);
+
+  const colonyEventKeys = useMemo(() => {
+    if (!colonyData) return [];
+    return Object.keys(colonyData).filter((k) => k !== "Colony Cup");
+  }, [colonyData]);
+
+  // ─── Classic dropdown change handler ────────────────────────────────────────
+  const onSelectChange = (e) => {
+    const newTable = e.target.value;
+    setLoadingTable(true);
+    setErrorTable(null);
+    setTableData(null);
+    setSelectedTable(newTable);
+  };
+
+  // ─── Colony dropdown change handler ─────────────────────────────────────────
+  const onCupEventChange = (e) => {
+    setSelectedCupEvent(e.target.value);
+  };
+
+  // ─── Classic table renderer (unchanged) ─────────────────────────────────────
+  const renderClassicTables = () => {
+    if (loadingTable) return <p className="loading-text">Loading results…</p>;
+    if (errorTable) return <p className="error-text">{errorTable}</p>;
 
     if (selectedTable === "net") {
-      // We expect tableData to be an Array of NetResult
-      if (!Array.isArray(tableData)) {
-        return <p className="loading-text">Loading results…</p>;
-      }
+      if (!Array.isArray(tableData)) return <p className="loading-text">Loading results…</p>;
       return (
         <table className="results-table net-table">
           <thead>
@@ -226,10 +272,7 @@ export default function Results() {
     }
 
     if (selectedTable === "gross") {
-      // We expect tableData to be an Array of GrossResult
-      if (!Array.isArray(tableData)) {
-        return <p className="loading-text">Loading results…</p>;
-      }
+      if (!Array.isArray(tableData)) return <p className="loading-text">Loading results…</p>;
       return (
         <table className="results-table gross-table">
           <thead>
@@ -285,15 +328,10 @@ export default function Results() {
     }
 
     if (selectedTable === "teams") {
-      // We expect tableData to be an Array of TeamResult
-      if (!Array.isArray(tableData)) {
-        return <p className="loading-text">Loading results…</p>;
-      }
+      if (!Array.isArray(tableData)) return <p className="loading-text">Loading results…</p>;
 
-      // Determine whether ALL rows have a defined, non‐empty 'total'
       const hasTotalColumn = tableData.every(
-        (row) =>
-          row.total !== null && row.total !== undefined && row.total !== "",
+        (row) => row.total !== null && row.total !== undefined && row.total !== ""
       );
 
       return (
@@ -320,11 +358,7 @@ export default function Results() {
           <tbody>
             {tableData.length === 0 ? (
               <tr>
-                {/* If no rows, colspan should match the number of rendered columns */}
-                <td
-                  colSpan={hasTotalColumn ? 4 : 3}
-                  style={{ textAlign: "center" }}
-                >
+                <td colSpan={hasTotalColumn ? 4 : 3} style={{ textAlign: "center" }}>
                   No data available.
                 </td>
               </tr>
@@ -346,10 +380,7 @@ export default function Results() {
     }
 
     if (selectedTable === "wgr") {
-      // We expect tableData to be an Array of WGRResult
-      if (!Array.isArray(tableData)) {
-        return <p className="loading-text">Loading results…</p>;
-      }
+      if (!Array.isArray(tableData)) return <p className="loading-text">Loading results…</p>;
       return (
         <table className="results-table net-table">
           <thead>
@@ -410,12 +441,7 @@ export default function Results() {
     }
 
     if (selectedTable === "skins") {
-      // We expect tableData to be an object { players: Array, holes: Array }
-      if (
-        !tableData ||
-        !Array.isArray(tableData.players) ||
-        !Array.isArray(tableData.holes)
-      ) {
+      if (!tableData || !Array.isArray(tableData.players) || !Array.isArray(tableData.holes)) {
         return <p className="loading-text">Loading results…</p>;
       }
 
@@ -512,6 +538,82 @@ export default function Results() {
     return null;
   };
 
+  // ─── Colony Cup renderer ────────────────────────────────────────────────────
+  const renderColonyCup = () => {
+    if (loadingColony) return <p className="loading-text">Loading Colony Cup…</p>;
+    if (errorColony) return <p className="error-text">{errorColony}</p>;
+    if (!colonyData) return null;
+
+    const overview = colonyOverview;
+    const matches = (selectedCupEvent && Array.isArray(colonyData[selectedCupEvent]))
+      ? colonyData[selectedCupEvent]
+      : [];
+
+    return (
+      <>
+        {/* ===== A) Overall score box ===== */}
+        {overview && (
+          <div className="colony-overview">
+            <div className="colony-overview-row">
+              <div className="colony-team">
+                <span className="colony-team-name">{overview.team1}</span>
+                <span className="colony-team-score">{overview.score1}</span>
+              </div>
+              <div className="colony-team">
+                <span className="colony-team-score">{overview.score2}</span>
+                <span className="colony-team-name">{overview.team2}</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ===== B) Event dropdown ===== */}
+        <div className="results-dropdown-container results-dropdown-width">
+          <select
+            id="colony-select"
+            className="results-dropdown schedule-dropdown"
+            value={selectedCupEvent}
+            onChange={onCupEventChange}
+          >
+            {colonyEventKeys.map((k) => (
+              <option key={k} value={k}>{k}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* ===== C) Matches table ===== */}
+        <table className="results-table colony-matches-table">
+          <thead>
+            <tr>
+              <th>{overview.team1}</th>
+              <th>Score</th>
+              <th>{overview.team2}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {matches.length === 0 ? (
+              <tr>
+                <td colSpan={4} style={{ textAlign: "center" }}>No matches.</td>
+              </tr>
+            ) : (
+              matches.map((m, idx) => (
+                <tr key={idx}>
+                  <td>{m.team1}</td>
+                  <td style={{ textAlign: "center" }}>
+					  {m.winner === m.team1 && "✓ "}
+					  {m.score}
+					  {m.winner === m.team2 && " ✓"}
+					</td>
+                  <td>{m.team2}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </>
+    );
+  };
+
   return (
     <div className="full-bleed results-content">
       <div className="content-container">
@@ -537,8 +639,7 @@ export default function Results() {
                 <div className="event-info">
                   <div className="event-name">{eventData.name}</div>
                   <div className="event-meta">
-                    {formatDateWithoutYear(eventData.date)} &nbsp;|&nbsp;{" "}
-                    {eventData.course}
+                    {formatDateWithoutYear(eventData.date)} &nbsp;|&nbsp; {eventData.course}
                     <br />
                     {eventData.town}, {eventData.state}
                   </div>
@@ -549,9 +650,17 @@ export default function Results() {
               </div>
             </div>
 
-            {/* ===== 2) Dropdown Selector ===== */}
-            <div className="results-dropdown-container results-dropdown-width">
-              <select
+            {/* ===== 2) Body switches between Classic vs Colony Cup ===== */}
+            {isColonyCup ? (
+              // Colony Cup specific body
+              <div className="results-table-container">
+                {renderColonyCup()}
+              </div>
+            ) : (
+              <>
+                {/* Classic dropdown */}
+                <div className="results-dropdown-container results-dropdown-width">
+                  <select
                 id="results-select"
                 className="results-dropdown schedule-dropdown"
                 value={selectedTable}
@@ -573,13 +682,16 @@ export default function Results() {
                   <option value="wgr">WGR</option>
                 )}
               </select>
-            </div>
+                </div>
 
-            {/* ===== 3) Render the appropriate table(s) ===== */}
-            <div className="results-table-container">{renderTable()}</div>
+                {/* Classic results */}
+                <div className="results-table-container">{renderClassicTables()}</div>
+              </>
+            )}
           </>
         )}
       </div>
     </div>
   );
 }
+

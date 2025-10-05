@@ -266,6 +266,55 @@
   width: 3%; /* Rank (narrow) */
 }
 
+.colony-overview {
+  margin: 12px 0 18px 0;
+  padding: 32px 100px 32px 100px;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 10px;
+  background: rgba(0,0,0,0.02);
+}
+.colony-overview-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.colony-team { 
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+}
+.colony-team-name { 
+  font-size: 1.5rem;
+  font-weight: 600; 
+}
+.colony-team-score { 
+  font-size: 1.5rem;
+  font-weight: 700; 
+  font-variant-numeric: tabular-nums; 
+}
+.colony-winner { 
+  font-size: 0.95rem; 
+  opacity: 0.8; 
+}
+
+.colony-matches-table th:nth-child(1),
+.colony-matches-table td:nth-child(1) {
+	width: 30%; /* Rank (narrow) */
+}
+  
+.colony-matches-table th:nth-child(2),
+.colony-matches-table td:nth-child(2) {
+	width: 10%; /* Rank (narrow) */
+	text-align: center;
+}
+  
+.colony-matches-table th:nth-child(3),
+.colony-matches-table td:nth-child(3) {
+	width: 30%; /* Rank (narrow) */
+}
+
 @media (max-width: 768px) {
   /* Hide the long text */
   .full-header {
