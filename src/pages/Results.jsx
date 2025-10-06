@@ -556,12 +556,18 @@ export default function Results() {
           <div className="colony-overview">
             <div className="colony-overview-row">
               <div className="colony-team">
-                <span className="colony-team-name">{overview.team1}</span>
+                <span className="colony-team-name">
+                {overview.winner === overview.team1 && "🏆 "}
+				{overview.team1}
+				</span>
                 <span className="colony-team-score">{overview.score1}</span>
               </div>
               <div className="colony-team">
                 <span className="colony-team-score">{overview.score2}</span>
-                <span className="colony-team-name">{overview.team2}</span>
+                <span className="colony-team-name">
+                {overview.winner === overview.team2 && "🏆 "}
+                {overview.team2}
+                </span>
               </div>
             </div>
           </div>
