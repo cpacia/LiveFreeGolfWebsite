@@ -606,9 +606,17 @@ export default function Results() {
                 <tr key={idx}>
                   <td>{m.team1}</td>
                   <td style={{ textAlign: "center" }}>
-					  {m.winner === m.team1 && "✓ "}
+                      <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+					  <span className="red-winner" style={{ width: "1em", textAlign: "right" }}>
+					  {m.winner === m.team1 && "✓"}
+					</span>
+					<span style={{ minWidth: "3em", textAlign: "center" }}>
 					  {m.score}
-					  {m.winner === m.team2 && " ✓"}
+					</span>
+					<span className="blue-winner" style={{ width: "1em", textAlign: "left" }}>
+					  {m.winner === m.team2 && "✓"}
+					</span>
+					</div>
 					</td>
                   <td>{m.team2}</td>
                 </tr>
