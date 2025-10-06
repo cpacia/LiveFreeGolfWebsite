@@ -212,17 +212,22 @@ export default function Schedule() {
                       </Link>
                     </div>
                   ) : eventDay <= weekFromNow ? (
-                    <div className="teetimes-link">
-                      <Link
-                        to={`/teetimes/${evt.shopifyUrl}?eventID=${evt.eventID}`}
-                        rel="noopener noreferrer"
-                      >
-                        Tee Times ▶
-                      </Link>
-                    </div>
-                  ) : (
-                    <span>Registering Soon</span>
-                  )}
+					  evt.blueGolfUrl && evt.blueGolfUrl.trim() !== "" ? (
+						<div className="teetimes-link">
+						  <Link
+							to={`/teetimes/${evt.shopifyUrl}?eventID=${evt.eventID}`}
+							rel="noopener noreferrer"
+						  >
+							Tee Times ▶
+						  </Link>
+						</div>
+					  ) : (
+						<span>Registration Closed</span>
+					  )
+					) : (
+					  <span>Registering Soon</span>
+					)
+                  }
                 </div>
               </div>
             );
