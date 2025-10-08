@@ -220,6 +220,19 @@
   padding-top: 65rem;
   margin-bottom: 14rem;
 }
+.player2-round5::after {
+  content: attr(data-score);
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translateY(1080px) translateX(-80px);
+  font-size: 0.85rem;
+  color: #555;
+  white-space: nowrap;
+  z-index: 1;
+  left: auto;
+  right: 0;
+}
 
 /* Champion */
 .player1-round6 {
