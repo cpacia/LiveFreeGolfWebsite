@@ -490,7 +490,7 @@
   .colony-matches-table td:nth-child(1) { width: 45%; text-align: center; }
   .colony-matches-table th:nth-child(2),
   .colony-matches-table td:nth-child(2) { 
-    width: 20%; 
+    width: 30%; 
   }
   .colony-matches-table th:nth-child(3),
   .colony-matches-table td:nth-child(3) { width: 45%; text-align: center; }
