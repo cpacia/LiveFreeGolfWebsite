@@ -599,7 +599,7 @@ export default function Results() {
           <tbody>
             {matches.length === 0 ? (
               <tr>
-                <td colSpan={4} style={{ textAlign: "center" }}>No matches.</td>
+                <td colSpan={3} style={{ textAlign: "center" }}>No matches.</td>
               </tr>
             ) : (
               matches.map((m, idx) => (
@@ -607,13 +607,13 @@ export default function Results() {
                   <td>{m.team1}</td>
                   <td style={{ textAlign: "center" }}>
                       <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
-					  <span className="red-winner" style={{ width: "1em", textAlign: "right" }}>
+					  <span className="red-winner" style={{ width: "1em" }}>
 					  {m.winner === m.team1 && "✓"}
 					</span>
-					<span style={{ minWidth: "3em", textAlign: "center" }}>
+					<span style={{ minWidth: "3em", textAlign: "center"}}>
 					  {m.score}
 					</span>
-					<span className="blue-winner" style={{ width: "1em", textAlign: "left" }}>
+					<span className="blue-winner" style={{ width: "1em" }}>
 					  {m.winner === m.team2 && "✓"}
 					</span>
 					</div>

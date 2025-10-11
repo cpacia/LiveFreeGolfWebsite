@@ -38,10 +38,6 @@
   gap: 0.5rem;
 }
 
-.results-dropdown-width {
-  max-width: 150;
-}
-
 .results-dropdown {
   padding: 8px 12px;
   font-size: 16px;
@@ -138,7 +134,7 @@
   align-items: center;
   padding: 1rem 0;
   border-bottom: 1px solid #e0e0e0;
-  background‐color: var(--color-light);
+  background-color: var(--color-light);
   margin-bottom: 1rem;
 }
 
@@ -268,7 +264,7 @@
 
 .colony-overview {
   margin: 12px 0 18px 0;
-  padding: 32px 100px 32px 100px;
+  padding: 32px 100px;
   border: 1px solid rgba(0,0,0,0.08);
   border-radius: 10px;
   background: rgba(0,0,0,0.02);
@@ -318,11 +314,13 @@
 .blue-winner {
   color: #1A22B0;
   font-size: 1.2rem;
+  text-align: left;
 }
 
 .red-winner {
   color: #B01A1A;
   font-size: 1.2rem;
+  text-align: right;
 }
 
 @media (max-width: 768px) {
@@ -449,4 +447,83 @@
   .teams-table td:nth-child(4) {
     width: 5%; /* Rank (narrow) */
   }
+  
+  .colony-overview {
+    padding: 16px;
+  }
+  .colony-overview-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .colony-team {
+    flex-direction: row !important; /* normal order: name then score */
+    justify-content: center;
+    gap: 6px;
+  }
+
+  /* The right-hand team reverses order on desktop,
+     so we force it to match the same name→score order */
+  .colony-team:nth-child(2) {
+    flex-direction: row !important;
+  }
+
+  /* Optional: make sure alignment and font sizing stay clean */
+  .colony-team-name {
+    order: 1;
+    text-align: right;
+  }
+
+  .colony-team-score {
+    order: 2;
+    text-align: left;
+  }
+
+  /* Matches table: allow team names to wrap and rebalance widths */
+  .results-table.colony-matches-table th,
+  .results-table.colony-matches-table td {
+    padding: 0.6rem 0.5rem;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+  .colony-matches-table th:nth-child(1),
+  .colony-matches-table td:nth-child(1) { width: 45%; text-align: center; }
+  .colony-matches-table th:nth-child(2),
+  .colony-matches-table td:nth-child(2) { 
+    width: 20%; 
+  }
+  .colony-matches-table th:nth-child(3),
+  .colony-matches-table td:nth-child(3) { width: 45%; text-align: center; }
+  
+   /* 2nd column cell itself */
+  .colony-matches-table td:nth-child(2) {
+    text-align: left !important;   /* beats inline style */
+  }
+  /* the inline-flex wrapper inside the td */
+  .colony-matches-table td:nth-child(2) > div {
+    justify-content: flex-start !important; /* beats inline justify-content:center */
+  }
+  /* optional: keep checkmarks tight to the score */
+  .colony-matches-table td:nth-child(2) .red-winner,
+  .colony-matches-table td:nth-child(2) .blue-winner {
+    width: auto;
+  }
+
+}
+
+.cc-score-cell { text-align: center; }
+.cc-score-wrap { display: inline-flex; align-items: center; justify-content: center; }
+.cc-mark-left, .cc-mark-right { width: 1em; }
+.cc-mark-left { text-align: right; }
+.cc-mark-right { text-align: left; }
+.cc-score { min-width: 3em; text-align: center; }
+
+/* ===== Mobile: left-align the Score column only ===== */
+@media (max-width: 768px) {
+  .colony-matches-table td:nth-child(2),
+  .cc-score-cell { text-align: left; }
+
+  .cc-score-wrap { justify-content: flex-start; }
+  .cc-score { text-align: left; }
+  .cc-mark-left, .cc-mark-right { width: auto; }
 }
