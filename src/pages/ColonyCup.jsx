@@ -18,11 +18,18 @@ export default function ColonyCup() {
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
         if (Array.isArray(data)) {
-          data.sort((a, b) => Number(a.year) - Number(b.year));
-          setInfos(data);
-        } else {
-          setInfos([data]);
-        }
+		  data.sort((a, b) => {
+			// First, prioritize the winning team flag
+			if (a.winningTeam && !b.winningTeam) return -1;
+			if (!a.winningTeam && b.winningTeam) return 1;
+
+			// Otherwise sort by year ascending
+			return Number(a.year) - Number(b.year);
+		  });
+		  setInfos(data);
+		} else {
+		  setInfos([data]);
+		}
       } catch (e) {
         console.error(e);
         setError("Failed to load Colony Cup info.");
