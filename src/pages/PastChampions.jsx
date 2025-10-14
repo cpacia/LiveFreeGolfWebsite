@@ -1,4 +1,4 @@
-// src/components/PastChampion.jsx
+// src/components/PastChampions.jsx
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { format, parseISO } from "date-fns";
@@ -7,8 +7,8 @@ import "../components/AdminSchedule.css";
 import "./Standings.css"; // includes .modal / .modal-backdrop base styles
 import "./PastChampions.css";
 
-export default function PastChampion() {
-  const [champion, setChampion] = useState(null);
+export default function PastChampions() {
+  const [champions, setChampions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -17,6 +17,7 @@ export default function PastChampion() {
   const [modalError, setModalError] = useState(null);
   const [modalRows, setModalRows] = useState([]);
   const [modalTitle, setModalTitle] = useState("");
+  const [selectedChampion, setSelectedChampion] = useState(null);
 
   useEffect(() => {
     const load = async () => {
@@ -24,16 +25,15 @@ export default function PastChampion() {
       setError(null);
       try {
         const resp = await fetch("/api/champions", { cache: "no-store" });
-        if (resp.status === 404) { setChampion(null); return; }
+        if (resp.status === 404) { setChampions([]); return; }
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
         const list = Array.isArray(data) ? data : data.champions || [];
-        if (!list.length) { setChampion(null); return; }
-        const latest = [...list].sort((a, b) => Number(b.year) - Number(a.year))[0];
-        setChampion(latest);
+        const sorted = [...list].sort((a, b) => Number(b.year) - Number(a.year));
+        setChampions(sorted);
       } catch (e) {
         console.error(e);
-        setError("Failed to load champion.");
+        setError("Failed to load champions.");
       } finally {
         setLoading(false);
       }
@@ -41,17 +41,18 @@ export default function PastChampion() {
     load();
   }, []);
 
-  const openSeasonModal = async () => {
-    if (!champion) return;
-    setModalTitle(`${champion.player} — ${champion.year} Season Results`);
+  const openSeasonModal = async (champ) => {
+    if (!champ) return;
+    setSelectedChampion(champ);
+    setModalTitle(`${champ.player} — ${champ.year} Season Results`);
     setModalRows([]);
     setModalError(null);
     setModalLoading(true);
     setModalOpen(true);
     try {
       const endpoint = `/api/standings-data/season/${encodeURIComponent(
-        champion.player
-      )}?year=${encodeURIComponent(champion.year)}`;
+        champ.player
+      )}?year=${encodeURIComponent(champ.year)}`;
       const resp = await fetch(endpoint);
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const rows = await resp.json();
@@ -66,11 +67,12 @@ export default function PastChampion() {
 
   if (loading) return <div className="content-container"><p>Loading…</p></div>;
   if (error) return <div className="content-container"><p className="error-text">{error}</p></div>;
-  if (!champion) {
+
+  if (!champions || champions.length === 0) {
     return (
       <div className="content-container">
-        <h1>Past Champion</h1>
-        <p>No champion has been recorded yet.</p>
+        <h1>Past Champions</h1>
+        <p>No champions have been recorded yet.</p>
       </div>
     );
   }
@@ -78,33 +80,36 @@ export default function PastChampion() {
   return (
     <div className="champion-content-section full-bleed">
       <div className="content-container">
-        <div className="pc-hero">
-          <div className="pc-hero-media">
-            <img
-              src={getImageUrl(`/api/champions/${champion.year}/image`)}
-              alt={`${champion.year} Champion ${champion.player}`}
-              className="pc-hero-img"
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = "/images/default-image.webp";
-              }}
-            />
-          </div>
+        <h1>Past Champions</h1>
+        <div className="pc-list">
+          {champions.map((c) => (
+            <article key={c.year} className="pc-hero">
+              <div className="pc-hero-media">
+                <img
+                  src={getImageUrl(`/api/champions/${c.year}/image`)}
+                  alt={`${c.year} Champion ${c.player}`}
+                  className="pc-hero-img"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "/images/default-image.webp";
+                  }}
+                />
+              </div>
 
-          <div className="pc-hero-body">
-            <div className="pc-eyebrow">{champion.year} CHAMPION</div>
-            <h1 className="pc-title">{champion.player}</h1>
-            <p className="pc-blurb">
-              The {champion.year} season crowned {champion.player} as our tour
-              champion. Click below to view the full tournament-by-tournament
-              breakdown of their season.
-            </p>
-            <div className="pc-actions">
-              <button className="pc-btn" onClick={openSeasonModal}>
-                View Season Results
-              </button>
-            </div>
-          </div>
+              <div className="pc-hero-body">
+                <div className="pc-eyebrow">{c.year} CHAMPION</div>
+                <h2 className="pc-title">{c.player}</h2>
+                <p className="pc-blurb">
+                  The {c.year} season crowned {c.player} as our tour champion. Click below to view the full tournament-by-tournament breakdown of their season.
+                </p>
+                <div className="pc-actions">
+                  <button className="pc-btn" onClick={() => openSeasonModal(c)}>
+                    View Season Results
+                  </button>
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
       </div>
 

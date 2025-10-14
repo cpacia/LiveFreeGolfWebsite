@@ -4,7 +4,7 @@
   position: static;
   z-index: auto;
   padding: 1.5rem 0;
-  height: 718px;              /* was fixed; let content size it */
+  height: auto;              /* was fixed; let content size it */
   box-sizing: border-box;
 }
 
