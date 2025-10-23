@@ -278,5 +278,21 @@
     "state": "VT",
     "thumbnail": "fox-run.webp",
     "link": "https://www.foxrungolfclubvt.com/"
+  },
+  {
+    "id": "brattleboro",
+    "name": "Brattleboro Country Club",
+    "city": "Brattleboro",
+    "state": "VT",
+    "thumbnail": "brattleboro.jpg",
+    "link": "https://brattleborocountryclub.com/"
+  },
+  {
+    "id": "mtsnow",
+    "name": "Mount Snow Golf Club",
+    "city": "West Dover",
+    "state": "VT",
+    "thumbnail": "mt-snow.avif",
+    "link": "https://www.mountsnow.com/explore-the-resort/activities-and-events/summer-activities/golf.aspx"
   }
 ]
