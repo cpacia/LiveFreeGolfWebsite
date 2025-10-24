@@ -139,11 +139,10 @@ export default function TourDetailsPage() {
         <section id="teams">
           <h2>Teams</h2>
           <p>
-            Every regular season event has a team event that runs
-            simultaneously. Players are placed into better ball teams of four.
-            The lowest individual score on the hole is your team's score for
-            that hole. Each member of the winning team earns 15 bonus points
-            toward the season‑long race. 85% of handicap strokes are typically
+            Every regular season event has a team component that runs
+            simultaneously. Players are placed into teams of three or four and play best ball or
+            average-of-teammates depending on field size. Each member of the winning team earns 
+            15 bonus points toward the season‑long race. 85% of handicap strokes are typically
             used for team play.
           </p>
         </section>
