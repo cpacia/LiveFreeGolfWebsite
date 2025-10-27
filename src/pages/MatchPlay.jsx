@@ -188,37 +188,65 @@ export default function MatchPlay() {
   // Render bracket columns in the exact order determined above, but ALWAYS
   // create “expectedMatches” slots per column (real matches + placeholders).
   const renderBracket = () => {
-    // 1) If there are no matches at all:
-    if (matches.length === 0) {
-      return <p>No bracket data yet.</p>;
-    }
+  if (matches.length === 0) {
+    return <p>No bracket data yet.</p>;
+  }
 
-    // 2) Determine Round 1’s name and its match count:
-    const roundOrder = extractRoundOrder();
-    const firstRoundName = roundOrder[0];
-    const firstCount = matches.filter((m) => m.round === firstRoundName).length;
+  const roundOrder = extractRoundOrder();
+  const firstRoundName = roundOrder[0];
+  const firstCount = matches.filter((m) => m.round === firstRoundName).length;
+  const allRoundNames = buildFullRoundList(firstRoundName);
 
-    // 3) Build the full list of round headings (e.g. ["Round 1", "Round 2", "Quarterfinals", …])
-    const allRoundNames = buildFullRoundList(firstRoundName);
+  // Identify the last "playable" round that actually has matches (e.g., "Finals")
+  const lastPlayableIndex = [...allRoundNames]
+    .reverse()
+    .findIndex((r) => matches.some((m) => m.round === r));
+  const lastPlayableRoundIndex =
+    lastPlayableIndex === -1
+      ? allRoundNames.length - 1
+      : allRoundNames.length - 1 - lastPlayableIndex;
+  const lastPlayableRoundName = allRoundNames[lastPlayableRoundIndex];
 
-    return (
-      <div className="bracket-container">
-        {(() => {
-          const winnerToScoreMap = new Map(); // winner -> score
+  // Grab the final match (often "Finals") to compute the champion
+  const finalMatch =
+    matches.find((m) => m.round === lastPlayableRoundName) ||
+    null;
+  const championName = finalMatch?.winner || "";
+  const championScore = finalMatch?.score || "";
 
-          return allRoundNames.map((roundName, c) => {
-            const roundMatches = matches.filter((m) => m.round === roundName);
+  return (
+    <div className="bracket-container">
+      {(() => {
+        const winnerToScoreMap = new Map(); // winner -> score
 
-            let expectedMatches = Math.floor(firstCount / Math.pow(2, c));
-            if (expectedMatches < 1 && c === allRoundNames.length - 1) {
-              expectedMatches = 1;
-            }
+        return allRoundNames.map((roundName, c) => {
+          const roundMatches = matches.filter((m) => m.round === roundName);
 
-            return (
-              <div key={roundName} className="bracket-column">
-                <div className="bracket-header">{roundName}</div>
+          let expectedMatches = Math.floor(firstCount / Math.pow(2, c));
+          if (expectedMatches < 1 && c === allRoundNames.length - 1) {
+            expectedMatches = 1;
+          }
 
-                {Array.from({ length: expectedMatches }).map((_, j) => {
+          const isChampionColumn =
+            c === allRoundNames.length - 1 &&
+            roundMatches.length === 0; // e.g., "Champion" summary column
+
+          return (
+            <div key={roundName} className="bracket-column">
+              <div className="bracket-header">{roundName}</div>
+
+              {isChampionColumn ? (
+                // Render the summary "Champion" box using the previous round's winner
+                <div className="bracket-match">
+                  <div
+                    className="bracket-player1 bracket-player player1-round6"
+                    data-score={championScore}
+                  >
+                    {championName || "\u200B"}
+                  </div>
+                </div>
+              ) : (
+                Array.from({ length: expectedMatches }).map((_, j) => {
                   const match = roundMatches[j];
                   let player1Extra = "",
                     player2Extra = "";
@@ -241,14 +269,13 @@ export default function MatchPlay() {
                   }
 
                   if (match) {
-                    // Store winner -> score in map
+                    // Store winner -> score for next round lookups
                     if (match.winner && match.score) {
                       const roundIndex = c;
                       const roundKey = `${match.winner}-${roundIndex}`;
                       winnerToScoreMap.set(roundKey, match.score);
                     }
 
-                    // Retrieve previous scores if available
                     const prevRound = c - 1;
                     const prevKey1 = `${match.player1}-${prevRound}`;
                     const p1ScoreFromLastRound = winnerToScoreMap.get(prevKey1);
@@ -283,23 +310,21 @@ export default function MatchPlay() {
                         <div className={`bracket-player${player1Extra}`}>
                           &#8203;
                         </div>
-                        <div
-                          className={`player2 bracket-player${player2Extra}`}
-                        >
+                        <div className={`player2 bracket-player${player2Extra}`}>
                           &#8203;
                         </div>
                       </div>
                     );
                   }
-                })}
-              </div>
-            );
-          });
-        })()}
-      </div>
-    );
-  };
-
+                })
+              )}
+            </div>
+          );
+        });
+      })()}
+    </div>
+  );
+};
   return (
     <div className="matchplay-wrapper">
       <div className="matchplay-content full-bleed">
