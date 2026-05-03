@@ -186,9 +186,11 @@ export default function ColonyCup() {
                       {standings &&
                         standings.season
                           .filter((p) => {
-                            const lastYear = (Number(year) - 1).toString();
+                            const prevYearNum = Number(year) - 1;
                             const lastEntry = infos.find(
-                              (e) => e.year === lastYear,
+                              (e) =>
+                                e.winningTeam &&
+                                parseInt(e.year, 10) === prevYearNum,
                             );
                             let lastTeam = [];
                             if (lastEntry) {
